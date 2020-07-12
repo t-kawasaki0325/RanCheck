@@ -4,7 +4,14 @@
   "main": "main.js",
   "author": "Takahiro Kawasaki",
   "license": "MIT",
+  "scripts": {
+    "start": "electron ./dist/main.js",
+    "build:main": "tsc",
+    "build:render": "webpack"
+  },
   "dependencies": {
+    "eslint-loader": "^4.0.2",
+    "html-webpack-plugin": "^4.3.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   },
