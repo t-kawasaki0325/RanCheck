@@ -10,6 +10,7 @@
     "build:render": "webpack"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "eslint-loader": "^4.0.2",
     "html-webpack-plugin": "^4.3.0",
     "react": "^16.13.1",
