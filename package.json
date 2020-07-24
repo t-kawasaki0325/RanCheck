@@ -10,7 +10,9 @@
     "build:render": "webpack"
   },
   "dependencies": {
+    "@types/cheerio": "^0.22.21",
     "axios": "^0.19.2",
+    "cheerio": "^1.0.0-rc.3",
     "eslint-loader": "^4.0.2",
     "html-webpack-plugin": "^4.3.0",
     "react": "^16.13.1",

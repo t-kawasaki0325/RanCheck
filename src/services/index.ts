@@ -1,3 +1,3 @@
-import { searchEngineDao } from './httpRequest'
+import googleRepository from './repository/googleRepository'
 
-export { searchEngineDao }
+export { googleRepository }
