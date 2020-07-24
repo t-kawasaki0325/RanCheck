@@ -1,18 +1,32 @@
-class SearchResultEntity {
+import ISearchResultEntity from './ISearchResultEntity'
+
+class SearchResultEntity implements ISearchResultEntity {
 
   /**
    * 順位
    */
-  private rank: number
+  private _rank: number
 
   /**
    * url
    */
-  private url: string
+  private _url: string
 
-  constructor(rank: number, url: string) {
-    this.rank = rank
-    this.url = url
+  constructor(rank: number = 0, url: string = '') {
+    this._rank = rank
+    this._url = url
+  }
+
+  get rank(): number {
+    return this._rank
+  }
+
+  get url(): string {
+    return this._url
+  }
+
+  get isEmpty(): boolean {
+    return this._rank === 0 && this._url === ''
   }
 }
 

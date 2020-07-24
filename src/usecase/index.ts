@@ -1,3 +1,4 @@
 import GoogleSearchResultEntity from './google/SearchResultEntity'
+import IGoogleSearchResultEntity from './google/ISearchResultEntity'
 
-export { GoogleSearchResultEntity }
+export { IGoogleSearchResultEntity, GoogleSearchResultEntity }
