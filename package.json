@@ -15,6 +15,7 @@
     "cheerio": "^1.0.0-rc.3",
     "eslint-loader": "^4.0.2",
     "html-webpack-plugin": "^4.3.0",
+    "nedb": "^1.8.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   },
