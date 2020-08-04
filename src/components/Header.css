@@ -1,0 +1,17 @@
+@value textGrey from '../App.css';
+@value backgroundGrey from '../App.css';
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 40px;
+    background: backgroundGrey;
+
+    border-bottom: #ddd;
+}
+
+.headerTitle {
+    color: textGrey;
+}
