@@ -1,7 +1,8 @@
 import React from 'react'
+import { MainTab } from '../components'
 
 const Home: React.FC = () => {
-  return <p>home</p>
+  return <MainTab />
 }
 
 export default Home

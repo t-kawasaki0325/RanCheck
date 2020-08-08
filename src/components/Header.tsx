@@ -1,6 +1,5 @@
 import React from 'react'
 
-// @ts-ignore
 import styles from './Header.css'
 
 interface IProps {

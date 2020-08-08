@@ -1,10 +1,7 @@
 import React from 'react'
 
-// @ts-ignore
 import styles from './MainTab.css'
-// @ts-ignore
 import IcnCheck from '../assets/img/icn_check.svg'
-// @ts-ignore
 import IcnPlus from '../assets/img/icn_plus.svg'
 
 const MainTab: React.FC = () => {

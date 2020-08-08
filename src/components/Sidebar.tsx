@@ -1,10 +1,7 @@
 import React from 'react'
 
-// @ts-ignore
 import IcnAnalysis from '../assets/img/icn_analysis.svg'
-// @ts-ignore
 import IcnSearch from '../assets/img/icn_search.svg'
-// @ts-ignore
 import styles from './Sidebar.css'
 
 const Sidebar: React.FC = () => {
