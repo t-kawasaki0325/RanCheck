@@ -1,0 +1,22 @@
+.rankTransition {
+    composes: layout from '../App.css';
+
+    height: 270px;
+    width: 240px;
+}
+
+.mainTitle {
+    composes: mainTitle from '../App.css';
+}
+
+.titleText {
+    composes: titleText from '../App.css';
+}
+
+.comparisonArea {
+    margin-top: 30px;
+}
+
+.comparisonArea_text {
+    margin: 10px 0;
+}

@@ -1,4 +1,4 @@
-@value backgroundGrey: #444;
+@value backgroundGrey from '../App.css';
 
 .sidebar {
     width: 80px;

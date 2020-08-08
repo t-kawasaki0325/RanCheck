@@ -1,8 +1,26 @@
 @value textGrey: #ddd;
 
+@value backgroundWhite: #fefefe;
 @value backgroundGrey: #444;
+@value backgroundMain: #ddd;
+
+.layout {
+    padding: 10px;
+    margin: 10px;
+
+    background: backgroundWhite;
+}
+
+.mainTitle {
+    margin: 10px 0;
+}
+
+.titleText {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
 
 .mainLayout {
     display: flex;
-    height: 100%;
+    height: calc(100% - 40px);
 }

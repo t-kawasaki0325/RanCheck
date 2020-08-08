@@ -1,0 +1,14 @@
+.rankGraph {
+    composes: layout from '../App.css';
+
+    flex-grow: 1;
+    height: 270px;
+}
+
+.mainTitle {
+    composes: mainTitle from '../App.css';
+}
+
+.titleText {
+    composes: titleText from '../App.css';
+}

@@ -1,0 +1,23 @@
+@value backgroundWhite from '../App.css';
+
+.settingTable {
+    composes: layout from '../App.css';
+
+    height: 260px;
+    overflow-y: auto;
+}
+
+.table {
+    border-collapse: separate;
+    border-spacing: 10px;
+}
+
+.up {
+    font-weight: bold;
+    color: #df5656;
+}
+
+.down {
+    font-weight: bold;
+    color: #0d47a1;
+}
