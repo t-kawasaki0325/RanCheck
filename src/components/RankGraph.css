@@ -12,3 +12,7 @@
 .titleText {
     composes: titleText from '../App.css';
 }
+
+.graphArea {
+    margin-top: 30px;
+}
