@@ -1,4 +1,5 @@
 interface IRancheckEntity {
+  _id: string
   title: string
   site: string
   url: string

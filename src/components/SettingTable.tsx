@@ -1,8 +1,15 @@
 import React from 'react'
+import { IRancheckEntity } from '../usecase'
 
 import styles from './SettingTable.css'
 
-const SettingTable: React.FC = () => {
+interface IProps {
+  settings: IRancheckEntity[]
+}
+
+const SettingTable: React.FC<IProps> = props => {
+  const { settings } = props
+
   return (
     <div className={styles.settingTable}>
       <table className={styles.table}>
@@ -16,17 +23,21 @@ const SettingTable: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>php プログラム</td>
-            <td>https://memorandumrail.com</td>
-            <td>23</td>
-            <td>
-              <span>1</span>
-              <span className={styles.up}>↗</span>
-              <span className={styles.down}>↘</span>
-            </td>
-            <td>https://memorandumrail.com</td>
-          </tr>
+        {settings.map((setting: IRancheckEntity) =>
+          (
+            <tr key={setting._id}>
+              <td>{setting.title}</td>
+              <td>{setting.site}</td>
+              <td>{setting.gRank[0].rank}</td>
+              <td>
+                <span>1</span>
+                <span className={styles.up}>↗</span>
+                <span className={styles.down}>↘</span>
+              </td>
+              <td>{setting.url}</td>
+            </tr>
+          )
+        )}
         </tbody>
       </table>
     </div>

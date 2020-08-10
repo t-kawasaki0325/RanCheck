@@ -3,6 +3,11 @@ import IRancheckEntity, { IRank } from './IRancheckEntity'
 class RancheckEntity implements IRancheckEntity {
 
   /**
+   * id
+   */
+  __id: string
+
+  /**
    * サイトタイトル
    */
   _title: string
@@ -27,12 +32,17 @@ class RancheckEntity implements IRancheckEntity {
    */
   _gRank: IRank[]
 
-  constructor(title: string, site: string, url: string, keyword: string, gRank: IRank[]) {
+  constructor(_id: string, title: string, site: string, url: string, keyword: string, gRank: IRank[]) {
+    this.__id = _id
     this._title = title
     this._site = site
     this._url = url
     this._keyword = keyword
     this._gRank = gRank
+  }
+
+  get _id() {
+    return this.__id
   }
 
   get title() {

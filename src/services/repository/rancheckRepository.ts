@@ -5,8 +5,8 @@ const rancheckRepository = {
   get: async () => {
     const data = await rancheckDao.get()
     return data.map((row: IRancheckEntity) => {
-      const { title, site, url, keyword, gRank } = row
-      return new RancheckEntity(title, site, url, keyword, gRank)
+      const { _id, title, site, url, keyword, gRank } = row
+      return new RancheckEntity(_id, title, site, url, keyword, gRank)
     })
   }
 }
