@@ -32,7 +32,14 @@ class RancheckEntity implements IRancheckEntity {
    */
   _gRank: IRank[]
 
-  constructor(_id: string, title: string, site: string, url: string, keyword: string, gRank: IRank[]) {
+  constructor(
+    _id: string,
+    title: string,
+    site: string,
+    keyword: string,
+    url: string = '',
+    gRank: IRank[] = []
+  ) {
     this.__id = _id
     this._title = title
     this._site = site
@@ -63,6 +70,16 @@ class RancheckEntity implements IRancheckEntity {
 
   get gRank() {
     return this._gRank
+  }
+
+  public forSave() {
+    return {
+      title: this._title,
+      site: this._site,
+      url: this._url,
+      keyword: this._keyword,
+      gRank: this._gRank
+    }
   }
 }
 

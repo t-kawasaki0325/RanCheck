@@ -2,12 +2,14 @@ import { rancheckDao } from '../datastore'
 import { IRancheckEntity, RancheckEntity } from '../../usecase'
 
 const rancheckRepository = {
-  get: async () => {
-    const data = await rancheckDao.get()
-    return data.map((row: IRancheckEntity) => {
-      const { _id, title, site, url, keyword, gRank } = row
-      return new RancheckEntity(_id, title, site, url, keyword, gRank)
-    })
+  get: async (): Promise<IRancheckEntity[]> => {
+    return await rancheckDao.get()
+  },
+
+  add: async (title: string, site: string, keywords: string[]): Promise<IRancheckEntity[]> => {
+    return await rancheckDao.add(keywords.map(
+      keyword => new RancheckEntity('', title, site, keyword)
+    ))
   }
 }
 

@@ -13,7 +13,7 @@ const PageHome: React.FC = () => {
   const [settings, setSettings] = useState<IRancheckEntity[]>([])
   useEffect(() => {
     initialize()
-  })
+  }, [])
 
   return (
     <Home

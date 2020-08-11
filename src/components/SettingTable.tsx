@@ -28,7 +28,9 @@ const SettingTable: React.FC<IProps> = props => {
             <tr key={setting._id}>
               <td>{setting.title}</td>
               <td>{setting.site}</td>
-              <td>{setting.gRank[0].rank}</td>
+              <td>
+                {setting.gRank.length > 0 ? setting.gRank[0].rank : '-'}
+              </td>
               <td>
                 <span>1</span>
                 <span className={styles.up}>↗</span>
