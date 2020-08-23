@@ -26,7 +26,7 @@ const SettingTable: React.FC<IProps> = props => {
         {settings.map((setting: IRancheckEntity) =>
           (
             <tr key={setting._id}>
-              <td>{setting.title}</td>
+              <td>{setting.keyword}</td>
               <td>{setting.site}</td>
               <td>
                 {setting.gRank.length > 0 ? setting.gRank[0].rank : '-'}
