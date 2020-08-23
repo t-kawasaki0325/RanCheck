@@ -1,8 +1,11 @@
 @value textGrey: #ddd;
+@value textDarkGrey: #444;
 
 @value backgroundWhite: #fefefe;
 @value backgroundGrey: #444;
 @value backgroundMain: #ddd;
+
+@value buttonGreen: #065400;
 
 .layout {
     padding: 10px;

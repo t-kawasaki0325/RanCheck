@@ -1,0 +1,75 @@
+@value textDarkGrey from '../../App.css';
+@value backgroundWhite from '../../App.css';
+@value buttonGreen from '../../App.css';
+
+.modal {
+    position: absolute;
+    z-index: 2;
+
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+
+    background: #fff;
+}
+
+.modalHeader {
+    padding: 20px 30px;
+    border-bottom: 1px solid textDarkGrey;
+}
+
+.modalBody {
+    padding: 30px;
+}
+
+.modalTitle {
+    margin-bottom: 20px;
+
+    font-weight: bold;
+    font-size: 2.4rem;
+    color: textDarkGrey;
+}
+
+.modalDescription {
+    font-size: 1.4rem;
+    color: textDarkGrey;
+}
+
+.modalMetaDescription {
+    color: textDarkGrey;
+}
+
+.modalItem {
+    display: flex;
+    justify-content: center;
+
+    margin-bottom: 20px;
+}
+
+.modalItemLabel {
+    margin-right: 10px;
+
+    width: 150px;
+    text-align: right;
+}
+
+.modalItem label {
+    font-size: 1.2rem;
+}
+
+.modalItem input,
+.modalItem textarea {
+    flex-grow: 1;
+
+    background: backgroundWhite;
+    border: 1px solid #ccc;
+}
+
+.modalButton {
+    padding: 10px 30px;
+
+    background: buttonGreen;
+    color: #fff;
+    font-size: 1.2rem;
+}
