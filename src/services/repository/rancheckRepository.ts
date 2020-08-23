@@ -10,6 +10,10 @@ const rancheckRepository = {
     return await rancheckDao.add(keywords.map(
       keyword => new RancheckEntity('', title, site, keyword)
     ))
+  },
+
+  delete: (id: string) => {
+    rancheckDao.delete(id)
   }
 }
 

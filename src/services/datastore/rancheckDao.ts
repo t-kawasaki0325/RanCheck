@@ -39,6 +39,10 @@ const rancheckDao = {
           }))
         })
     })
+  },
+
+  delete: (id: string) => {
+    db.remove({ _id: id }, {})
   }
 }
 
