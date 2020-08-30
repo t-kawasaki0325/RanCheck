@@ -1,8 +1,7 @@
-import React from 'react'
+import React from 'react';
 import { Home } from './pages'
 import { Header, Sidebar } from './components';
 
-// @ts-ignore
 import styles from './App.css'
 import 'destyle.css'
 import './common.css'

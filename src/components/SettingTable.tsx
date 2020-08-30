@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useContext } from 'react';
 import { IRancheckEntity } from '../usecase'
+import { store } from '../store/store'
 
 import styles from './SettingTable.css'
 
@@ -7,8 +8,8 @@ interface IProps {
   settings: IRancheckEntity[]
 }
 
-const SettingTable: React.FC<IProps> = props => {
-  const { settings } = props
+const SettingTable: React.FC<IProps> = () => {
+  const { rancheck: { settings } } = useContext(store)
 
   return (
     <div className={styles.settingTable}>
