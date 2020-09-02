@@ -4,11 +4,7 @@ import { store } from '../store/store'
 
 import styles from './SettingTable.css'
 
-interface IProps {
-  settings: IRancheckEntity[]
-}
-
-const SettingTable: React.FC<IProps> = () => {
+const SettingTable: React.FC = () => {
   const { rancheck: { settings } } = useContext(store)
 
   return (

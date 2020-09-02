@@ -1,16 +1,9 @@
 import React from 'react'
 import { MainTab, RankGraph, RankTransition, SettingTable } from '../components'
-import { IRancheckEntity } from '../usecase'
 
 import styles from './Home.css'
 
-interface IProps {
-  settings: IRancheckEntity[]
-}
-
-const Home: React.FC<IProps> = props => {
-  const { settings } = props
-
+const Home: React.FC = () => {
   return (
     <div className={styles.home}>
       <MainTab />
@@ -20,9 +13,7 @@ const Home: React.FC<IProps> = props => {
           <RankTransition />
         </div>
         <div>
-          <SettingTable
-            settings={settings}
-          />
+          <SettingTable />
         </div>
       </div>
     </div>

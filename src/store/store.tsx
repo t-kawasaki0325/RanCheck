@@ -35,6 +35,9 @@ const StateProvider = ({ children }: { children: any }) => {
 const updateStore = async (action: string, store: IState, setStore: Function) => {
   let value = null
   switch (action) {
+    case actions.setRancheck:
+      value = rancheck.setRancheck(payload)
+      break
     case actions.fetchRancheck:
       value = await rancheck.fetchRancheck()
   }
