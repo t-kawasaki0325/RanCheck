@@ -5,7 +5,7 @@ import { store } from '../store/store'
 import styles from './SettingTable.css'
 
 const SettingTable: React.FC = () => {
-  const { rancheck: { settings } } = useContext(store)
+  const { rancheck: { settings, setRancheck } } = useContext(store)
 
   return (
     <div className={styles.settingTable}>
@@ -22,7 +22,7 @@ const SettingTable: React.FC = () => {
         <tbody>
         {settings.map((setting: IRancheckEntity) =>
           (
-            <tr key={setting._id}>
+            <tr key={setting._id} onMouseMove={() => setRancheck(setting)}>
               <td>{setting.keyword}</td>
               <td>{setting.site}</td>
               <td>
