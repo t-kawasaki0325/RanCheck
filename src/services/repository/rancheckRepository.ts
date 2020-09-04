@@ -12,6 +12,10 @@ const rancheckRepository = {
     ))
   },
 
+  update: (setting: IRancheckEntity) => {
+    rancheckDao.update(setting)
+  },
+
   delete: (id: string) => {
     rancheckDao.delete(id)
   }

@@ -1,4 +1,5 @@
 import IRancheckEntity, { IRank } from './IRancheckEntity'
+import { dateUtils } from '../../utils'
 
 class RancheckEntity implements IRancheckEntity {
 
@@ -70,6 +71,13 @@ class RancheckEntity implements IRancheckEntity {
 
   get gRank() {
     return this._gRank
+  }
+
+  public addRank(rank: number) {
+    this._gRank.push({
+      date: dateUtils.getYYYY_MM_DD(),
+      rank
+    })
   }
 
   public forSave() {

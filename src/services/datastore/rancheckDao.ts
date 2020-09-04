@@ -1,5 +1,6 @@
 import db from './db'
 import { IRancheckEntity, RancheckEntity } from '../../usecase';
+import { IRank } from '../../usecase/rancheck/IRancheckEntity';
 
 export interface saveType {
   title: string
@@ -39,6 +40,11 @@ const rancheckDao = {
           }))
         })
     })
+  },
+
+  update: (doc: IRancheckEntity) => {
+    const { _id, title, site, url ,keyword, gRank } = doc
+    db.update({ _id }, { _id, title, site, url ,keyword, gRank }, {})
   },
 
   delete: (id: string) => {

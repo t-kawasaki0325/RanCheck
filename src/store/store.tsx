@@ -7,7 +7,8 @@ type IState = {
     selectedSetting: IRancheckEntity
     settings: IRancheckEntity[],
     setRancheck: Function,
-    fetchRancheck: Function
+    fetchRancheck: Function,
+    googleSearch: Function
   }
 }
 const initialState: IState = {
@@ -15,12 +16,15 @@ const initialState: IState = {
     selectedSetting: {} as IRancheckEntity,
     settings: [],
     setRancheck: () => {},
-    fetchRancheck: async () => {}
+    fetchRancheck: async () => {},
+    googleSearch: async () => {}
   }
 }
 const actions = {
+  // rancheck
   setRancheck: 'rancheck/selectedSetting/update',
-  fetchRancheck: 'rancheck/settings/fetch'
+  fetchRancheck: 'rancheck/settings/fetch',
+  googleSearch: 'rancheck/settings/googleSearch'
 }
 
 const store = React.createContext(initialState)
@@ -32,7 +36,12 @@ const StateProvider = ({ children }: { children: any }) => {
     rancheck: {
       ...store.rancheck,
       setRancheck: (payload: IRancheckEntity) => updateStore(actions.setRancheck, store, setStore, payload),
-      fetchRancheck: () => updateStore(actions.fetchRancheck, store, setStore)
+      fetchRancheck: () => updateStore(actions.fetchRancheck, store, setStore),
+      googleSearch: async () => {
+        for (const [index, setting] of store.rancheck.settings.entries()) {
+          await updateStore(actions.googleSearch, store, setStore, { setting, index })
+        }
+      }
     }
   }
   return <Provider value={{ ...value }}>{children}</Provider>
@@ -51,6 +60,13 @@ const updateStore = async (
       break
     case actions.fetchRancheck:
       value = await rancheck.fetchRancheck()
+      break
+    case actions.googleSearch:
+      const { setting, index } = payload
+      value = [...store.rancheck.settings]
+      // TODO: siteをDBからデータ取得するように
+      value[index] = await rancheck.googleSearch(setting, 'memorandumrail.com')
+      break
   }
 
   const [key, updateKey] = action.split('/')

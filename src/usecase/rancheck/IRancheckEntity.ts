@@ -5,6 +5,7 @@ interface IRancheckEntity {
   url: string
   keyword: string
   gRank: IRank[]
+  addRank: Function
   forSave: Function
 }
 

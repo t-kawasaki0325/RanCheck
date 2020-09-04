@@ -1,13 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react';
+import { store } from '../store/store';
 
 import styles from './MainTab.css'
 import IcnCheck from '../assets/img/icn_check.svg'
 import IcnPlus from '../assets/img/icn_plus.svg'
 
 const MainTab: React.FC = () => {
+  const { rancheck } = useContext(store)
   return (
     <div className={styles.mainTab}>
-      <div className={styles.icon}>
+      <div onClick={() => rancheck.googleSearch()} className={styles.icon}>
         <img className={styles.iconImg} src={IcnCheck} />
         <span className={styles.iconText}>Rank Check</span>
       </div>
