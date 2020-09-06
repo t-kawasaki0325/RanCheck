@@ -1,7 +1,8 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent, useContext } from 'react';
 import { rancheckRepository } from '../../services'
 
 import styles from './AddSettingModal.css'
+import { store } from '../../store/store'
 
 interface IRegisterInfo {
   site: string
@@ -13,6 +14,7 @@ const AddSettingModal: React.FC = () => {
     site: '',
     keywordInclLine: ''
   })
+  const { modal, rancheck } = useContext(store)
 
   const register = () => {
     const { site, keywordInclLine } = registerInfo
@@ -20,7 +22,8 @@ const AddSettingModal: React.FC = () => {
 
     // TODO: site urlからサイトタイトルを取得する処理を追加
     const title = ''
-    rancheckRepository.add(title, site, keywords)
+    rancheck.addRancheck({ title, site, keywords })
+    modal.closeAddSettingModal()
   }
 
   const handleChange = (event: ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => {
@@ -35,6 +38,7 @@ const AddSettingModal: React.FC = () => {
     <>
       <div className={styles.modal}>
         <div className={styles.modalHeader}>
+          <div onClick={() => modal.closeAddSettingModal()} className={styles.modalClose}>とじる</div>
           <div className={styles.modalTitle}>項目追加</div>
           <div className={styles.modalDescription}>検索したいキーワードを追加してください</div>
           <div className={styles.modalMetaDescription}>

@@ -23,6 +23,10 @@
     padding: 30px;
 }
 
+.modalClose {
+    text-align: right;
+}
+
 .modalTitle {
     margin-bottom: 20px;
 

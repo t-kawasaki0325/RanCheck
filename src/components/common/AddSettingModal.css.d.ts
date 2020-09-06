@@ -1,5 +1,6 @@
 declare const styles: {
   readonly "modal": string;
+  readonly "modalClose": string;
   readonly "modalTitle": string;
   readonly "modalHeader": string;
   readonly "modalBody": string;
