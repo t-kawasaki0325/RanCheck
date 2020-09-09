@@ -6,6 +6,14 @@ interface IRancheckEntity {
   keyword: string
   gRank: IRank[]
   addRank: Function
+  latestRank: Function
+  rankTransition: Function
+  isRankUp: Function
+  isRankDown: Function
+  rankTransitionByWeek: Function
+  rankTransitionByMonth: Function
+  rankTransitionByThreeMonth: Function
+  rankTransitionBySixMonth: Function
   forSave: Function
 }
 

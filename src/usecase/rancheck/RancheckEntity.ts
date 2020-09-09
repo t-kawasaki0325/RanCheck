@@ -80,6 +80,56 @@ class RancheckEntity implements IRancheckEntity {
     })
   }
 
+  latestRank(): string {
+    const length = this._gRank.length
+    return length > 0 ? `${this._gRank[length - 1].rank}` : '-'
+  }
+
+  public rankTransition(): string {
+    const length = this._gRank.length
+    return length > 1
+      ? `${this._gRank[length - 1].rank - this._gRank[length - 2].rank}`
+      : '-'
+  }
+
+  public isRankUp(): boolean {
+    const length = this._gRank.length
+    return length > 1
+      ? Number(this.rankTransition()) < 0
+      : false
+  }
+
+  public isRankDown(): boolean {
+    const length = this._gRank.length
+    return length > 1
+      ? Number(this.rankTransition()) > 0
+      : false
+  }
+
+  public rankTransitionByWeek(): string {
+    const aWeekAgo = dateUtils.aWeekAgo()
+    const target = this._gRank.find(rank => rank.date === aWeekAgo)
+    return target ? `${Number(this.latestRank()) - target.rank}` : '-'
+  }
+
+  public rankTransitionByMonth() {
+    const aMonthAgo = dateUtils.aMonthAgo()
+    const target = this._gRank.find(rank => rank.date === aMonthAgo)
+    return target ? `${Number(this.latestRank()) - target.rank}` : '-'
+  }
+
+  public rankTransitionByThreeMonth() {
+    const threeMonthAgo = dateUtils.threeMonthAgo()
+    const target = this._gRank.find(rank => rank.date === threeMonthAgo)
+    return target ? `${Number(this.latestRank()) - target.rank}` : '-'
+  }
+
+  public rankTransitionBySixMonth() {
+    const sixMonthAgo = dateUtils.sixMonthAgo()
+    const target = this._gRank.find(rank => rank.date === sixMonthAgo)
+    return target ? `${Number(this.latestRank()) - target.rank}` : '-'
+  }
+
   public forSave() {
     return {
       title: this._title,

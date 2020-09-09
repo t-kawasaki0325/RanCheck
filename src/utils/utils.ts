@@ -8,3 +8,7 @@ export const sleep = () => {
 export const includeString = (including: string, included: string): boolean => {
   return including.indexOf(included) !== -1
 }
+
+export const absVal = (number: number): number => Math.abs(number)
+
+export const isObjEmpty = (obj: Object): boolean => Object.keys(obj).length === 0

@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { IRancheckEntity } from '../usecase'
 import { store } from '../store/store'
+import { absVal } from '../utils/utils'
 
 import styles from './SettingTable.css'
 
@@ -26,12 +27,12 @@ const SettingTable: React.FC = () => {
               <td>{setting.keyword}</td>
               <td>{setting.site}</td>
               <td>
-                {setting.gRank.length > 0 ? setting.gRank[0].rank : '-'}
+                {setting.latestRank()}
               </td>
               <td>
-                <span>1</span>
-                <span className={styles.up}>↗</span>
-                <span className={styles.down}>↘</span>
+                <span>{absVal(setting.rankTransition())}</span>
+                {setting.isRankUp() && <span className={styles.up}>↗</span>}
+                {setting.isRankDown() && <span className={styles.down}>↘</span>}
               </td>
               <td>{setting.url}</td>
             </tr>
