@@ -1,18 +1,30 @@
-import React from 'react'
-import { rancheckRepository } from '../../services'
+import React from 'react';
 
 import styles from './ContextMenu.css'
 
-const ContextMenu: React.FC = () => {
+interface IProps {
+  top: number
+  left: number
+  closeContextMenu: Function
+}
+
+const ContextMenu: React.FC<IProps> = (props: IProps) => {
+  const { top, left, closeContextMenu } = props
   const editItem = () => {}
   const deleteItem = (id: string) => {
-    rancheckRepository.delete(id)
+
   }
 
   return (
     <>
-      <div className={styles.overlay}></div>
-      <div className={styles.contextMenu}>
+      <div
+        className={styles.overlay}
+        onClick={() => closeContextMenu()}
+      ></div>
+      <div
+        className={styles.contextMenu}
+        style={{ top, left }}
+      >
         <ul>
           <li
             className={styles.menuItem}

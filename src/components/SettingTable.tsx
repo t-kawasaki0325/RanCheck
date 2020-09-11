@@ -1,12 +1,21 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { IRancheckEntity } from '../usecase'
 import { store } from '../store/store'
 import { absVal } from '../utils/utils'
+import ContextMenu from './common/ContextMenu';
 
 import styles from './SettingTable.css'
 
 const SettingTable: React.FC = () => {
   const { rancheck: { settings, setRancheck } } = useContext(store)
+  const [contextMenu, setContextMenu] = useState({
+    top: 0,
+    left: 0,
+    state: false
+  })
+  const closeContextMenu = () => {
+    setContextMenu({ top: 0, left: 0, state: false })
+  }
 
   return (
     <div className={styles.settingTable}>
@@ -23,7 +32,13 @@ const SettingTable: React.FC = () => {
         <tbody>
         {settings.map((setting: IRancheckEntity) =>
           (
-            <tr key={setting._id} onMouseMove={() => setRancheck(setting)}>
+            <tr
+              key={setting._id}
+              onMouseMove={() => setRancheck(setting)}
+              onContextMenu={({ pageX, pageY }) => {
+                setContextMenu({ top: pageY, left: pageX, state: true })
+              }}
+            >
               <td>{setting.keyword}</td>
               <td>{setting.site}</td>
               <td>
@@ -40,6 +55,13 @@ const SettingTable: React.FC = () => {
         )}
         </tbody>
       </table>
+      {contextMenu.state &&
+        <ContextMenu
+          top={contextMenu.top}
+          left={contextMenu.left}
+          closeContextMenu={closeContextMenu}
+        />
+      }
     </div>
   )
 }
