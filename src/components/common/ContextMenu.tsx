@@ -32,12 +32,13 @@ const ContextMenu: React.FC<IProps> = (props: IProps) => {
         style={{ top, left }}
       >
         <ul>
-          <li
-            className={styles.menuItem}
-            onClick={() => editItem()}
-          >
-            編集
-          </li>
+          {/*仕様を固める必要があるため一旦コメントアウト*/}
+          {/*<li*/}
+          {/*  className={styles.menuItem}*/}
+          {/*  onClick={() => editItem()}*/}
+          {/*>*/}
+          {/*  編集*/}
+          {/*</li>*/}
           <li
             className={styles.menuItem}
             onClick={() => deleteItem()}

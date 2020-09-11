@@ -45,7 +45,9 @@ const SettingTable: React.FC = () => {
                 {setting.latestRank()}
               </td>
               <td>
-                <span>{absVal(setting.rankTransition())}</span>
+                <span>
+                  {absVal(setting.rankTransition())}
+                </span>
                 {setting.isRankUp() && <span className={styles.up}>↗</span>}
                 {setting.isRankDown() && <span className={styles.down}>↘</span>}
               </td>

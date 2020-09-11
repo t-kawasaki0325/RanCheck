@@ -85,24 +85,24 @@ class RancheckEntity implements IRancheckEntity {
     return length > 0 ? `${this._gRank[length - 1].rank}` : '-'
   }
 
-  public rankTransition(): string {
+  public rankTransition(): number {
     const length = this._gRank.length
     return length > 1
-      ? `${this._gRank[length - 1].rank - this._gRank[length - 2].rank}`
-      : '-'
+      ? this._gRank[length - 1].rank - this._gRank[length - 2].rank
+      : 0
   }
 
   public isRankUp(): boolean {
     const length = this._gRank.length
     return length > 1
-      ? Number(this.rankTransition()) < 0
+      ? this.rankTransition() < 0
       : false
   }
 
   public isRankDown(): boolean {
     const length = this._gRank.length
     return length > 1
-      ? Number(this.rankTransition()) > 0
+      ? this.rankTransition() > 0
       : false
   }
 
