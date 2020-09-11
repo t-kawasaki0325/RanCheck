@@ -30,7 +30,7 @@ const SettingTable: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-        {settings.map((setting: IRancheckEntity) =>
+        {settings && settings.map((setting: IRancheckEntity) =>
           (
             <tr
               key={setting._id}

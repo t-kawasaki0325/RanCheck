@@ -10,6 +10,7 @@ export type IState = {
     settings: IRancheckEntity[]
     addRancheck: Function
     setRancheck: Function
+    deleteRancheck: Function,
     fetchRancheck: Function
     googleSearch: Function
   },
@@ -26,6 +27,7 @@ const initialState: IState = {
     settings: [],
     addRancheck: () => {},
     setRancheck: () => {},
+    deleteRancheck: () => {},
     fetchRancheck: async () => {},
     googleSearch: async () => {}
   },
@@ -40,6 +42,7 @@ const actions = {
   // rancheck
   addRancheck: 'rancheck/settings/add',
   setRancheck: 'rancheck/selectedSetting/update',
+  deleteRancheck: 'rancheck/settings/delete',
   fetchRancheck: 'rancheck/settings/fetch',
   googleSearch: 'rancheck/settings/googleSearch',
   // modal
@@ -56,6 +59,10 @@ const StateProvider = ({ children }: { children: any }) => {
       ...store.rancheck,
       addRancheck: (payload: addRancheckType) => updateStore(actions.addRancheck, store, setStore, payload),
       setRancheck: (payload: IRancheckEntity) => updateStore(actions.setRancheck, store, setStore, payload),
+      deleteRancheck: () => {
+        const { _id } = store.rancheck.selectedSetting
+        updateStore(actions.deleteRancheck, store, setStore, _id)
+      },
       fetchRancheck: () => updateStore(actions.fetchRancheck, store, setStore),
       googleSearch: async () => {
         for (const [index, setting] of store.rancheck.settings.entries()) {
@@ -86,6 +93,10 @@ const updateStore = async (
       break
     case actions.setRancheck:
       value = rancheck.setRancheck(payload)
+      break
+    case actions.deleteRancheck:
+      rancheck.deleteRancheck(payload)
+      value = store.rancheck.settings.filter(setting => setting._id !== payload)
       break
     case actions.fetchRancheck:
       value = await rancheck.fetchRancheck()

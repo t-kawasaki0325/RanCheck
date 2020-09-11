@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { store } from '../../store/store';
 
 import styles from './ContextMenu.css'
 
@@ -10,9 +11,14 @@ interface IProps {
 
 const ContextMenu: React.FC<IProps> = (props: IProps) => {
   const { top, left, closeContextMenu } = props
-  const editItem = () => {}
-  const deleteItem = (id: string) => {
+  const { rancheck } = useContext(store)
 
+  const editItem = () => {
+    closeContextMenu()
+  }
+  const deleteItem = () => {
+    closeContextMenu()
+    rancheck.deleteRancheck()
   }
 
   return (
@@ -34,7 +40,7 @@ const ContextMenu: React.FC<IProps> = (props: IProps) => {
           </li>
           <li
             className={styles.menuItem}
-            onClick={() => deleteItem('LRXbXQxccTK0JBK0')}
+            onClick={() => deleteItem()}
           >
             削除
           </li>
