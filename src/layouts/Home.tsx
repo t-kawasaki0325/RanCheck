@@ -8,12 +8,12 @@ const Home: React.FC = () => {
     <div className={styles.home}>
       <MainTab />
       <div className={styles.main}>
+        <div>
+          <SettingTable />
+        </div>
         <div className={styles.boxFlex}>
           <RankGraph />
           <RankTransition />
-        </div>
-        <div>
-          <SettingTable />
         </div>
       </div>
     </div>

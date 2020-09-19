@@ -1,19 +1,73 @@
+@value backgroundWhite from '../App.css';
 @value backgroundGrey from '../App.css';
+@value textGrey from '../App.css';
 
 .sidebar {
-    width: 80px;
+    display: flex;
+    flex-direction: column;
+
+    width: 200px;
     height: 100%;
 
-    background: backgroundGrey;
+    background: backgroundWhite;
+    border-right: textGrey 1px solid;
+
+}
+
+.shrinkSidebar {
+    display: flex;
+    flex-direction: column;
+
+    width: 65px;
+    height: 100%;
+
+    background: backgroundWhite;
+    border-right: textGrey 1px solid;
+}
+
+.positionBottom {
+    margin-top: auto;
 }
 
 .icon {
     display: flex;
     justify-content: center;
+    align-items: center;
     padding: 1.4rem;
+}
+
+.iconRight {
+    justify-content: flex-end;
+}
+
+.iconLeft {
+    justify-content: flex-start;
 }
 
 .icon:hover {
     opacity: 0.5;
 }
 
+.list {
+    border-top: textGrey 1px solid;
+}
+
+.item {
+    padding: 15px 10px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.item:hover {
+    background: backgroundGrey;
+}
+
+.itemSelected {
+    background: backgroundGrey;
+}
+
+.addSiteText {
+    margin-left: 5px;
+}

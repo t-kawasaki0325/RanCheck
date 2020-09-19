@@ -1,7 +1,7 @@
 .rankTransition {
     composes: layout from '../App.css';
 
-    height: 270px;
+    height: 200px;
     width: 240px;
 }
 

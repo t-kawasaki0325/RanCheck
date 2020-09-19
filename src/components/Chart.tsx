@@ -13,7 +13,7 @@ const Chart: React.FC = () => {
     // https://github.com/recharts/recharts/issues/2175
     <div style={{ position: 'relative' }}>
       <div style={{ position: 'absolute', left: '40px', top: '-3px' }}>1</div>
-      <LineChart width={800} height={200} data={data}>
+      <LineChart width={760} height={160} data={data}>
         <Line type="monotone" dataKey="rank" stroke="#8884d8" />
         <CartesianGrid stroke="#ccc" />
         <XAxis dataKey="date" />

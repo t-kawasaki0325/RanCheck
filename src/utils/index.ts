@@ -1,4 +1,4 @@
-import { sleep, includeString } from './utils'
+import { sleep, includeString, absVal, range } from './utils'
 import dateUtils from './dateUtils'
 
-export { sleep, includeString, dateUtils }
+export { sleep, includeString, absVal, range, dateUtils }

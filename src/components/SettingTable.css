@@ -1,15 +1,95 @@
 @value backgroundWhite from '../App.css';
+@value textGrey from '../App.css';
+@value textDarkGrey from '../App.css';
 
-.settingTable {
-    composes: layout from '../App.css';
+table {
+    width: 100%;
+}
 
-    height: 260px;
+tbody {
     overflow-y: auto;
+
+    background: backgroundWhite;
+}
+
+.settingTable {}
+
+.searchCondition {
+    display: flex;
+    align-items: center;
+
+    height: 40px;
+
+    color: textDarkGrey;
+}
+
+.searchKeyword {
+    position: relative;
+
+    margin: 20px;
+}
+
+.searchKeyword input {
+    padding: 5px 15px;
+
+    border: 1px textGrey solid;
+    border-radius: 999px;
+    background: backgroundWhite;
+}
+
+.searchKeyword:after {
+    content: '';
+    position: absolute;
+    top: 4px;
+    right: 16px;
+    bottom: 0;
+
+    background: no-repeat url("../assets/img/icn_search.svg");
+
+    width: 20px;
+    height: 20px;
+}
+
+.searchKeywordNum {}
+
+.searchKeywordNum select {
+    padding: 5px 10px;
+    margin-left: 5px;
+
+    background: backgroundWhite;
+    border: 1px textGrey solid;
 }
 
 .table {
-    border-collapse: separate;
-    border-spacing: 10px;
+    height: 340px;
+    overflow: scroll;
+}
+
+.table th {
+    position: sticky;
+    top: 0;
+
+    padding: 5px 2px;
+
+    background: #ccc;
+    color: textDarkGrey;
+}
+
+.table td {
+    padding: 2px;
+    vertical-align: middle;
+
+    height: 24px;
+    font-size: 0.8rem;
+    border: 1px #ddd solid;
+}
+
+.table tr:first-child td {
+    border-top: 0;
+}
+
+.table tr:last-child td {
+    border-bottom: 0;
 }
 
 .up {

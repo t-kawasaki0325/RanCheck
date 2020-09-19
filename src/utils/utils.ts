@@ -12,3 +12,5 @@ export const includeString = (including: string, included: string): boolean => {
 export const absVal = (number: number): number => Math.abs(number)
 
 export const isObjEmpty = (obj: Object): boolean => Object.keys(obj).length === 0
+
+export const range = (end: number): number[] => [...Array(end).keys()]
