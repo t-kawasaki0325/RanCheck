@@ -46,6 +46,26 @@
     line-height: 50px;
 }
 
+.modalHeaderStep-selected {
+    color: mainColor;
+}
+
+.modalHeaderStep-selected .circle {
+    border: 1px solid mainColor;
+}
+
+.modalHeaderStep:not(:first-child):before {
+    content: '';
+    position: absolute;
+    top: -25px;
+    left: -20px;
+
+    background: url("../../assets/img/next.png");
+
+    height: 100px;
+    width: 40px;
+}
+
 .modalBody {
     padding: 0 30px;
     margin: 0 auto;

@@ -1,8 +1,8 @@
 import React, { useState, ChangeEvent, useContext } from 'react';
+import IcnCancel from '../../assets/img/icn_cancel.svg'
 
-import styles from './AddSettingModal.css'
+import styles from './InitialSettingModal.css'
 import { store } from '../../store/store'
-import IcnCancel from '../../assets/img/icn_cancel.svg';
 
 interface IRegisterInfo {
   site: string
@@ -38,7 +38,12 @@ const AddSettingModal: React.FC = () => {
     <>
       <div className={styles.modal}>
         <div className={styles.modalHeader}>
+          <div className={`${styles.modalHeaderStep} ${styles['modalHeaderStep-selected']}`}>
+            <span className={styles.circle}>1</span>
+            <span>Setup Site</span>
+          </div>
           <div className={styles.modalHeaderStep}>
+            <span className={styles.circle}>2</span>
             <span>Add keyword</span>
           </div>
         </div>
@@ -46,6 +51,17 @@ const AddSettingModal: React.FC = () => {
           <div className={`${styles['modalItem-alignRight']} ${styles.modalCancelArea}`}>
             <img src={IcnCancel} />
           </div>
+          {false && (
+            <>
+              <div className={styles.modalTitle}>サイトのURLを追加</div>
+              <div className={styles.modalItem}>
+                <input
+                  name='site'
+                  onChange={handleChange}
+                />
+              </div>
+            </>
+          )}
           <>
             <div className={styles.modalTitle}>検索キーワードを追加</div>
             <div className={styles.modalItem}>
@@ -65,7 +81,7 @@ const AddSettingModal: React.FC = () => {
               className={styles.modalButton}
               onClick={register}
             >
-              完了
+              キーワードを追加
             </button>
           </div>
         </div>

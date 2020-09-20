@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { IRancheckEntity } from '../usecase'
 import { store } from '../store/store'
 import { absVal, range } from '../utils'
-import ContextMenu from './common/ContextMenu';
+import { ContextMenu } from './common';
 
 import styles from './SettingTable.css'
 
