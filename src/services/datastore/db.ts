@@ -1,8 +1,11 @@
 import { datastore } from '../../localModules'
 
-const db = new datastore({
+export const rancheck = new datastore({
   filename: 'rancheck.db',
   autoload: true
 })
 
-export default db
+export const projects = new datastore({
+  filename: 'projects.db',
+  autoload: true
+})

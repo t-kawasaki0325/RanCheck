@@ -9,7 +9,7 @@ interface IRegisterInfo {
   keywordInclLine: string
 }
 
-const AddSettingModal: React.FC = () => {
+const InitialSettingModal: React.FC = () => {
   const [registerInfo, setRegisterInfo] = useState<IRegisterInfo>({
     site: '',
     keywordInclLine: ''
@@ -89,4 +89,4 @@ const AddSettingModal: React.FC = () => {
     </>
   )
 }
-export default AddSettingModal
+export default InitialSettingModal

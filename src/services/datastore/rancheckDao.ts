@@ -1,6 +1,5 @@
-import db from './db'
+import { rancheck } from './db'
 import { IRancheckEntity, RancheckEntity } from '../../usecase';
-import { IRank } from '../../usecase/rancheck/IRancheckEntity';
 
 export interface saveType {
   title: string
@@ -20,7 +19,7 @@ export interface selectType extends saveType {
 const rancheckDao = {
   get: async (): Promise<IRancheckEntity[]> => {
     return new Promise(resolve => {
-      db.find({}, (err: Error, docs: selectType[]) => {
+      rancheck.find({}, (err: Error, docs: selectType[]) => {
         resolve(docs.map((doc: selectType) => {
           const { _id, title, site, url, keyword, gRank } = doc
           return new RancheckEntity(_id, title, site, keyword, url, gRank)
@@ -31,7 +30,7 @@ const rancheckDao = {
 
   add: async (docs: IRancheckEntity[]): Promise<IRancheckEntity[]> => {
     return new Promise(resolve => {
-      db.insert(
+      rancheck.insert(
         docs.map((doc: IRancheckEntity) => doc.forSave()),
         (error: Error, newDocs: selectType[]) => {
           resolve(newDocs.map((doc: selectType) => {
@@ -44,11 +43,11 @@ const rancheckDao = {
 
   update: (doc: IRancheckEntity) => {
     const { _id, title, site, url ,keyword, gRank } = doc
-    db.update({ _id }, { _id, title, site, url ,keyword, gRank }, {})
+    rancheck.update({ _id }, { _id, title, site, url ,keyword, gRank }, {})
   },
 
   delete: (id: string) => {
-    db.remove({ _id: id }, {})
+    rancheck.remove({ _id: id }, {})
   }
 }
 

@@ -81,7 +81,9 @@ const SettingTable: React.FC = () => {
               </tr>
             )
           )}
-          {numShortage > 0 && range(numShortage).map(() => <EmplySettingTable />)}
+          {numShortage > 0 && range(numShortage).map(
+            (index: number) => <EmplySettingTable key={index} />)
+          }
           </tbody>
         </table>
       </div>

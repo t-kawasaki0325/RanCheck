@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import rancheck from './rancheck'
+import projects from './projects'
 import { modalGetters } from './modal'
-import { IRancheckEntity } from '../usecase/';
+import { IRancheckEntity, IProjectsEntity } from '../usecase/';
 import { addRancheckType } from '../services/repository/rancheckRepository';
 
 export type IState = {
@@ -14,7 +15,12 @@ export type IState = {
     fetchRancheck: Function
     googleSearch: Function
   },
+  projects: {
+    projects: IProjectsEntity[]
+    fetchProjects: Function
+  },
   modal: {
+    initialSettingModal: boolean
     addSettingModal: boolean
     initModalStatus: Function
     openAddSettingModal: Function
@@ -31,7 +37,12 @@ const initialState: IState = {
     fetchRancheck: async () => {},
     googleSearch: async () => {}
   },
+  projects: {
+    projects: [],
+    fetchProjects: () => {}
+  },
   modal: {
+    initialSettingModal: false,
     addSettingModal: false,
     initModalStatus: () => {},
     openAddSettingModal: () => {},
@@ -45,7 +56,10 @@ const actions = {
   deleteRancheck: 'rancheck/settings/delete',
   fetchRancheck: 'rancheck/settings/fetch',
   googleSearch: 'rancheck/settings/googleSearch',
+  // projects
+  fetchProjects: 'projects/projects/',
   // modal
+  setInitialSettingModal: 'modal/initialSettingModal/',
   setAddSettingModal: 'modal/addSettingModal/',
 }
 
@@ -70,6 +84,14 @@ const StateProvider = ({ children }: { children: any }) => {
         }
       }
     },
+    projects: {
+      ...store.projects,
+      fetchProjects: () => updateMultipleStore(
+        [actions.fetchProjects, actions.setInitialSettingModal],
+        store,
+        setStore
+      )
+    },
     modal: {
       ...store.modal,
       openAddSettingModal: () => updateStore(actions.setAddSettingModal, store, setStore, true),
@@ -85,7 +107,7 @@ const updateStore = async (
   setStore: Function,
   payload: any = null
 ) => {
-  let value = null
+  let value: any = null
   switch (action) {
     // rancheck
     case actions.addRancheck:
@@ -120,6 +142,37 @@ const updateStore = async (
       ...(store as any)[key],
       [updateKey]: value
     }
+  })
+}
+
+const updateMultipleStore = async (
+  actionList: string[],
+  store: IState,
+  setStore: Function,
+) => {
+  let value: any = []
+  switch (actionList.toString()) {
+    case [actions.fetchProjects, actions.setInitialSettingModal].toString():
+      const result = await projects.fetchProjects()
+      value = [result, !result.length]
+      break
+  }
+
+  const keys = actionList.map(action => {
+    const [key, updateKey] = action.split('/')
+    return [key, updateKey]
+  })
+  const updateValue = {}
+  keys.forEach(([key, updateKey], index) => {
+    (updateValue as any)[key] = {
+      ...(store as any)[key],
+      [updateKey]: value[index]
+    }
+  })
+
+  setStore({
+    ...store,
+    ...updateValue
   })
 }
 
