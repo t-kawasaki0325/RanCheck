@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import rancheck from './rancheck'
-import projects from './projects'
+import projects, { projectsGetters } from './projects'
 import { modalGetters } from './modal'
 import { IRancheckEntity, IProjectsEntity } from '../usecase/';
 import { addRancheckType } from '../services/repository/rancheckRepository';
@@ -179,5 +179,6 @@ const updateMultipleStore = async (
 export {
   store,
   StateProvider,
-  modalGetters
+  modalGetters,
+  projectsGetters
 }
