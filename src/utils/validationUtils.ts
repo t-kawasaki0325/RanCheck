@@ -1,5 +1,5 @@
 import message from '../config/message'
-import { projectsGetters, IState } from '../store/store'
+import { projectsGetters, rancheckGetters, IState } from '../store/store'
 
 const { INVALID_TYPE, ALREADY_EXISTS } = message
 
@@ -18,6 +18,9 @@ const validationUtils = {
   },
 
   rancheck: (keywords: string[], rancheck: IState['rancheck']): string => {
+    if (rancheckGetters(rancheck).exists(keywords)) {
+      return ALREADY_EXISTS
+    }
     return ''
   }
 }

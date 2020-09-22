@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import rancheck from './rancheck'
+import rancheck, { rancheckGetters } from './rancheck'
 import projects, { projectsGetters } from './projects'
 import { modalGetters } from './modal'
 import { IRancheckEntity, IProjectsEntity } from '../usecase/';
@@ -17,12 +17,14 @@ export type IState = {
   },
   projects: {
     projects: IProjectsEntity[]
+    initProject: Function
     fetchProjects: Function
   },
   modal: {
     initialSettingModal: boolean
     addSettingModal: boolean
     initModalStatus: Function
+    closeInitialSettingModal: Function
     openAddSettingModal: Function
     closeAddSettingModal: Function
   }
@@ -39,12 +41,14 @@ const initialState: IState = {
   },
   projects: {
     projects: [],
+    initProject: () => {},
     fetchProjects: () => {}
   },
   modal: {
     initialSettingModal: false,
     addSettingModal: false,
     initModalStatus: () => {},
+    closeInitialSettingModal: () => {},
     openAddSettingModal: () => {},
     closeAddSettingModal: () => {}
   }
@@ -57,6 +61,7 @@ const actions = {
   fetchRancheck: 'rancheck/settings/fetch',
   googleSearch: 'rancheck/settings/googleSearch',
   // projects
+  addProject: 'projects/projects/add',
   fetchProjects: 'projects/projects/',
   // modal
   setInitialSettingModal: 'modal/initialSettingModal/',
@@ -86,6 +91,12 @@ const StateProvider = ({ children }: { children: any }) => {
     },
     projects: {
       ...store.projects,
+      initProject: (payload: addRancheckType) => updateMultipleStore(
+        [actions.addProject, actions.addRancheck, actions.setInitialSettingModal],
+        store,
+        setStore,
+        payload
+      ),
       fetchProjects: () => updateMultipleStore(
         [actions.fetchProjects, actions.setInitialSettingModal],
         store,
@@ -94,6 +105,7 @@ const StateProvider = ({ children }: { children: any }) => {
     },
     modal: {
       ...store.modal,
+      closeInitialSettingModal: () => updateStore(actions.setInitialSettingModal, store, setStore, false),
       openAddSettingModal: () => updateStore(actions.setAddSettingModal, store, setStore, true),
       closeAddSettingModal: () => updateStore(actions.setAddSettingModal, store, setStore, false)
     }
@@ -129,8 +141,13 @@ const updateStore = async (
       // TODO: siteをDBからデータ取得するように
       value[index] = await rancheck.googleSearch(setting, 'memorandumrail.com')
       break
+    // projects
+    case actions.addProject:
+      value = [await projects.addProject(payload)]
+      break
     // modal
     case actions.setAddSettingModal:
+    case actions.setInitialSettingModal:
       value = payload
       break
   }
@@ -149,12 +166,20 @@ const updateMultipleStore = async (
   actionList: string[],
   store: IState,
   setStore: Function,
+  payload: any = null
 ) => {
   let value: any = []
   switch (actionList.toString()) {
     case [actions.fetchProjects, actions.setInitialSettingModal].toString():
       const result = await projects.fetchProjects()
       value = [result, !result.length]
+      break
+    case [actions.addProject, actions.addRancheck, actions.setInitialSettingModal].toString():
+      value = await Promise.all([
+        projects.addProject({ site: payload.site }),
+        rancheck.addRancheck(payload)
+      ])
+      value.push(false) // initModalを非表示にするための処理
       break
   }
 
@@ -180,5 +205,6 @@ export {
   store,
   StateProvider,
   modalGetters,
+  rancheckGetters,
   projectsGetters
 }

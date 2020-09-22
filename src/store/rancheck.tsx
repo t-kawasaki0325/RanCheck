@@ -1,6 +1,16 @@
+import { IState } from './store';
 import { rancheckRepository, googleRepository } from '../services'
 import { IRancheckEntity } from '../usecase'
 import { addRancheckType } from '../services/repository/rancheckRepository';
+
+export const rancheckGetters = (store: IState['rancheck']) => ({
+  exists: (keywords: string[]) => {
+    const filterd = store.settings.filter(
+      setting => !keywords.includes(setting.keyword)
+    ) || []
+    return filterd.length !== store.settings.length
+  }
+})
 
 export default {
   addRancheck: async (payload: addRancheckType) => await rancheckRepository.add(payload),

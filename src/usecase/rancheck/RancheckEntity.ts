@@ -35,9 +35,9 @@ class RancheckEntity implements IRancheckEntity {
 
   constructor(
     _id: string,
-    title: string,
     site: string,
     keyword: string,
+    title: string = '',
     url: string = '',
     gRank: IRank[] = []
   ) {

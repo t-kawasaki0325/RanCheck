@@ -22,7 +22,7 @@ const rancheckDao = {
       rancheck.find({}, (err: Error, docs: selectType[]) => {
         resolve(docs.map((doc: selectType) => {
           const { _id, title, site, url, keyword, gRank } = doc
-          return new RancheckEntity(_id, title, site, keyword, url, gRank)
+          return new RancheckEntity(_id, site, keyword, title, url, gRank)
         }))
       })
     })

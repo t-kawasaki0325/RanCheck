@@ -1,5 +1,5 @@
 import React, { useState, ChangeEvent, useContext } from 'react';
-import { validationUtils } from '../../utils'
+import { validationUtils, toHalfWidthSpace } from '../../utils'
 import IcnCancel from '../../assets/img/icn_cancel.svg'
 
 import styles from './InitialSettingModal.css'
@@ -20,6 +20,9 @@ const buttonText = {
   [STEP.ADD_KEYWORD]: '完了'
 }
 
+const keywordsToArray = (keywordInclLine: string): string[] => {
+  return keywordInclLine.split('\n').map(keyword => toHalfWidthSpace(keyword))
+}
 
 const InitialSettingModal: React.FC = () => {
   const [registerInfo, setRegisterInfo] = useState<IRegisterInfo>({
@@ -28,16 +31,13 @@ const InitialSettingModal: React.FC = () => {
   })
   const [step, setStep] = useState(0)
   const [message, setMessage] = useState('')
-  const { modal, rancheck , projects} = useContext(store)
+  const { rancheck , projects } = useContext(store)
 
-  const register = () => {
+  const register = async () => {
     const { site, keywordInclLine } = registerInfo
-    const keywords = keywordInclLine.split('\n')
+    const keywords = keywordsToArray(keywordInclLine)
 
-    // TODO: site urlからサイトタイトルを取得する処理を追加
-    const title = ''
-    rancheck.addRancheck({ title, site, keywords })
-    modal.closeAddSettingModal()
+    projects.initProject({ site, keywords })
   }
 
   const handleChange = (event: ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => {
@@ -54,7 +54,10 @@ const InitialSettingModal: React.FC = () => {
       error = validationUtils.projects(registerInfo.site, projects)
     }
     if (step === STEP.ADD_KEYWORD) {
-      error = validationUtils.rancheck(registerInfo.keywordInclLine, projects)
+      error = validationUtils.rancheck(
+        keywordsToArray(registerInfo.keywordInclLine),
+        rancheck
+      )
     }
     setMessage(error)
     return !!error
@@ -64,7 +67,7 @@ const InitialSettingModal: React.FC = () => {
      if (step < ALL_STEP && !validate()) {
        setStep(step => step + 1)
      }
-     if (step === ALL_STEP) {
+     if (step === ALL_STEP - 1) {
        register()
      }
   }

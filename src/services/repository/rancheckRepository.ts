@@ -2,7 +2,6 @@ import { rancheckDao } from '../datastore'
 import { IRancheckEntity, RancheckEntity } from '../../usecase'
 
 export type addRancheckType = {
-  title: string
   site: string
   keywords: string[]
 }
@@ -12,9 +11,9 @@ const rancheckRepository = {
     return await rancheckDao.get()
   },
 
-  add: async ({ title, site, keywords }: addRancheckType): Promise<IRancheckEntity[]> => {
+  add: async ({ site, keywords }: addRancheckType): Promise<IRancheckEntity[]> => {
     return await rancheckDao.add(keywords.map(
-      keyword => new RancheckEntity('', title, site, keyword)
+      keyword => new RancheckEntity('', site, keyword)
     ))
   },
 
