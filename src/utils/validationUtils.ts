@@ -1,10 +1,11 @@
 import message from '../config/message'
 import { projectsGetters, rancheckGetters, IState } from '../store/store'
+import { testDao } from '../services/httpRequest'
 
-const { INVALID_TYPE, ALREADY_EXISTS } = message
+const { INVALID_TYPE, NOT_EXISTS_URL, ALREADY_EXISTS } = message
 
 const validationUtils = {
-  projects: (url: string, projects: IState['projects']): string => {
+  projects: async (url: string, projects: IState['projects']): Promise<string> => {
     const params = url.match(/^(http:\/\/|https:\/\/)?(.*?)(?:\/|\?|#|$)/);
     const domain = params ? params[2] : ''
     const isValid = domain !== '' && domain.indexOf('.') !== -1
@@ -14,6 +15,10 @@ const validationUtils = {
     if (projectsGetters(projects).exists(domain)) {
       return ALREADY_EXISTS
     }
+    if (await testDao.testRequest(domain)) {
+      return NOT_EXISTS_URL
+    }
+
     return ''
   },
 

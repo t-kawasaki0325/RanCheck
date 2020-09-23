@@ -48,10 +48,10 @@ const InitialSettingModal: React.FC = () => {
     })
   }
 
-  const validate = () => {
+  const validate = async () => {
     let error = ''
     if (step === STEP.SETUP_SITE) {
-      error = validationUtils.projects(registerInfo.site, projects)
+      error = await validationUtils.projects(registerInfo.site, projects)
     }
     if (step === STEP.ADD_KEYWORD) {
       error = validationUtils.rancheck(
@@ -63,13 +63,14 @@ const InitialSettingModal: React.FC = () => {
     return !!error
   }
 
-  const toNext = () => {
-     if (step < ALL_STEP && !validate()) {
-       setStep(step => step + 1)
-     }
-     if (step === ALL_STEP - 1) {
-       register()
-     }
+  const toNext = async () => {
+    const isValid = !(await validate())
+    if (step < ALL_STEP && isValid) {
+      setStep(step => step + 1)
+    }
+    if (step === ALL_STEP - 1) {
+      register()
+    }
   }
 
   return (
