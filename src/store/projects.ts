@@ -4,7 +4,8 @@ import { IProjectsEntity } from '../usecase';
 import { addProjectType } from '../services/repository/projectsRepository';
 
 export const projectsGetters = (store: IState['projects']) => ({
-  exists: (project: string) => !!store.projects.find(v => v.site === project)
+  site: () => store.selectedProject.site || '',
+  exists: (project: string) => !!store.projects.find(v => v.site === project),
 })
 
 export default {

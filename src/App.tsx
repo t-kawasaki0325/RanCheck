@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { store } from './store/store'
+import { store, projectsGetters } from './store/store'
 import { modalGetters } from './store/modal'
 import { Home } from './pages'
 import { Header, Sidebar } from './components';
@@ -28,7 +28,7 @@ const App: React.FC = () => {
       {init && modal.initialSettingModal && <InitialSettingModal />}
       {init && modalGetters(modal).allModalClosed &&
         <>
-          <Header site="test" />
+          <Header site={projectsGetters(projects).site()} />
           <div className={styles.mainLayout}>
             <Sidebar />
             <Home />

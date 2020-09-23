@@ -16,6 +16,7 @@ export type IState = {
     googleSearch: Function
   },
   projects: {
+    selectedProject: IProjectsEntity,
     projects: IProjectsEntity[]
     initProject: Function
     fetchProjects: Function
@@ -40,6 +41,7 @@ const initialState: IState = {
     googleSearch: async () => {}
   },
   projects: {
+    selectedProject: {} as IProjectsEntity,
     projects: [],
     initProject: () => {},
     fetchProjects: () => {}
@@ -62,6 +64,7 @@ const actions = {
   googleSearch: 'rancheck/settings/googleSearch',
   // projects
   addProject: 'projects/projects/add',
+  setProject: 'projects/selectedProject/update',
   fetchProjects: 'projects/projects/',
   // modal
   setInitialSettingModal: 'modal/initialSettingModal/',
@@ -92,13 +95,13 @@ const StateProvider = ({ children }: { children: any }) => {
     projects: {
       ...store.projects,
       initProject: (payload: addRancheckType) => updateMultipleStore(
-        [actions.addProject, actions.addRancheck, actions.setInitialSettingModal],
+        [actions.addProject, actions.addRancheck, actions.setProject, actions.setInitialSettingModal],
         store,
         setStore,
         payload
       ),
       fetchProjects: () => updateMultipleStore(
-        [actions.fetchProjects, actions.setInitialSettingModal],
+        [actions.fetchProjects, actions.setProject, actions.setInitialSettingModal],
         store,
         setStore
       )
@@ -138,8 +141,7 @@ const updateStore = async (
     case actions.googleSearch:
       const { setting, index } = payload
       value = [...store.rancheck.settings]
-      // TODO: siteをDBからデータ取得するように
-      value[index] = await rancheck.googleSearch(setting, 'memorandumrail.com')
+      value[index] = await rancheck.googleSearch(setting, store.projects.selectedProject.site)
       break
     // projects
     case actions.addProject:
@@ -170,16 +172,16 @@ const updateMultipleStore = async (
 ) => {
   let value: any = []
   switch (actionList.toString()) {
-    case [actions.fetchProjects, actions.setInitialSettingModal].toString():
+    case [actions.fetchProjects, actions.setProject, actions.setInitialSettingModal].toString():
       const result = await projects.fetchProjects()
-      value = [result, !result.length]
+      value = [result, result[0], !result.length]
       break
-    case [actions.addProject, actions.addRancheck, actions.setInitialSettingModal].toString():
-      value = await Promise.all([
+    case [actions.addProject, actions.addRancheck, actions.setProject, actions.setInitialSettingModal].toString():
+      const [project, settings] = await Promise.all([
         projects.addProject({ site: payload.site }),
         rancheck.addRancheck(payload)
       ])
-      value.push(false) // initModalを非表示にするための処理
+      value = [project, settings, project[0], false]
       break
   }
 
@@ -189,8 +191,9 @@ const updateMultipleStore = async (
   })
   const updateValue = {}
   keys.forEach(([key, updateKey], index) => {
+    const baseObj = key in updateValue ? updateValue : store;
     (updateValue as any)[key] = {
-      ...(store as any)[key],
+      ...(baseObj as any)[key],
       [updateKey]: value[index]
     }
   })
