@@ -59,6 +59,10 @@
     margin: 15px 0;
 }
 
+.modalCancelArea img:hover {
+    opacity: 0.5;
+}
+
 .modalClose {
     text-align: right;
 }

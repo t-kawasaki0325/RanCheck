@@ -79,7 +79,12 @@ const StateProvider = ({ children }: { children: any }) => {
   const value: IState = {
     rancheck: {
       ...store.rancheck,
-      addRancheck: (payload: addRancheckType) => updateStore(actions.addRancheck, store, setStore, payload),
+      addRancheck: (payload: addRancheckType) => updateMultipleStore(
+        [actions.addRancheck, actions.setAddSettingModal],
+        store,
+        setStore,
+        payload
+      ),
       setRancheck: (payload: IRancheckEntity) => updateStore(actions.setRancheck, store, setStore, payload),
       deleteRancheck: () => {
         const { _id } = store.rancheck.selectedSetting
@@ -172,6 +177,10 @@ const updateMultipleStore = async (
 ) => {
   let value: any = []
   switch (actionList.toString()) {
+    case [actions.addRancheck, actions.setAddSettingModal].toString():
+      const setting = await rancheck.addRancheck(payload)
+      value = [[...store.rancheck.settings, ...setting], false]
+      break
     case [actions.fetchProjects, actions.setProject, actions.setInitialSettingModal].toString():
       const result = await projects.fetchProjects()
       value = [result, result[0], !result.length]

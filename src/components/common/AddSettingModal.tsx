@@ -1,29 +1,30 @@
 import React, { useState, ChangeEvent, useContext } from 'react';
+import { store } from '../../store/store'
+import { toHalfWidthSpace } from '../../utils';
 
 import styles from './AddSettingModal.css'
-import { store } from '../../store/store'
 import IcnCancel from '../../assets/img/icn_cancel.svg';
 
 interface IRegisterInfo {
-  site: string
   keywordInclLine: string
+}
+
+const keywordsToArray = (keywordInclLine: string): string[] => {
+  return keywordInclLine.split('\n').map(keyword => toHalfWidthSpace(keyword))
 }
 
 const AddSettingModal: React.FC = () => {
   const [registerInfo, setRegisterInfo] = useState<IRegisterInfo>({
-    site: '',
     keywordInclLine: ''
   })
-  const { modal, rancheck } = useContext(store)
+  const { modal, rancheck, projects } = useContext(store)
 
   const register = () => {
-    const { site, keywordInclLine } = registerInfo
-    const keywords = keywordInclLine.split('\n')
+    const { keywordInclLine } = registerInfo
+    const site = projects.selectedProject.site
+    const keywords = keywordsToArray(keywordInclLine)
 
-    // TODO: site urlからサイトタイトルを取得する処理を追加
-    const title = ''
-    rancheck.addRancheck({ title, site, keywords })
-    modal.closeAddSettingModal()
+    rancheck.addRancheck({ site, keywords })
   }
 
   const handleChange = (event: ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => {
@@ -33,6 +34,8 @@ const AddSettingModal: React.FC = () => {
       [name]: value
     })
   }
+
+  const closeModal = () => modal.closeAddSettingModal()
 
   return (
     <>
@@ -44,7 +47,7 @@ const AddSettingModal: React.FC = () => {
         </div>
         <div className={styles.modalBody}>
           <div className={`${styles['modalItem-alignRight']} ${styles.modalCancelArea}`}>
-            <img src={IcnCancel} />
+            <img onClick={closeModal} src={IcnCancel} />
           </div>
           <>
             <div className={styles.modalTitle}>検索キーワードを追加</div>
