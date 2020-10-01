@@ -5,12 +5,13 @@ import { store } from '../store/store';
 
 const Sidebar: React.FC = () => {
   const [isShrink, setIsShrink] = useState(false)
-  const { projects } = useContext(store)
-
+  const { projects, modal } = useContext(store)
 
   const toggleShrink = () => {
     setIsShrink(isShrink => !isShrink)
   }
+
+  const openInitSettingModal = () => modal.openInitialSettingModal()
 
   return (
     <>
@@ -19,6 +20,7 @@ const Sidebar: React.FC = () => {
         <SidebarSiteInfo
           projects={projects.projects}
           shrinkSidebar={toggleShrink}
+          openAddSiteModal={openInitSettingModal}
         />
       )}
     </>

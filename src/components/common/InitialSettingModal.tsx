@@ -1,9 +1,10 @@
 import React, { useState, ChangeEvent, useContext } from 'react';
 import { validationUtils, toHalfWidthSpace } from '../../utils'
+import { store } from '../../store/store'
+import { IProjectsEntity } from '../../usecase/';
 import IcnCancel from '../../assets/img/icn_cancel.svg'
 
 import styles from './InitialSettingModal.css'
-import { store } from '../../store/store'
 
 interface IRegisterInfo {
   site: string
@@ -24,6 +25,8 @@ const keywordsToArray = (keywordInclLine: string): string[] => {
   return keywordInclLine.split('\n').map(keyword => toHalfWidthSpace(keyword))
 }
 
+const showCancelButton = (projects: IProjectsEntity[]) => projects.length !== 0
+
 const InitialSettingModal: React.FC = () => {
   const [registerInfo, setRegisterInfo] = useState<IRegisterInfo>({
     site: '',
@@ -31,7 +34,7 @@ const InitialSettingModal: React.FC = () => {
   })
   const [step, setStep] = useState(0)
   const [message, setMessage] = useState('')
-  const { rancheck , projects } = useContext(store)
+  const { rancheck , projects, modal } = useContext(store)
 
   const register = async () => {
     const { site, keywordInclLine } = registerInfo
@@ -88,7 +91,9 @@ const InitialSettingModal: React.FC = () => {
         </div>
         <div className={styles.modalBody}>
           <div className={`${styles['modalItem-alignRight']} ${styles.modalCancelArea}`}>
-            <img src={IcnCancel} />
+            {showCancelButton(projects.projects) && (
+              <img onClick={() => modal.closeInitialSettingModal()} src={IcnCancel} />
+            )}
           </div>
           {step === STEP.SETUP_SITE && (
             <>

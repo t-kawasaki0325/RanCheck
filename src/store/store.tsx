@@ -24,7 +24,7 @@ export type IState = {
   modal: {
     initialSettingModal: boolean
     addSettingModal: boolean
-    initModalStatus: Function
+    openInitialSettingModal: Function
     closeInitialSettingModal: Function
     openAddSettingModal: Function
     closeAddSettingModal: Function
@@ -49,7 +49,7 @@ const initialState: IState = {
   modal: {
     initialSettingModal: false,
     addSettingModal: false,
-    initModalStatus: () => {},
+    openInitialSettingModal: () => {},
     closeInitialSettingModal: () => {},
     openAddSettingModal: () => {},
     closeAddSettingModal: () => {}
@@ -113,6 +113,7 @@ const StateProvider = ({ children }: { children: any }) => {
     },
     modal: {
       ...store.modal,
+      openInitialSettingModal: () => updateStore(actions.setInitialSettingModal, store, setStore, true),
       closeInitialSettingModal: () => updateStore(actions.setInitialSettingModal, store, setStore, false),
       openAddSettingModal: () => updateStore(actions.setAddSettingModal, store, setStore, true),
       closeAddSettingModal: () => updateStore(actions.setAddSettingModal, store, setStore, false)

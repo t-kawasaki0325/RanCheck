@@ -8,10 +8,11 @@ import styles from './Sidebar.css'
 interface IProps {
   projects: IProjectsEntity[]
   shrinkSidebar: Function
+  openAddSiteModal: Function
 }
 
 const SidebarSiteInfo: React.FC<IProps> = (props: IProps) => {
-  const { shrinkSidebar, projects } = props
+  const { shrinkSidebar, projects, openAddSiteModal } = props
 
   return (
     <div className={styles.sidebar}>
@@ -23,7 +24,10 @@ const SidebarSiteInfo: React.FC<IProps> = (props: IProps) => {
           <div className={`${styles.item} ${styles.itemSelected}`}>{project.site}</div>
         </div>
       ))}
-      <div className={`${styles.positionBottom} ${styles.icon} ${styles.iconLeft}`}>
+      <div
+        className={`${styles.positionBottom} ${styles.icon} ${styles.iconLeft}`}
+        onClick={() => openAddSiteModal()}
+      >
         <img src={IcnPlus} />
         <span className={styles.addSiteText}>サイトを追加</span>
       </div>
