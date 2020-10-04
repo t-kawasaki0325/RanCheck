@@ -1,8 +1,8 @@
-import message from '../config/message'
+import { MESSAGE } from '../config/message'
 import { projectsGetters, rancheckGetters, IState } from '../store/store'
 import { testDao } from '../services/httpRequest'
 
-const { INVALID_TYPE, NOT_EXISTS_URL, ALREADY_EXISTS } = message
+const { INVALID_TYPE, NOT_EXISTS_URL, ALREADY_EXISTS } = MESSAGE
 
 const validationUtils = {
   projects: async (url: string, projects: IState['projects']): Promise<string> => {

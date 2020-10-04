@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { store } from '../../store/store';
+import { DELETE_CONFIRM } from '../../config/message'
 
 import styles from './ContextMenu.css'
 
@@ -18,7 +19,9 @@ const ContextMenu: React.FC<IProps> = (props: IProps) => {
   }
   const deleteItem = () => {
     closeContextMenu()
-    rancheck.deleteRancheck()
+    if (window.confirm(DELETE_CONFIRM(rancheck.selectedSetting.keyword))) {
+      rancheck.deleteRancheck()
+    }
   }
 
   return (
