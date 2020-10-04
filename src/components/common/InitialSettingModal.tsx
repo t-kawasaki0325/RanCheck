@@ -95,9 +95,13 @@ const InitialSettingModal: React.FC = () => {
               <img onClick={() => modal.closeInitialSettingModal()} src={IcnCancel} />
             )}
           </div>
+          {message && (
+            <div className={styles.errorWrapper}>
+              <span className={styles.error}>{message}</span>
+            </div>
+          )}
           {step === STEP.SETUP_SITE && (
             <>
-              {message && <div>{message}</div>}
               <div className={styles.modalTitle}>サイトのURLを追加</div>
               <div className={styles.modalItem}>
                 <input

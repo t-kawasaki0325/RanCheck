@@ -1,7 +1,9 @@
 @value mainColor from '../../App.css';
 @value textGrey from '../../App.css';
 @value textDarkGrey from '../../App.css';
+@value textError from '../../App.css';
 @value backgroundWhite from '../../App.css';
+@value backgroundError from '../../App.css';
 
 .circle {
     display: inline-block;
@@ -136,4 +138,32 @@
 
 .modalButton:hover {
     opacity: 0.5;
+}
+
+.errorWrapper {
+    margin: 20px;
+    text-align: center;
+}
+
+.error {
+    position: relative;
+
+    display: inline-block;
+    padding: 20px 20px 20px 50px;
+
+    background: backgroundError;
+    color: textError;
+    font-weight: bold;
+    border-radius: 20px;
+}
+
+.error:after {
+    content: '';
+    position: absolute;
+    top: 13px;
+    left: 10px;
+
+    background: url('../../assets/img/icn_warning.png');
+    width: 32px;
+    height: 32px;
 }

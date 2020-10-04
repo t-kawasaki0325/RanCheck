@@ -1,10 +1,12 @@
 @value textGrey: #ddd;
 @value textDarkGrey: #444;
+@value textError: #c54949;
 
 @value backgroundWhite: #fefefe;
 @value backgroundGrey: #ddd;
 @value backgroundMain: #ebf5fe;
 @value backgroundHover: #5674df;
+@value backgroundError: #edaa9a;
 
 @value mainColor: #1565c0;
 

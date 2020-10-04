@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent, useContext } from 'react';
 import { store } from '../../store/store'
-import { toHalfWidthSpace } from '../../utils';
+import { validationUtils, toHalfWidthSpace } from '../../utils';
 
 import styles from './AddSettingModal.css'
 import IcnCancel from '../../assets/img/icn_cancel.svg';
@@ -17,9 +17,22 @@ const AddSettingModal: React.FC = () => {
   const [registerInfo, setRegisterInfo] = useState<IRegisterInfo>({
     keywordInclLine: ''
   })
+  const [message, setMessage] = useState('')
   const { modal, rancheck, projects } = useContext(store)
 
+  const validate = () => {
+    const error = validationUtils.rancheck(
+      keywordsToArray(registerInfo.keywordInclLine),
+      rancheck
+    )
+    setMessage(error)
+    return !!error
+  }
+
   const register = () => {
+    if (validate()) {
+      return
+    }
     const { keywordInclLine } = registerInfo
     const site = projects.selectedProject.site
     const keywords = keywordsToArray(keywordInclLine)
@@ -49,20 +62,23 @@ const AddSettingModal: React.FC = () => {
           <div className={`${styles['modalItem-alignRight']} ${styles.modalCancelArea}`}>
             <img onClick={closeModal} src={IcnCancel} />
           </div>
-          <>
-            <div className={styles.modalTitle}>検索キーワードを追加</div>
-            <div className={styles.modalItem}>
+          {message && (
+            <div className={styles.errorWrapper}>
+              <span className={styles.error}>{message}</span>
+            </div>
+          )}
+          <div className={styles.modalTitle}>検索キーワードを追加</div>
+          <div className={styles.modalItem}>
               <textarea
                 rows={10}
                 name='keywordInclLine'
                 onChange={handleChange}
               >
               </textarea>
-            </div>
-            <div className={`${styles.modalItem} ${styles.modalItemRemarks}`}>
-              <span>※1行ごとに1つのキーワードを入力できます</span>
-            </div>
-          </>
+          </div>
+          <div className={`${styles.modalItem} ${styles.modalItemRemarks}`}>
+            <span>※1行ごとに1つのキーワードを入力できます</span>
+          </div>
           <div className={`${styles.modalItem} ${styles['modalItem-alignRight']}`}>
             <button
               className={styles.modalButton}

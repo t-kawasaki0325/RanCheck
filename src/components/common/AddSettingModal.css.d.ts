@@ -10,6 +10,8 @@ declare const styles: {
   readonly "modalItemRemarks": string;
   readonly "modalItem-alignRight": string;
   readonly "modalButton": string;
+  readonly "errorWrapper": string;
+  readonly "error": string;
 };
 export = styles;
 

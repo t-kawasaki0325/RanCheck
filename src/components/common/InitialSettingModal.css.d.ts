@@ -12,6 +12,8 @@ declare const styles: {
   readonly "modalItemRemarks": string;
   readonly "modalItem-alignRight": string;
   readonly "modalButton": string;
+  readonly "error": string;
+  readonly "errorWrapper": string;
 };
 export = styles;
 
