@@ -73,6 +73,14 @@ class RancheckEntity implements IRancheckEntity {
     return this._gRank
   }
 
+  public wordIncludes(word: string): boolean {
+    return !!this.keyword.match(word)
+  }
+
+  public matchKeywordNumber(number: number): boolean {
+    return this.keyword.split(' ').length === number
+  }
+
   public addRank(rank: number) {
     this._gRank.push({
       date: dateUtils.getYYYY_MM_DD(),

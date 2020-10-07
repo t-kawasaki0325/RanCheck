@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { ChangeEvent, useContext, useMemo, useState } from 'react';
 import { IRancheckEntity } from '../usecase'
 import { store } from '../store/store'
 import { absVal, range } from '../utils'
@@ -24,23 +24,50 @@ const SettingTable: React.FC = () => {
     left: 0,
     state: false
   })
+  const [condition, setCondition] = useState({
+    word: '',
+    number: '0'
+  })
+
   const closeContextMenu = () => {
     setContextMenu({ top: 0, left: 0, state: false })
   }
 
-  const length = settings ? settings.length : 0
+  const handleChange = (event: ChangeEvent<HTMLInputElement|HTMLSelectElement>) => {
+    const { name, value } = event.target
+    setCondition(condition => ({ ...condition, [name]: value }))
+  }
+
+  const displaySettings = () => settings.filter(setting => {
+    const { word, number } = condition
+    return setting.wordIncludes(word)
+      && (number === '0' || setting.matchKeywordNumber(parseInt(number)))
+  })
+
+  const length = displaySettings().length
   const numShortage = length > MIN_SETTING_LENGTH ? 0 : MIN_SETTING_LENGTH - length
 
   return (
     <div className={styles.settingTable}>
       <div className={styles.searchCondition}>
         <div className={styles.searchKeyword}>
-          <input />
+          <input
+            name='word'
+            value={condition.word}
+            onChange={handleChange}
+          />
         </div>
         <div className={styles.searchKeywordNum}>
           <span>検索キーワード数</span>
-          <select>
-            <option>全て ▼</option>
+          <select
+            name='number'
+            value={condition.number}
+            onChange={handleChange}
+          >
+            <option value={0}>全て ▼</option>
+            <option value={1}>1語</option>
+            <option value={2}>2語</option>
+            <option value={3}>3語</option>
           </select>
         </div>
       </div>
@@ -56,7 +83,7 @@ const SettingTable: React.FC = () => {
           </tr>
           </thead>
           <tbody>
-          {settings && settings.map((setting: IRancheckEntity) =>
+          {displaySettings() && displaySettings().map((setting: IRancheckEntity) =>
             (
               <tr
                 key={setting._id}
