@@ -63,6 +63,7 @@
 }
 
 .item:hover {
+    cursor: pointer;
     background: backgroundGrey;
 }
 

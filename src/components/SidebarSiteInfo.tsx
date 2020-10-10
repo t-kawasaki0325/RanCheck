@@ -7,12 +7,20 @@ import styles from './Sidebar.css'
 
 interface IProps {
   projects: IProjectsEntity[]
+  selectedProject: IProjectsEntity
+  switchProject: Function
   shrinkSidebar: Function
   openAddSiteModal: Function
 }
 
 const SidebarSiteInfo: React.FC<IProps> = (props: IProps) => {
-  const { shrinkSidebar, projects, openAddSiteModal } = props
+  const {
+    projects,
+    selectedProject,
+    switchProject,
+    shrinkSidebar,
+    openAddSiteModal
+  } = props
 
   return (
     <div className={styles.sidebar}>
@@ -21,7 +29,12 @@ const SidebarSiteInfo: React.FC<IProps> = (props: IProps) => {
       </div>
       {projects.map(project => (
         <div key={project._id} className={styles.list}>
-          <div className={`${styles.item} ${styles.itemSelected}`}>{project.site}</div>
+          <div
+            className={`${styles.item} ${project.equals(selectedProject) ? styles.itemSelected : ''}`}
+            onClick={() => switchProject(project._id)}
+          >
+            {project.site}
+          </div>
         </div>
       ))}
       <div

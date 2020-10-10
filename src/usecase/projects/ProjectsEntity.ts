@@ -48,5 +48,9 @@ class ProjectsEntity implements IProjectsEntity {
   get lastSearch() {
     return this._lastSearch
   }
+
+  public equals(project: IProjectsEntity) {
+    return this._id === project._id
+  }
 }
 export default ProjectsEntity

@@ -20,6 +20,7 @@ export type IState = {
     projects: IProjectsEntity[]
     initProject: Function
     fetchProjects: Function
+    switchProjects: Function
   },
   modal: {
     initialSettingModal: boolean
@@ -44,7 +45,8 @@ const initialState: IState = {
     selectedProject: {} as IProjectsEntity,
     projects: [],
     initProject: () => {},
-    fetchProjects: () => {}
+    fetchProjects: () => {},
+    switchProjects: () => {}
   },
   modal: {
     initialSettingModal: false,
@@ -109,6 +111,12 @@ const StateProvider = ({ children }: { children: any }) => {
         [actions.fetchProjects, actions.setProject, actions.setInitialSettingModal],
         store,
         setStore
+      ),
+      switchProjects: (payload: string) => updateMultipleStore(
+        [actions.setProject, actions.fetchRancheck],
+        store,
+        setStore,
+        payload
       )
     },
     modal: {
@@ -142,7 +150,8 @@ const updateStore = async (
       value = store.rancheck.settings.filter(setting => setting._id !== payload)
       break
     case actions.fetchRancheck:
-      value = await rancheck.fetchRancheck()
+      const project = store.projects.selectedProject
+      value = await rancheck.fetchRancheck(project.site)
       break
     case actions.googleSearch:
       const { setting, index } = payload
@@ -192,6 +201,11 @@ const updateMultipleStore = async (
         rancheck.addRancheck(payload)
       ])
       value = [project, settings, project[0], false]
+      break
+    case [actions.setProject, actions.fetchRancheck].toString():
+      const changeProject = store.projects.projects.find(project => project._id === payload)
+      const changedSettings = await rancheck.fetchRancheck(changeProject!.site)
+      value = [changeProject, changedSettings]
       break
   }
 

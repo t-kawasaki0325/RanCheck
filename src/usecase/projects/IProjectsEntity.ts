@@ -3,6 +3,7 @@ interface IProjectsEntity {
   site: string
   groups: IGroup[]
   lastSearch: string
+  equals: Function
 }
 
 export interface IGroup {

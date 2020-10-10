@@ -7,8 +7,8 @@ export type addRancheckType = {
 }
 
 const rancheckRepository = {
-  get: async (): Promise<IRancheckEntity[]> => {
-    return await rancheckDao.get()
+  get: async (site: string): Promise<IRancheckEntity[]> => {
+    return await rancheckDao.get(site)
   },
 
   add: async ({ site, keywords }: addRancheckType): Promise<IRancheckEntity[]> => {

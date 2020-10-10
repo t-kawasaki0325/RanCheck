@@ -15,10 +15,17 @@ const Sidebar: React.FC = () => {
 
   return (
     <>
-      {isShrink && <SidebarShrink expandSidebar={toggleShrink} />}
+      {isShrink &&
+        <SidebarShrink
+          expandSidebar={toggleShrink}
+          openAddSiteModal={openInitSettingModal}
+        />
+      }
       {!isShrink && (
         <SidebarSiteInfo
           projects={projects.projects}
+          selectedProject={projects.selectedProject}
+          switchProject={projects.switchProjects}
           shrinkSidebar={toggleShrink}
           openAddSiteModal={openInitSettingModal}
         />

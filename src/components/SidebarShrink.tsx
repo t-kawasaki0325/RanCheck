@@ -6,17 +6,21 @@ import styles from './Sidebar.css'
 
 interface IProps {
   expandSidebar: Function
+  openAddSiteModal: Function
 }
 
 const SidebarShrink: React.FC<IProps> = (props: IProps) => {
-  const { expandSidebar } = props
+  const { expandSidebar, openAddSiteModal } = props
 
   return (
     <div className={styles.shrinkSidebar}>
       <div onClick={() => expandSidebar()} className={styles.icon}>
         <img src={IcnMenu} />
       </div>
-      <div className={`${styles.icon} ${styles.positionBottom}`}>
+      <div
+        className={`${styles.icon} ${styles.positionBottom}`}
+        onClick={() => openAddSiteModal()}
+      >
         <img src={IcnPlus} />
       </div>
     </div>
