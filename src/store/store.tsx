@@ -200,7 +200,7 @@ const updateMultipleStore = async (
         projects.addProject({ site: payload.site }),
         rancheck.addRancheck(payload)
       ])
-      value = [project, settings, project[0], false]
+      value = [[...store.projects.projects, ...project], settings, project[0], false]
       break
     case [actions.setProject, actions.fetchRancheck].toString():
       const changeProject = store.projects.projects.find(project => project._id === payload)
