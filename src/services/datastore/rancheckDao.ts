@@ -10,6 +10,8 @@ export interface saveType {
     date: string
     rank: number
   }[]
+  groups: string[]
+  createdAt: string
 }
 
 export interface selectType extends saveType {
@@ -21,8 +23,8 @@ const rancheckDao = {
     return new Promise(resolve => {
       rancheck.find({}, (err: Error, docs: selectType[]) => {
         resolve(docs.map((doc: selectType) => {
-          const { _id, title, site, url, keyword, gRank } = doc
-          return new RancheckEntity(_id, site, keyword, title, url, gRank)
+          const { _id, title, site, url, keyword, gRank, groups, createdAt } = doc
+          return new RancheckEntity(_id, site, keyword, title, url, gRank, groups, createdAt)
         }))
       })
     })
@@ -34,16 +36,16 @@ const rancheckDao = {
         docs.map((doc: IRancheckEntity) => doc.forSave()),
         (error: Error, newDocs: selectType[]) => {
           resolve(newDocs.map((doc: selectType) => {
-            const { _id, title, site, url, keyword, gRank } = doc
-            return new RancheckEntity(_id, title, site, keyword, url, gRank)
+            const { _id, title, site, url, keyword, gRank, groups, createdAt } = doc
+            return new RancheckEntity(_id, title, site, keyword, url, gRank, groups, createdAt)
           }))
         })
     })
   },
 
   update: (doc: IRancheckEntity) => {
-    const { _id, title, site, url ,keyword, gRank } = doc
-    rancheck.update({ _id }, { _id, title, site, url ,keyword, gRank }, {})
+    const { _id, title, site, url ,keyword, gRank, groups, createdAt } = doc
+    rancheck.update({ _id }, { _id, title, site, url ,keyword, gRank, groups, createdAt }, {})
   },
 
   delete: (id: string) => {

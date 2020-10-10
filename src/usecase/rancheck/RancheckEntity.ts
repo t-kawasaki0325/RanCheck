@@ -33,20 +33,36 @@ class RancheckEntity implements IRancheckEntity {
    */
   _gRank: IRank[]
 
+  /**
+   * 所属グループ
+   */
+  _groups: string[]
+
+  /**
+   * 作成日
+   */
+  _createdAt: string
+
   constructor(
     _id: string,
     site: string,
     keyword: string,
     title: string = '',
     url: string = '',
-    gRank: IRank[] = []
+    gRank: IRank[] = [],
+    groups: string[] = [],
+    createdAt: string = ''
   ) {
+    const date = new Date()
+
     this.__id = _id
     this._title = title
     this._site = site
     this._url = url
     this._keyword = keyword
     this._gRank = gRank
+    this._groups = groups
+    this._createdAt = createdAt || `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`
   }
 
   get _id() {
@@ -71,6 +87,14 @@ class RancheckEntity implements IRancheckEntity {
 
   get gRank() {
     return this._gRank
+  }
+
+  get groups() {
+    return this._groups
+  }
+
+  get createdAt() {
+    return this._createdAt
   }
 
   public wordIncludes(word: string): boolean {
@@ -144,7 +168,9 @@ class RancheckEntity implements IRancheckEntity {
       site: this._site,
       url: this._url,
       keyword: this._keyword,
-      gRank: this._gRank
+      gRank: this._gRank,
+      groups: this._groups,
+      createdAt: this._createdAt
     }
   }
 }
