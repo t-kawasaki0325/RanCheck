@@ -3,19 +3,28 @@ import { sleep, includeString } from '../../utils'
 import { searchEngineDao } from '../httpRequest'
 import { IGoogleSearchResultEntity, GoogleSearchResultEntity } from '../../usecase'
 
-const SELECTOR = '.rc .r > a'
+const SELECTOR = '.rc a:not([class])'
 
-const LOOP_NUM = 10
-const LENGTH_PER_PAGE = 10
+const MAX_SEARCH_NUM = 100
 
 const googleRepository = {
   getSearchResult: async (keyword: string, site: string): Promise<IGoogleSearchResultEntity> => {
-    for (let count = 0; count < LOOP_NUM; count++) {
-      const results = await googleRepository.get(keyword, count)
+    let page = 0
+    let totalSearchNum = 0
+    while (1) {
+      const results = await googleRepository.get(keyword, page, totalSearchNum)
 
+      // 検索結果が見つかったとき
       const matchSearchResult = results.find(result => includeString(result.url, site))
       if (!!matchSearchResult) {
         return matchSearchResult
+      }
+
+      page++
+      totalSearchNum += results.length
+      // 検索結果が見つからず100位まで検索したとき
+      if (totalSearchNum >= MAX_SEARCH_NUM) {
+        break
       }
 
       await sleep()
@@ -24,19 +33,19 @@ const googleRepository = {
     return new GoogleSearchResultEntity;
   },
 
-  get: async (keyword: string, page: number): Promise<IGoogleSearchResultEntity[]> => {
+  get: async (keyword: string, page: number, baseRank: number): Promise<IGoogleSearchResultEntity[]> => {
     const data = await searchEngineDao.google(keyword, page)
 
     const $ = cheerio.load(data)
     const elements = $(SELECTOR)
 
-    return Object.values(elements)
-      .slice(0, LENGTH_PER_PAGE)
-      .map((element, index) => {
+    return elements
+      .map((index: number, element: Node) => {
         const url = (element as any).attribs.href
-        const rank = page * 10 + index + 1
+        const rank = baseRank + index + 1
         return new GoogleSearchResultEntity(rank, url)
       })
+      .get()
   }
 }
 
