@@ -18,7 +18,10 @@ const EmplySettingTable = () => (
 )
 
 const SettingTable: React.FC = () => {
-  const { rancheck: { settings, setRancheck } } = useContext(store)
+  const {
+    rancheck: { settings, setRancheck },
+    searchStatus: { isSearching, count, totalNum}
+  } = useContext(store)
   const [contextMenu, setContextMenu] = useState({
     top: 0,
     left: 0,
@@ -70,6 +73,11 @@ const SettingTable: React.FC = () => {
             <option value={3}>3語</option>
           </select>
         </div>
+        {isSearching && (
+          <div className={styles.searchStatus}>
+            {count} / {totalNum} 検索中…
+          </div>
+        )}
       </div>
       <div className={styles.table}>
         <table>

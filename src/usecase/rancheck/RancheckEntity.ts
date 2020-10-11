@@ -62,7 +62,7 @@ class RancheckEntity implements IRancheckEntity {
     this._keyword = keyword
     this._gRank = gRank
     this._groups = groups
-    this._createdAt = createdAt || `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`
+    this._createdAt = createdAt || dateUtils.getYYYY_MM_DD()
   }
 
   get _id() {
@@ -115,6 +115,11 @@ class RancheckEntity implements IRancheckEntity {
   latestRank(): string {
     const length = this._gRank.length
     return length > 0 ? `${this._gRank[length - 1].rank}` : '-'
+  }
+
+  lastSearch(): string {
+    const length = this._gRank.length
+    return length > 0 ? `${this._gRank[length - 1].date}` : ''
   }
 
   public rankTransition(): number {

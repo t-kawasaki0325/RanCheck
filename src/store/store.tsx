@@ -4,6 +4,7 @@ import projects, { projectsGetters } from './projects'
 import { modalGetters } from './modal'
 import { IRancheckEntity, IProjectsEntity } from '../usecase/';
 import { addRancheckType } from '../services/repository/rancheckRepository';
+import { dateUtils } from '../utils'
 
 export type IState = {
   rancheck: {
@@ -29,6 +30,11 @@ export type IState = {
     closeInitialSettingModal: Function
     openAddSettingModal: Function
     closeAddSettingModal: Function
+  },
+  searchStatus: {
+    isSearching: boolean
+    count: number
+    totalNum: number
   }
 }
 const initialState: IState = {
@@ -55,6 +61,11 @@ const initialState: IState = {
     closeInitialSettingModal: () => {},
     openAddSettingModal: () => {},
     closeAddSettingModal: () => {}
+  },
+  searchStatus: {
+    isSearching: false,
+    count: 0,
+    totalNum: 0
   }
 }
 const actions = {
@@ -71,6 +82,10 @@ const actions = {
   // modal
   setInitialSettingModal: 'modal/initialSettingModal/',
   setAddSettingModal: 'modal/addSettingModal/',
+  // searchStatus
+  setIsSearching: 'searchStatus/isSearching',
+  setCount: 'searchStatus/count',
+  setTotalNum: 'searchStatus/totalNum',
 }
 
 const store = React.createContext(initialState)
@@ -94,8 +109,16 @@ const StateProvider = ({ children }: { children: any }) => {
       },
       fetchRancheck: () => updateStore(actions.fetchRancheck, store, setStore),
       googleSearch: async () => {
-        for (const [index, setting] of store.rancheck.settings.entries()) {
-          await updateStore(actions.googleSearch, store, setStore, { setting, index })
+        const searchTarget = store.rancheck.settings.filter(
+          setting => setting.lastSearch() !== dateUtils.getYYYY_MM_DD()
+        )
+        for (const [index, setting] of searchTarget.entries()) {
+          await updateMultipleStore(
+            [actions.googleSearch, actions.setIsSearching, actions.setCount, actions.setTotalNum],
+            store,
+            setStore,
+            { setting, index, isSearching: searchTarget.length > index + 1, totalNum: searchTarget.length }
+          )
         }
       }
     },
@@ -125,6 +148,9 @@ const StateProvider = ({ children }: { children: any }) => {
       closeInitialSettingModal: () => updateStore(actions.setInitialSettingModal, store, setStore, false),
       openAddSettingModal: () => updateStore(actions.setAddSettingModal, store, setStore, true),
       closeAddSettingModal: () => updateStore(actions.setAddSettingModal, store, setStore, false)
+    },
+    searchStatus: {
+      ...store.searchStatus,
     }
   }
   return <Provider value={{ ...value }}>{children}</Provider>
@@ -188,8 +214,8 @@ const updateMultipleStore = async (
   let value: any = []
   switch (actionList.toString()) {
     case [actions.addRancheck, actions.setAddSettingModal].toString():
-      const setting = await rancheck.addRancheck(payload)
-      value = [[...store.rancheck.settings, ...setting], false]
+      const addedSetting = await rancheck.addRancheck(payload)
+      value = [[...store.rancheck.settings, ...addedSetting], false]
       break
     case [actions.fetchProjects, actions.setProject, actions.setInitialSettingModal].toString():
       const result = await projects.fetchProjects()
@@ -206,6 +232,13 @@ const updateMultipleStore = async (
       const changeProject = store.projects.projects.find(project => project._id === payload)
       const changedSettings = await rancheck.fetchRancheck(changeProject!.site)
       value = [changeProject, changedSettings]
+      break
+    case [actions.googleSearch, actions.setIsSearching, actions.setCount, actions.setTotalNum].toString():
+      const { setting, index, isSearching, totalNum } = payload
+      const copiedSettings = [...store.rancheck.settings]
+      copiedSettings[index] = await rancheck.googleSearch(setting, store.projects.selectedProject.site)
+      // indexは現在検索している次の検索数を表すので+2とする
+      value = [copiedSettings, isSearching, index + 2, totalNum]
       break
   }
 

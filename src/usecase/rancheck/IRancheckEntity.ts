@@ -11,6 +11,7 @@ interface IRancheckEntity {
   matchKeywordNumber: Function
   addRank: Function
   latestRank: Function
+  lastSearch: Function
   rankTransition: Function
   isRankUp: Function
   isRankDown: Function

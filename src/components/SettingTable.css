@@ -60,6 +60,11 @@ tbody {
     border: 1px textGrey solid;
 }
 
+.searchStatus {
+    margin-left: auto;
+    margin-right: 20px;
+}
+
 .table {
     height: 340px;
     overflow: scroll;
