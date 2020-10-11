@@ -97,6 +97,10 @@ class RancheckEntity implements IRancheckEntity {
     return this._createdAt
   }
 
+  public equals(rancheck: IRancheckEntity): boolean {
+    return this._id === rancheck._id
+  }
+
   public wordIncludes(word: string): boolean {
     return !!this.keyword.match(word)
   }

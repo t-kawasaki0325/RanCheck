@@ -236,7 +236,8 @@ const updateMultipleStore = async (
     case [actions.googleSearch, actions.setIsSearching, actions.setCount, actions.setTotalNum].toString():
       const { setting, index, isSearching, totalNum } = payload
       const copiedSettings = [...store.rancheck.settings]
-      copiedSettings[index] = await rancheck.googleSearch(setting, store.projects.selectedProject.site)
+      const settingIndex = copiedSettings.findIndex((v: IRancheckEntity) => v.equals(setting))
+      copiedSettings[settingIndex] = await rancheck.googleSearch(setting, store.projects.selectedProject.site)
       // indexは現在検索している次の検索数を表すので+2とする
       value = [copiedSettings, isSearching, index + 2, totalNum]
       break

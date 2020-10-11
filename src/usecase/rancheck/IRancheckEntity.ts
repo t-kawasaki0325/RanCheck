@@ -7,6 +7,7 @@ interface IRancheckEntity {
   gRank: IRank[]
   groups: string[]
   createdAt: string
+  equals: Function
   wordIncludes: Function
   matchKeywordNumber: Function
   addRank: Function
