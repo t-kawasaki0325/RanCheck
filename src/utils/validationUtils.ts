@@ -27,6 +27,10 @@ const validationUtils = {
       return ALREADY_EXISTS
     }
     return ''
+  },
+
+  search: (type: 'SEARCHING' | 'ALL_SEARCHED') => {
+    alert(MESSAGE[type])
   }
 }
 

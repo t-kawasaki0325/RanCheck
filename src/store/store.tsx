@@ -4,7 +4,7 @@ import projects, { projectsGetters } from './projects'
 import { modalGetters } from './modal'
 import { IRancheckEntity, IProjectsEntity } from '../usecase/';
 import { addRancheckType } from '../services/repository/rancheckRepository';
-import { dateUtils } from '../utils'
+import { dateUtils, validationUtils } from '../utils'
 
 export type IState = {
   rancheck: {
@@ -112,6 +112,15 @@ const StateProvider = ({ children }: { children: any }) => {
         const searchTarget = store.rancheck.settings.filter(
           setting => setting.lastSearch() !== dateUtils.getYYYY_MM_DD()
         )
+        if (store.searchStatus.isSearching) {
+          validationUtils.search('SEARCHING')
+          return
+        }
+        if (searchTarget.length === 0) {
+          validationUtils.search('ALL_SEARCHED')
+          return
+        }
+
         for (const [index, setting] of searchTarget.entries()) {
           await updateMultipleStore(
             [actions.googleSearch, actions.setIsSearching, actions.setCount, actions.setTotalNum],
@@ -144,9 +153,17 @@ const StateProvider = ({ children }: { children: any }) => {
     },
     modal: {
       ...store.modal,
-      openInitialSettingModal: () => updateStore(actions.setInitialSettingModal, store, setStore, true),
+      openInitialSettingModal: () => {
+        store.searchStatus.isSearching
+          ? validationUtils.search('SEARCHING')
+          : updateStore(actions.setInitialSettingModal, store, setStore, true)
+      },
       closeInitialSettingModal: () => updateStore(actions.setInitialSettingModal, store, setStore, false),
-      openAddSettingModal: () => updateStore(actions.setAddSettingModal, store, setStore, true),
+      openAddSettingModal: () => {
+        store.searchStatus.isSearching
+          ? validationUtils.search('SEARCHING')
+          : updateStore(actions.setAddSettingModal, store, setStore, true)
+      },
       closeAddSettingModal: () => updateStore(actions.setAddSettingModal, store, setStore, false)
     },
     searchStatus: {
