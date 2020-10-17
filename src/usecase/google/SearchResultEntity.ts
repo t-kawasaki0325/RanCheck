@@ -12,9 +12,15 @@ class SearchResultEntity implements ISearchResultEntity {
    */
   private _url: string
 
-  constructor(rank: number = 0, url: string = '') {
+  /**
+   * title
+   */
+  private _title: string
+
+  constructor(rank: number = 0, url: string = '', title: string = '') {
     this._rank = rank
     this._url = url
+    this._title = title
   }
 
   get rank(): number {
@@ -23,6 +29,10 @@ class SearchResultEntity implements ISearchResultEntity {
 
   get url(): string {
     return this._url
+  }
+
+  get title(): string {
+    return this._title
   }
 
   get isEmpty(): boolean {

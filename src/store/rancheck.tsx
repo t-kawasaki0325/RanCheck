@@ -39,9 +39,9 @@ export default {
   deleteRancheck: (id: string) => rancheckRepository.delete(id),
   fetchRancheck: async (site: string) => await rancheckRepository.get(site),
   googleSearch: async (setting: IRancheckEntity, site: string) => {
-    const { rank } = await googleRepository.getSearchResult(setting.keyword, site)
+    const { rank, title, url } = await googleRepository.getSearchResult(setting.keyword, site)
     // TODO: 本来編集するべきでないので直す
-    setting.addRank(rank)
+    setting.addRank(title, url, rank)
     rancheckRepository.update(setting)
     return setting
   }

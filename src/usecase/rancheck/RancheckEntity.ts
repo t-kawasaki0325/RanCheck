@@ -109,7 +109,9 @@ class RancheckEntity implements IRancheckEntity {
     return this.keyword.split(' ').length === number
   }
 
-  public addRank(rank: number) {
+  public addRank(title: string, url: string, rank: number) {
+    this._title = title
+    this._url = url
     this._gRank.push({
       date: dateUtils.getYYYY_MM_DD(),
       rank
@@ -119,6 +121,10 @@ class RancheckEntity implements IRancheckEntity {
   latestRank(): number {
     const length = this._gRank.length
     return length > 0 ? this._gRank[length - 1].rank : 0
+  }
+
+  path(): string {
+    return (this.url as any).match(/^https?:\/{2,}.*?(\/.*)/)[1]
   }
 
   lastSearch(): string {

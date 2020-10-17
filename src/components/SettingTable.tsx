@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useContext, useMemo, useState } from 'react';
+import React, { ChangeEvent, useContext, useState } from 'react';
 import { IRancheckEntity } from '../usecase'
 import { store, rancheckGetters } from '../store/store'
 import { SortType } from '../store/rancheck'
@@ -104,7 +104,6 @@ const SettingTable: React.FC = () => {
           <thead>
           <tr>
             <th>キーワード</th>
-            <th>URL</th>
             <th
               className={styles.sort}
               onClick={() => changeSortSettings('rank')}
@@ -117,7 +116,8 @@ const SettingTable: React.FC = () => {
             >
               Google順位変化
             </th>
-            <th>ランクインページ</th>
+            <th>タイトル</th>
+            <th>URL</th>
           </tr>
           </thead>
           <tbody>
@@ -131,7 +131,6 @@ const SettingTable: React.FC = () => {
                 }}
               >
                 <td>{setting.keyword}</td>
-                <td>{setting.site}</td>
                 <td>
                   {setting.latestRank() || '-'}
                 </td>
@@ -142,7 +141,8 @@ const SettingTable: React.FC = () => {
                   {setting.isRankUp() && <span className={styles.up}>↗</span>}
                   {setting.isRankDown() && <span className={styles.down}>↘</span>}
                 </td>
-                <td>{setting.url}</td>
+                <td>{setting.title}</td>
+                <td>{setting.path()}</td>
               </tr>
             )
           )}

@@ -3,7 +3,7 @@ import { sleep, includeString } from '../../utils'
 import { searchEngineDao } from '../httpRequest'
 import { IGoogleSearchResultEntity, GoogleSearchResultEntity } from '../../usecase'
 
-const SELECTOR = '.rc a:not([class])'
+const SELECTOR = '.rc > div > a:not([class])'
 
 const MAX_SEARCH_NUM = 100
 
@@ -41,9 +41,10 @@ const googleRepository = {
 
     return elements
       .map((index: number, element: Node) => {
-        const url = (element as any).attribs.href
+        const title = $(element).find('h3 span').text()
+        const url = $(element).attr('href')
         const rank = baseRank + index + 1
-        return new GoogleSearchResultEntity(rank, url)
+        return new GoogleSearchResultEntity(rank, url, title)
       })
       .get()
   }
