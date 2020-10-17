@@ -5,6 +5,7 @@ import { modalGetters } from './modal'
 import { IRancheckEntity, IProjectsEntity } from '../usecase/';
 import { addRancheckType } from '../services/repository/rancheckRepository';
 import { dateUtils, validationUtils } from '../utils'
+import { MESSAGE } from '../config/message'
 
 export type IState = {
   rancheck: {
@@ -122,12 +123,19 @@ const StateProvider = ({ children }: { children: any }) => {
         }
 
         for (const [index, setting] of searchTarget.entries()) {
-          await updateMultipleStore(
+          const isError = await updateMultipleStore(
             [actions.googleSearch, actions.setIsSearching, actions.setCount, actions.setTotalNum],
             store,
             setStore,
             { setting, index, isSearching: searchTarget.length > index + 1, totalNum: searchTarget.length }
-          )
+          ).catch(() => {
+            return true
+          })
+          if (isError) {
+            updateStore(actions.setIsSearching, store, setStore, false)
+            alert(MESSAGE.SEARCH_ERROR)
+            break
+          }
         }
       }
     },
@@ -208,6 +216,10 @@ const updateStore = async (
     // modal
     case actions.setAddSettingModal:
     case actions.setInitialSettingModal:
+      value = payload
+      break
+    // searchStatus
+    case actions.setIsSearching:
       value = payload
       break
   }

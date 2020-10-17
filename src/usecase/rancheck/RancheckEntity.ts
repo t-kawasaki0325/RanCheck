@@ -53,8 +53,6 @@ class RancheckEntity implements IRancheckEntity {
     groups: string[] = [],
     createdAt: string = ''
   ) {
-    const date = new Date()
-
     this.__id = _id
     this._title = title
     this._site = site
@@ -124,7 +122,8 @@ class RancheckEntity implements IRancheckEntity {
   }
 
   path(): string {
-    return (this.url as any).match(/^https?:\/{2,}.*?(\/.*)/)[1]
+    const params = this.url.match(/^https?:\/{2,}.*?(\/.*)/)
+    return params ? params[1] : ''
   }
 
   lastSearch(): string {
