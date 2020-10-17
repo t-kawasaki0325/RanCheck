@@ -116,9 +116,9 @@ class RancheckEntity implements IRancheckEntity {
     })
   }
 
-  latestRank(): string {
+  latestRank(): number {
     const length = this._gRank.length
-    return length > 0 ? `${this._gRank[length - 1].rank}` : '-'
+    return length > 0 ? this._gRank[length - 1].rank : 0
   }
 
   lastSearch(): string {

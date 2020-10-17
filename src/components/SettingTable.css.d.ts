@@ -6,6 +6,7 @@ declare const styles: {
     readonly "searchKeywordNum": string;
     readonly "searchStatus": string;
     readonly "table": string;
+    readonly "sort": string;
     readonly "up": string;
     readonly "down": string;
 };

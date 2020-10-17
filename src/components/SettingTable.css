@@ -80,6 +80,23 @@ tbody {
     color: textDarkGrey;
 }
 
+.table th.sort:hover {
+    opacity: 0.8;
+}
+
+.table th.sort:after {
+    content: '';
+    position: absolute;
+
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+
+    background: url('../assets/img/icn_sort.svg') no-repeat;
+    width: 16px;
+    height: 16px;
+}
+
 .table td {
     padding: 2px;
     vertical-align: middle;

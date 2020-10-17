@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useContext, useMemo, useState } from 'react';
 import { IRancheckEntity } from '../usecase'
-import { store } from '../store/store'
+import { store, rancheckGetters } from '../store/store'
+import { SortType } from '../store/rancheck'
 import { absVal, range } from '../utils'
 import { ContextMenu } from './common';
 
@@ -19,7 +20,7 @@ const EmplySettingTable = () => (
 
 const SettingTable: React.FC = () => {
   const {
-    rancheck: { settings, setRancheck },
+    rancheck,
     searchStatus: { isSearching, count, totalNum}
   } = useContext(store)
   const [contextMenu, setContextMenu] = useState({
@@ -31,6 +32,15 @@ const SettingTable: React.FC = () => {
     word: '',
     number: '0'
   })
+  const [sort, setSort] = useState<{
+    type: SortType,
+    rank: boolean,
+    transition: boolean
+  }>({
+    type: '',
+    rank: false,
+    transition: false
+  })
 
   const closeContextMenu = () => {
     setContextMenu({ top: 0, left: 0, state: false })
@@ -41,11 +51,21 @@ const SettingTable: React.FC = () => {
     setCondition(condition => ({ ...condition, [name]: value }))
   }
 
-  const displaySettings = () => settings.filter(setting => {
-    const { word, number } = condition
-    return setting.wordIncludes(word)
-      && (number === '0' || setting.matchKeywordNumber(parseInt(number)))
-  })
+  const changeSortSettings = (column: 'rank' | 'transition') => {
+    setSort(sort => ({
+      ...sort,
+      type: column,
+      [column]: !sort[column]
+    }))
+  }
+
+  const displaySettings = () => rancheckGetters(rancheck)
+    .sorted(sort.type, sort.rank, sort.transition)
+    .filter(setting => {
+      const { word, number } = condition
+      return setting.wordIncludes(word)
+        && (number === '0' || setting.matchKeywordNumber(parseInt(number)))
+    })
 
   const length = displaySettings().length
   const numShortage = length > MIN_SETTING_LENGTH ? 0 : MIN_SETTING_LENGTH - length
@@ -85,8 +105,18 @@ const SettingTable: React.FC = () => {
           <tr>
             <th>キーワード</th>
             <th>URL</th>
-            <th>Google順位</th>
-            <th>Google順位変化</th>
+            <th
+              className={styles.sort}
+              onClick={() => changeSortSettings('rank')}
+            >
+              Google順位
+            </th>
+            <th
+              className={styles.sort}
+              onClick={() => changeSortSettings('transition')}
+            >
+              Google順位変化
+            </th>
             <th>ランクインページ</th>
           </tr>
           </thead>
@@ -95,7 +125,7 @@ const SettingTable: React.FC = () => {
             (
               <tr
                 key={setting._id}
-                onMouseMove={() => setRancheck(setting)}
+                onMouseMove={() => rancheck.setRancheck(setting)}
                 onContextMenu={({ pageX, pageY }) => {
                   setContextMenu({ top: pageY, left: pageX, state: true })
                 }}
@@ -103,7 +133,7 @@ const SettingTable: React.FC = () => {
                 <td>{setting.keyword}</td>
                 <td>{setting.site}</td>
                 <td>
-                  {setting.latestRank()}
+                  {setting.latestRank() || '-'}
                 </td>
                 <td>
                 <span>
