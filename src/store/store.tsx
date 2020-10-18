@@ -108,7 +108,11 @@ const StateProvider = ({ children }: { children: any }) => {
         const { _id } = store.rancheck.selectedSetting
         updateStore(actions.deleteRancheck, store, setStore, _id)
       },
-      fetchRancheck: () => updateStore(actions.fetchRancheck, store, setStore),
+      fetchRancheck: () => updateMultipleStore(
+        [actions.fetchRancheck, actions.setRancheck],
+        store,
+        setStore
+      ),
       googleSearch: async () => {
         const searchTarget = store.rancheck.settings.filter(
           setting => setting.lastSearch() !== dateUtils.getYYYY_MM_DD()
@@ -153,7 +157,7 @@ const StateProvider = ({ children }: { children: any }) => {
         setStore
       ),
       switchProjects: (payload: string) => updateMultipleStore(
-        [actions.setProject, actions.fetchRancheck],
+        [actions.setProject, actions.fetchRancheck, actions.setRancheck],
         store,
         setStore,
         payload
@@ -199,10 +203,6 @@ const updateStore = async (
     case actions.deleteRancheck:
       rancheck.deleteRancheck(payload)
       value = store.rancheck.settings.filter(setting => setting._id !== payload)
-      break
-    case actions.fetchRancheck:
-      const project = store.projects.selectedProject
-      value = await rancheck.fetchRancheck(project.site)
       break
     case actions.googleSearch:
       const { setting, index } = payload
@@ -257,10 +257,15 @@ const updateMultipleStore = async (
       ])
       value = [[...store.projects.projects, ...project], settings, project[0], false]
       break
-    case [actions.setProject, actions.fetchRancheck].toString():
+    case [actions.fetchRancheck, actions.setRancheck].toString():
+      const selectedProject = store.projects.selectedProject
+      const rancheckSettings = await rancheck.fetchRancheck(selectedProject.site)
+      value = [rancheckSettings, rancheckSettings[0]]
+      break
+    case [actions.setProject, actions.fetchRancheck, actions.setRancheck].toString():
       const changeProject = store.projects.projects.find(project => project._id === payload)
       const changedSettings = await rancheck.fetchRancheck(changeProject!.site)
-      value = [changeProject, changedSettings]
+      value = [changeProject, changedSettings, changedSettings[0]]
       break
     case [actions.googleSearch, actions.setIsSearching, actions.setCount, actions.setTotalNum].toString():
       const { setting, index, isSearching, totalNum } = payload

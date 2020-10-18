@@ -121,6 +121,10 @@ class RancheckEntity implements IRancheckEntity {
     return length > 0 ? this._gRank[length - 1].rank : 0
   }
 
+  maxRank(): number {
+    return this._gRank.reduce((prev, current) => Math.max(prev, current.rank), 0)
+  }
+
   path(): string {
     const params = this.url.match(/^https?:\/{2,}.*?(\/.*)/)
     return params ? params[1] : ''
