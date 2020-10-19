@@ -117,8 +117,8 @@ class RancheckEntity implements IRancheckEntity {
   }
 
   latestRank(): number {
-    const length = this._gRank.length
-    return length > 0 ? this._gRank[length - 1].rank : 0
+    const latestRank = this._gRank.slice(-1)[0]
+    return latestRank && latestRank.rank < 100 ? latestRank.rank : 0
   }
 
   maxRank(): number {

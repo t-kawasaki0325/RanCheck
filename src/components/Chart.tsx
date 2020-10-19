@@ -45,6 +45,7 @@ const Chart: React.FC = () => {
         />
         <YAxis
           domain={[1, yAxis.max]}
+          allowDataOverflow={true}
           tick={{ fontSize: 12 }}
           ticks={yAxis.ticks}
           reversed={true}

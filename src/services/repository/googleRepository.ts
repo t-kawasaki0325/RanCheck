@@ -30,7 +30,8 @@ const googleRepository = {
       await sleep()
     }
 
-    return new GoogleSearchResultEntity;
+    // 検索結果が100位より下の場合は一律で110位に設定する
+    return new GoogleSearchResultEntity(MAX_SEARCH_NUM + 10);
   },
 
   get: async (keyword: string, page: number, baseRank: number): Promise<IGoogleSearchResultEntity[]> => {
