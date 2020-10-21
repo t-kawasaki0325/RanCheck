@@ -10,6 +10,8 @@
 
 @value mainColor: #1565c0;
 
+@value disabledColor: #aaa;
+
 .layout {
     padding: 10px;
     margin: 10px;

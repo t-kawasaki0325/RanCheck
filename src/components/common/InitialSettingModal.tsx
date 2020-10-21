@@ -22,7 +22,9 @@ const buttonText = {
 }
 
 const keywordsToArray = (keywordInclLine: string): string[] => {
-  return keywordInclLine.split('\n').map(keyword => toHalfWidthSpace(keyword))
+  return keywordInclLine.split('\n').reduce(
+    (prev: string[], current: string) => current.trim() !== '' ? prev.concat(toHalfWidthSpace(current.trim())) : prev
+  , [])
 }
 
 const showCancelButton = (projects: IProjectsEntity[]) => projects.length !== 0
@@ -75,6 +77,11 @@ const InitialSettingModal: React.FC = () => {
       register()
     }
   }
+
+  const isDisableButton = [
+    registerInfo.site.trim() === '',
+    registerInfo.keywordInclLine.trim() === ''
+  ]
 
   return (
     <>
@@ -129,6 +136,7 @@ const InitialSettingModal: React.FC = () => {
           )}
           <div className={`${styles.modalItem} ${styles['modalItem-alignRight']}`}>
             <button
+              disabled={isDisableButton[step]}
               className={styles.modalButton}
               onClick={toNext}
             >

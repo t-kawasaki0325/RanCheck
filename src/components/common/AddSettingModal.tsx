@@ -10,7 +10,9 @@ interface IRegisterInfo {
 }
 
 const keywordsToArray = (keywordInclLine: string): string[] => {
-  return keywordInclLine.split('\n').map(keyword => toHalfWidthSpace(keyword))
+  return keywordInclLine.split('\n').reduce(
+    (prev: string[], current: string) => current.trim() !== '' ? prev.concat(toHalfWidthSpace(current.trim())) : prev
+  , [])
 }
 
 const AddSettingModal: React.FC = () => {
@@ -81,6 +83,7 @@ const AddSettingModal: React.FC = () => {
           </div>
           <div className={`${styles.modalItem} ${styles['modalItem-alignRight']}`}>
             <button
+              disabled={registerInfo.keywordInclLine.trim() === ''}
               className={styles.modalButton}
               onClick={register}
             >

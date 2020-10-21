@@ -2,7 +2,7 @@ import { MESSAGE } from '../config/message'
 import { projectsGetters, rancheckGetters, IState } from '../store/store'
 import { testDao } from '../services/httpRequest'
 
-const { INVALID_TYPE, NOT_EXISTS_URL, ALREADY_EXISTS } = MESSAGE
+const { INVALID_TYPE, NOT_EXISTS_URL, ALREADY_EXISTS, DUPLICATE_KEYWORDS } = MESSAGE
 
 const validationUtils = {
   projects: async (url: string, projects: IState['projects']): Promise<string> => {
@@ -23,6 +23,9 @@ const validationUtils = {
   },
 
   rancheck: (keywords: string[], rancheck: IState['rancheck']): string => {
+    if (keywords.length !== new Set(keywords).size) {
+      return DUPLICATE_KEYWORDS
+    }
     if (rancheckGetters(rancheck).exists(keywords)) {
       return ALREADY_EXISTS
     }
