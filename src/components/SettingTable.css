@@ -77,7 +77,24 @@ tbody {
     padding: 5px 2px;
 
     background: #ccc;
+    font-size: 0.8rem;
     color: textDarkGrey;
+}
+
+.table th:first-child {
+    width: 230px;
+}
+.table th:nth-child(2) {
+    width: 90px;
+}
+.table th:nth-child(3) {
+    width: 120px;
+}
+.table th:nth-child(4) {
+    width: 320px;
+}
+.table th:nth-child(5) {
+    width: 240px;
 }
 
 .table th.sort:hover {
