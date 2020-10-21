@@ -18,7 +18,14 @@ export const rancheckGetters = (store: IState['rancheck']) => ({
     rank: boolean,
     transition: boolean
   ): IRancheckEntity[] => {
-    const settings = store.settings.slice()
+    const [settings, outrangeSettings] = store.settings.reduce<[IRancheckEntity[], IRancheckEntity[]]>(
+      (prev: [IRancheckEntity[], IRancheckEntity[]], current: IRancheckEntity) => {
+        return current.latestRank() !== 0
+          ? [prev[0].concat(current), prev[1]]
+          : [prev[0], prev[1].concat(current)]
+      },
+      [[], []]
+    )
     if (type === 'rank') {
       rank
         ? settings.sort((a, b) => a.latestRank() > b.latestRank() ? 1 : -1)
@@ -29,7 +36,7 @@ export const rancheckGetters = (store: IState['rancheck']) => ({
         ? settings.sort((a, b) => a.rankTransition() > b.rankTransition() ? 1 : -1)
         : settings.sort((a, b) => a.rankTransition() < b.rankTransition() ? 1 : -1)
     }
-    return settings
+    return settings.concat(outrangeSettings)
   }
 })
 
