@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { store } from '../../store/store';
+import React, { useContext } from 'react'
+import { store } from '../../store/store'
 import { DELETE_CONFIRM } from '../../config/message'
 
 import styles from './ContextMenu.css'
@@ -26,14 +26,8 @@ const ContextMenu: React.FC<IProps> = (props: IProps) => {
 
   return (
     <>
-      <div
-        className={styles.overlay}
-        onClick={() => closeContextMenu()}
-      ></div>
-      <div
-        className={styles.contextMenu}
-        style={{ top, left }}
-      >
+      <div className={styles.overlay} onClick={() => closeContextMenu()}></div>
+      <div className={styles.contextMenu} style={{ top, left }}>
         <ul>
           {/*仕様を固める必要があるため一旦コメントアウト*/}
           {/*<li*/}
@@ -42,10 +36,7 @@ const ContextMenu: React.FC<IProps> = (props: IProps) => {
           {/*>*/}
           {/*  編集*/}
           {/*</li>*/}
-          <li
-            className={styles.menuItem}
-            onClick={() => deleteItem()}
-          >
+          <li className={styles.menuItem} onClick={() => deleteItem()}>
             削除
           </li>
         </ul>

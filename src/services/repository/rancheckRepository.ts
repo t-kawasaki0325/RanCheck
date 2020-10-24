@@ -11,10 +11,13 @@ const rancheckRepository = {
     return await rancheckDao.get(site)
   },
 
-  add: async ({ site, keywords }: addRancheckType): Promise<IRancheckEntity[]> => {
-    return await rancheckDao.add(keywords.map(
-      keyword => new RancheckEntity('', site, keyword)
-    ))
+  add: async ({
+    site,
+    keywords,
+  }: addRancheckType): Promise<IRancheckEntity[]> => {
+    return await rancheckDao.add(
+      keywords.map(keyword => new RancheckEntity('', site, keyword)),
+    )
   },
 
   update: (setting: IRancheckEntity) => {
@@ -23,7 +26,7 @@ const rancheckRepository = {
 
   delete: (id: string) => {
     rancheckDao.delete(id)
-  }
+  },
 }
 
 export default rancheckRepository

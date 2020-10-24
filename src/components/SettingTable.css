@@ -12,7 +12,8 @@ tbody {
     background: backgroundWhite;
 }
 
-.settingTable {}
+.settingTable {
+}
 
 .searchCondition {
     display: flex;
@@ -44,13 +45,14 @@ tbody {
     right: 16px;
     bottom: 0;
 
-    background: no-repeat url("../assets/img/icn_search.svg");
+    background: no-repeat url('../assets/img/icn_search.svg');
 
     width: 20px;
     height: 20px;
 }
 
-.searchKeywordNum {}
+.searchKeywordNum {
+}
 
 .searchKeywordNum select {
     padding: 5px 10px;

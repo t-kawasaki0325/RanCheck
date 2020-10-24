@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react'
 import { Home } from '../layouts'
-import { store } from '../store/store';
+import { store } from '../store/store'
 
 const PageHome: React.FC = () => {
   const { rancheck } = useContext(store)
@@ -14,11 +14,7 @@ const PageHome: React.FC = () => {
     initialize()
   }, [])
 
-  return (
-    <>
-      {init && <Home />}
-    </>
-  )
+  return <>{init && <Home />}</>
 }
 
 export default PageHome

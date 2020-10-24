@@ -2,11 +2,19 @@ import { MESSAGE } from '../config/message'
 import { projectsGetters, rancheckGetters, IState } from '../store/store'
 import { testDao } from '../services/httpRequest'
 
-const { INVALID_TYPE, NOT_EXISTS_URL, ALREADY_EXISTS, DUPLICATE_KEYWORDS } = MESSAGE
+const {
+  INVALID_TYPE,
+  NOT_EXISTS_URL,
+  ALREADY_EXISTS,
+  DUPLICATE_KEYWORDS,
+} = MESSAGE
 
 const validationUtils = {
-  projects: async (url: string, projects: IState['projects']): Promise<string> => {
-    const params = url.match(/^(http:\/\/|https:\/\/)?(.*?)(?:\/|\?|#|$)/);
+  projects: async (
+    url: string,
+    projects: IState['projects'],
+  ): Promise<string> => {
+    const params = url.match(/^(http:\/\/|https:\/\/)?(.*?)(?:\/|\?|#|$)/)
     const domain = params ? params[2] : ''
     const isValid = domain !== '' && domain.indexOf('.') !== -1
     if (!isValid) {
@@ -34,7 +42,7 @@ const validationUtils = {
 
   search: (type: 'SEARCHING' | 'ALL_SEARCHED') => {
     alert(MESSAGE[type])
-  }
+  },
 }
 
 export default validationUtils

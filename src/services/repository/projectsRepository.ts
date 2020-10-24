@@ -12,7 +12,7 @@ const projectsRepository = {
 
   add: async ({ site }: addProjectType): Promise<IProjectsEntity> => {
     return await projecstDao.add(new ProjectsEntity('', site, ''))
-  }
+  },
 }
 
 export default projectsRepository

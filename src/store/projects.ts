@@ -1,7 +1,7 @@
 import { IState } from './store'
-import { projectsRepository } from '../services';
-import { IProjectsEntity } from '../usecase';
-import { addProjectType } from '../services/repository/projectsRepository';
+import { projectsRepository } from '../services'
+import { IProjectsEntity } from '../usecase'
+import { addProjectType } from '../services/repository/projectsRepository'
 
 export const projectsGetters = (store: IState['projects']) => ({
   site: () => store.selectedProject.site || '',
@@ -9,6 +9,9 @@ export const projectsGetters = (store: IState['projects']) => ({
 })
 
 export default {
-  addProject: async (payload: addProjectType): Promise<IProjectsEntity[]> => [await projectsRepository.add(payload)],
-  fetchProjects: async (): Promise<IProjectsEntity[]> => await projectsRepository.get()
+  addProject: async (payload: addProjectType): Promise<IProjectsEntity[]> => [
+    await projectsRepository.add(payload),
+  ],
+  fetchProjects: async (): Promise<IProjectsEntity[]> =>
+    await projectsRepository.get(),
 }

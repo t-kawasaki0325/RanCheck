@@ -1,7 +1,7 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState } from 'react'
 import SidebarShrink from './SidebarShrink'
 import SidebarSiteInfo from './SidebarSiteInfo'
-import { store } from '../store/store';
+import { store } from '../store/store'
 
 const Sidebar: React.FC = () => {
   const [isShrink, setIsShrink] = useState(false)
@@ -15,12 +15,12 @@ const Sidebar: React.FC = () => {
 
   return (
     <>
-      {isShrink &&
+      {isShrink && (
         <SidebarShrink
           expandSidebar={toggleShrink}
           openAddSiteModal={openInitSettingModal}
         />
-      }
+      )}
       {!isShrink && (
         <SidebarSiteInfo
           projects={projects.projects}

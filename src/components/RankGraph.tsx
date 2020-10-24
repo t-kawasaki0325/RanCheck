@@ -1,11 +1,13 @@
-import React, { useContext } from 'react';
+import React, { useContext } from 'react'
 import { Chart } from './'
 import { store } from '../store/store'
 
 import styles from './RankGraph.css'
 
 const RankGraph: React.FC = () => {
-  const { rancheck: { selectedSetting } } = useContext(store)
+  const {
+    rancheck: { selectedSetting },
+  } = useContext(store)
 
   return (
     <div className={styles.rankGraph}>

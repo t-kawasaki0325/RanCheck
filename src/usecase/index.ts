@@ -11,5 +11,5 @@ export {
   IRancheckEntity,
   RancheckEntity,
   IProjectsEntity,
-  ProjectsEntity
+  ProjectsEntity,
 }

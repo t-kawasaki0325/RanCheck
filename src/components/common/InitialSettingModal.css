@@ -63,7 +63,7 @@
     top: -25px;
     left: -20px;
 
-    background: url("../../assets/img/next.png");
+    background: url('../../assets/img/next.png');
 
     height: 100px;
     width: 40px;
@@ -92,7 +92,7 @@
 
 .modalTitle {
     text-align: center;
-    font-size: 2.0rem;
+    font-size: 2rem;
     color: textDarkGrey;
 }
 

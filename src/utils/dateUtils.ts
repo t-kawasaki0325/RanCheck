@@ -26,5 +26,5 @@ export default {
     const date = new Date()
     date.setMonth(date.getMonth() - 6)
     return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`
-  }
+  },
 }

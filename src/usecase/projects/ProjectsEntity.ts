@@ -25,7 +25,7 @@ class ProjectsEntity implements IProjectsEntity {
     _id: string,
     site: string,
     lastSearch: string,
-    groups: IGroup[] = []
+    groups: IGroup[] = [],
   ) {
     this.__id = _id
     this._site = site

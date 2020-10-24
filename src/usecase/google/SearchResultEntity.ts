@@ -1,7 +1,6 @@
 import ISearchResultEntity from './ISearchResultEntity'
 
 class SearchResultEntity implements ISearchResultEntity {
-
   /**
    * 順位
    */

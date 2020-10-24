@@ -1,21 +1,29 @@
 import { cheerio } from '../../localModules'
 import { sleep, includeString } from '../../utils'
 import { searchEngineDao } from '../httpRequest'
-import { IGoogleSearchResultEntity, GoogleSearchResultEntity } from '../../usecase'
+import {
+  IGoogleSearchResultEntity,
+  GoogleSearchResultEntity,
+} from '../../usecase'
 
 const SELECTOR = '.rc > div > a:not([class])'
 
 const MAX_SEARCH_NUM = 100
 
 const googleRepository = {
-  getSearchResult: async (keyword: string, site: string): Promise<IGoogleSearchResultEntity> => {
+  getSearchResult: async (
+    keyword: string,
+    site: string,
+  ): Promise<IGoogleSearchResultEntity> => {
     let page = 0
     let totalSearchNum = 0
     while (1) {
       const results = await googleRepository.get(keyword, page, totalSearchNum)
 
       // 検索結果が見つかったとき
-      const matchSearchResult = results.find(result => includeString(result.url, site))
+      const matchSearchResult = results.find(result =>
+        includeString(result.url, site),
+      )
       if (!!matchSearchResult) {
         return matchSearchResult
       }
@@ -31,10 +39,14 @@ const googleRepository = {
     }
 
     // 検索結果が100位より下の場合は一律で110位に設定する
-    return new GoogleSearchResultEntity(MAX_SEARCH_NUM + 10);
+    return new GoogleSearchResultEntity(MAX_SEARCH_NUM + 10)
   },
 
-  get: async (keyword: string, page: number, baseRank: number): Promise<IGoogleSearchResultEntity[]> => {
+  get: async (
+    keyword: string,
+    page: number,
+    baseRank: number,
+  ): Promise<IGoogleSearchResultEntity[]> => {
     const data = await searchEngineDao.google(keyword, page)
 
     const $ = cheerio.load(data)
@@ -48,7 +60,7 @@ const googleRepository = {
         return new GoogleSearchResultEntity(rank, url, title)
       })
       .get()
-  }
+  },
 }
 
 export default googleRepository

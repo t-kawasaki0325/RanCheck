@@ -2,7 +2,6 @@ import IRancheckEntity, { IRank } from './IRancheckEntity'
 import { dateUtils } from '../../utils'
 
 class RancheckEntity implements IRancheckEntity {
-
   /**
    * id
    */
@@ -51,7 +50,7 @@ class RancheckEntity implements IRancheckEntity {
     url: string = '',
     gRank: IRank[] = [],
     groups: string[] = [],
-    createdAt: string = ''
+    createdAt: string = '',
   ) {
     this.__id = _id
     this._title = title
@@ -112,7 +111,7 @@ class RancheckEntity implements IRancheckEntity {
     this._url = url
     this._gRank.push({
       date: dateUtils.getYYYY_MM_DD(),
-      rank
+      rank,
     })
   }
 
@@ -122,7 +121,10 @@ class RancheckEntity implements IRancheckEntity {
   }
 
   maxRank(): number {
-    return this._gRank.reduce((prev, current) => Math.max(prev, current.rank), 0)
+    return this._gRank.reduce(
+      (prev, current) => Math.max(prev, current.rank),
+      0,
+    )
   }
 
   path(): string {
@@ -144,16 +146,12 @@ class RancheckEntity implements IRancheckEntity {
 
   public isRankUp(): boolean {
     const length = this._gRank.length
-    return length > 1
-      ? this.rankTransition() < 0
-      : false
+    return length > 1 ? this.rankTransition() < 0 : false
   }
 
   public isRankDown(): boolean {
     const length = this._gRank.length
-    return length > 1
-      ? this.rankTransition() > 0
-      : false
+    return length > 1 ? this.rankTransition() > 0 : false
   }
 
   public rankTransitionByWeek(): string {
@@ -188,7 +186,7 @@ class RancheckEntity implements IRancheckEntity {
       keyword: this._keyword,
       gRank: this._gRank,
       groups: this._groups,
-      createdAt: this._createdAt
+      createdAt: this._createdAt,
     }
   }
 }

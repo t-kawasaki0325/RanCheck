@@ -1,7 +1,7 @@
-import React, { useState, ChangeEvent, useContext } from 'react';
+import React, { useState, ChangeEvent, useContext } from 'react'
 import { validationUtils, toHalfWidthSpace } from '../../utils'
 import { store } from '../../store/store'
-import { IProjectsEntity } from '../../usecase/';
+import { IProjectsEntity } from '../../usecase/'
 import IcnCancel from '../../assets/img/icn_cancel.svg'
 
 import styles from './InitialSettingModal.css'
@@ -13,18 +13,24 @@ interface IRegisterInfo {
 
 const STEP = {
   SETUP_SITE: 0,
-  ADD_KEYWORD: 1
+  ADD_KEYWORD: 1,
 }
 const ALL_STEP = Object.keys(STEP).length
 const buttonText = {
   [STEP.SETUP_SITE]: 'キーワードを追加',
-  [STEP.ADD_KEYWORD]: '完了'
+  [STEP.ADD_KEYWORD]: '完了',
 }
 
 const keywordsToArray = (keywordInclLine: string): string[] => {
-  return keywordInclLine.split('\n').reduce(
-    (prev: string[], current: string) => current.trim() !== '' ? prev.concat(toHalfWidthSpace(current.trim())) : prev
-  , [])
+  return keywordInclLine
+    .split('\n')
+    .reduce(
+      (prev: string[], current: string) =>
+        current.trim() !== ''
+          ? prev.concat(toHalfWidthSpace(current.trim()))
+          : prev,
+      [],
+    )
 }
 
 const showCancelButton = (projects: IProjectsEntity[]) => projects.length !== 0
@@ -32,11 +38,11 @@ const showCancelButton = (projects: IProjectsEntity[]) => projects.length !== 0
 const InitialSettingModal: React.FC = () => {
   const [registerInfo, setRegisterInfo] = useState<IRegisterInfo>({
     site: '',
-    keywordInclLine: ''
+    keywordInclLine: '',
   })
   const [step, setStep] = useState(0)
   const [message, setMessage] = useState('')
-  const { rancheck , projects, modal } = useContext(store)
+  const { rancheck, projects, modal } = useContext(store)
 
   const register = async () => {
     const { site, keywordInclLine } = registerInfo
@@ -45,11 +51,13 @@ const InitialSettingModal: React.FC = () => {
     projects.initProject({ site, keywords })
   }
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => {
+  const handleChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = event.target
     setRegisterInfo({
       ...registerInfo,
-      [name]: value
+      [name]: value,
     })
   }
 
@@ -61,7 +69,7 @@ const InitialSettingModal: React.FC = () => {
     if (step === STEP.ADD_KEYWORD) {
       error = validationUtils.rancheck(
         keywordsToArray(registerInfo.keywordInclLine),
-        rancheck
+        rancheck,
       )
     }
     setMessage(error)
@@ -80,14 +88,15 @@ const InitialSettingModal: React.FC = () => {
 
   const isDisableButton = [
     registerInfo.site.trim() === '',
-    registerInfo.keywordInclLine.trim() === ''
+    registerInfo.keywordInclLine.trim() === '',
   ]
 
   return (
     <>
       <div className={styles.modal}>
         <div className={styles.modalHeader}>
-          <div className={`${styles.modalHeaderStep} ${styles['modalHeaderStep-selected']}`}>
+          <div
+            className={`${styles.modalHeaderStep} ${styles['modalHeaderStep-selected']}`}>
             <span className={styles.circle}>1</span>
             <span>Setup Site</span>
           </div>
@@ -97,9 +106,13 @@ const InitialSettingModal: React.FC = () => {
           </div>
         </div>
         <div className={styles.modalBody}>
-          <div className={`${styles['modalItem-alignRight']} ${styles.modalCancelArea}`}>
+          <div
+            className={`${styles['modalItem-alignRight']} ${styles.modalCancelArea}`}>
             {showCancelButton(projects.projects) && (
-              <img onClick={() => modal.closeInitialSettingModal()} src={IcnCancel} />
+              <img
+                onClick={() => modal.closeInitialSettingModal()}
+                src={IcnCancel}
+              />
             )}
           </div>
           {message && (
@@ -111,10 +124,7 @@ const InitialSettingModal: React.FC = () => {
             <>
               <div className={styles.modalTitle}>サイトのURLを追加</div>
               <div className={styles.modalItem}>
-                <input
-                  name='site'
-                  onChange={handleChange}
-                />
+                <input name="site" onChange={handleChange} />
               </div>
             </>
           )}
@@ -122,24 +132,22 @@ const InitialSettingModal: React.FC = () => {
             <>
               <div className={styles.modalTitle}>検索キーワードを追加</div>
               <div className={styles.modalItem}>
-              <textarea
-                rows={10}
-                name='keywordInclLine'
-                onChange={handleChange}
-              >
-              </textarea>
+                <textarea
+                  rows={10}
+                  name="keywordInclLine"
+                  onChange={handleChange}></textarea>
               </div>
               <div className={`${styles.modalItem} ${styles.modalItemRemarks}`}>
                 <span>※1行ごとに1つのキーワードを入力できます</span>
               </div>
             </>
           )}
-          <div className={`${styles.modalItem} ${styles['modalItem-alignRight']}`}>
+          <div
+            className={`${styles.modalItem} ${styles['modalItem-alignRight']}`}>
             <button
               disabled={isDisableButton[step]}
               className={styles.modalButton}
-              onClick={toNext}
-            >
+              onClick={toNext}>
               {(buttonText as any)[step]}
             </button>
           </div>

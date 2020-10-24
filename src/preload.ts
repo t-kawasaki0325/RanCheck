@@ -6,6 +6,6 @@ global.datastore = require('nedb')
 global.recharts = require('recharts')
 
 const _setImmediate = setImmediate
-process.once('loaded', (() => {
+process.once('loaded', () => {
   global.setImmediate = _setImmediate
-}))
+})

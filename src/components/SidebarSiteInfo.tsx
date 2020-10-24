@@ -19,28 +19,30 @@ const SidebarSiteInfo: React.FC<IProps> = (props: IProps) => {
     selectedProject,
     switchProject,
     shrinkSidebar,
-    openAddSiteModal
+    openAddSiteModal,
   } = props
 
   return (
     <div className={styles.sidebar}>
-      <div onClick={() => shrinkSidebar()} className={`${styles.icon} ${styles.iconRight}`}>
+      <div
+        onClick={() => shrinkSidebar()}
+        className={`${styles.icon} ${styles.iconRight}`}>
         <img src={IcnBack} />
       </div>
       {projects.map(project => (
         <div key={project._id} className={styles.list}>
           <div
-            className={`${styles.item} ${project.equals(selectedProject) ? styles.itemSelected : ''}`}
-            onClick={() => switchProject(project._id)}
-          >
+            className={`${styles.item} ${
+              project.equals(selectedProject) ? styles.itemSelected : ''
+            }`}
+            onClick={() => switchProject(project._id)}>
             {project.site}
           </div>
         </div>
       ))}
       <div
         className={`${styles.positionBottom} ${styles.icon} ${styles.iconLeft}`}
-        onClick={() => openAddSiteModal()}
-      >
+        onClick={() => openAddSiteModal()}>
         <img src={IcnPlus} />
         <span className={styles.addSiteText}>サイトを追加</span>
       </div>

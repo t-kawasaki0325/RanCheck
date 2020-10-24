@@ -9,3 +9,7 @@ bracketSpacing: true
 jsxBracketSameLine: true
 arrowParens: avoid
 endOfLine: lf
+overrides:
+  - files: '*.css'
+    options:
+      tabWidth: 4

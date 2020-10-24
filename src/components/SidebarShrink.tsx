@@ -19,8 +19,7 @@ const SidebarShrink: React.FC<IProps> = (props: IProps) => {
       </div>
       <div
         className={`${styles.icon} ${styles.positionBottom}`}
-        onClick={() => openAddSiteModal()}
-      >
+        onClick={() => openAddSiteModal()}>
         <img src={IcnPlus} />
       </div>
     </div>
