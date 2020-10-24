@@ -22,6 +22,14 @@ module.exports = {
         test: /\.tsx?$/,
         use: 'ts-loader',
       },
+      {
+        test: /\.css?$/,
+        loaders: ['style-loader', 'css-loader?modules']
+      },
+      {
+        test: /\.(svg|png)?$/,
+        loader: 'file-loader'
+      }
     ],
   },
   resolve: {

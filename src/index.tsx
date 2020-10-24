@@ -1,6 +1,13 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import App from './App'
+import { StateProvider } from './store/store'
 
-const container = document.getElementById('contents');
+const container = document.getElementById('contents')
 
-ReactDOM.render(<p>Hello World</p>, container);
+ReactDOM.render(
+  <StateProvider>
+    <App />
+  </StateProvider>,
+  container,
+)

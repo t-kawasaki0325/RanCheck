@@ -1,0 +1,18 @@
+.rankGraph {
+    composes: layout from '../App.css';
+
+    flex-grow: 1;
+    height: 200px;
+}
+
+.mainTitle {
+    composes: mainTitle from '../App.css';
+}
+
+.titleText {
+    composes: titleText from '../App.css';
+}
+
+.graphArea {
+    margin-top: 5px;
+}
