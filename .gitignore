@@ -1,4 +1,8 @@
 /node_modules
 /dist
+/product
+
+main.js
+preload.js*
 
 .idea/
