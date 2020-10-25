@@ -8,12 +8,14 @@
     "start": "electron ./dist/main.js",
     "build:main": "tsc",
     "build:render": "webpack",
-    "package:mac": "webpack && electron-builder --mac --x64"
+    "package:mac": "tsc && webpack && yarn mv:package && electron-builder --mac --x64",
+    "mv:package": "mv dist/main.js ./main.js && mv dist/main.js.map ./main.js.map && mv dist/preload.js ./preload.js && mv dist/preload.js.map ./preload.js.map"
   },
   "dependencies": {
     "axios": "^0.19.2",
     "cheerio": "^1.0.0-rc.3",
     "destyle.css": "^1.0.13",
+    "dotenv": "^8.2.0",
     "eslint-loader": "^4.0.2",
     "file-loader": "^6.0.0",
     "html-webpack-plugin": "^4.3.0",
@@ -28,6 +30,7 @@
     "@types/react-dom": "^16.9.8",
     "@types/recharts": "^1.8.14",
     "asar": "^3.0.3",
+    "cross-env": "^7.0.2",
     "css-loader": "^4.2.0",
     "electron": "^9.1.0",
     "electron-builder": "^22.9.1",
@@ -49,7 +52,8 @@
       "./dist/**/*",
       "./main.js",
       "./preload.js",
-      "./src/*.db"
+      "./src/*.db",
+      ".env"
     ]
   }
 }

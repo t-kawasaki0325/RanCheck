@@ -1,5 +1,6 @@
 import { app, BrowserWindow } from 'electron'
 const path = require('path')
+require('dotenv').config()
 
 const createWindow = (): void => {
   const win = new BrowserWindow({
@@ -14,9 +15,10 @@ const createWindow = (): void => {
     },
   })
 
-  win.loadFile('./index.html')
+  const loadPath = process.env.NODE_ENV === 'development' ? '.' : './dist'
+  win.loadFile(loadPath + '/index.html')
 
-  win.webContents.openDevTools()
+  process.env.NODE_ENV === 'development' && win.webContents.openDevTools()
 }
 
 app.whenReady().then(createWindow)
