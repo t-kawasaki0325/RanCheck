@@ -1,0 +1,32 @@
+@value textDarkGrey from '../../App.css';
+@value backgroundWhite from '../../App.css';
+@value backgroundHover from '../../App.css';
+
+.overlay {
+    position: absolute;
+
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.contextMenu {
+    position: absolute;
+
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.menuItem {
+    padding: 2px 20px;
+
+    font-size: 1rem;
+    background: backgroundWhite;
+    color: textDarkGrey;
+}
+
+.menuItem:hover {
+    background: backgroundHover;
+    color: #fff;
+}

@@ -1,0 +1,174 @@
+@value mainColor from '../../App.css';
+@value disabledColor from '../../App.css';
+@value textGrey from '../../App.css';
+@value textDarkGrey from '../../App.css';
+@value textError from '../../App.css';
+@value backgroundWhite from '../../App.css';
+@value backgroundError from '../../App.css';
+
+.circle {
+    display: inline-block;
+    margin-right: 20px;
+
+    width: 50px;
+    height: 50px;
+
+    text-align: center;
+    border: 1px solid textDarkGrey;
+    border-radius: 999px;
+}
+
+.modal {
+    position: absolute;
+    z-index: 2;
+
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+
+    background: #fff;
+}
+
+.modalHeader {
+    display: flex;
+    align-items: center;
+
+    height: 100px;
+    border-bottom: 1px solid textGrey;
+}
+
+.modalHeaderStep {
+    flex-grow: 1;
+    position: relative;
+
+    padding: 0 30px;
+
+    color: textDarkGrey;
+    font-size: 1.8rem;
+    line-height: 50px;
+}
+
+.modalBody {
+    padding: 0 30px;
+    margin: 0 auto;
+}
+
+.modalCancelArea {
+    height: 50px;
+}
+
+.modalCancelArea img {
+    margin: 15px 0;
+}
+
+.modalCancelArea img:hover {
+    opacity: 0.5;
+}
+
+.modalClose {
+    text-align: right;
+}
+
+.modalTitle {
+    text-align: center;
+    font-size: 2rem;
+    color: textDarkGrey;
+}
+
+.modalItem {
+    text-align: center;
+}
+
+.modalItemRemarks {
+    margin: 5px auto;
+
+    width: 60%;
+
+    font-size: 1.1rem;
+    text-align: right;
+}
+
+.modalItem-alignRight {
+    text-align: right;
+}
+
+.modalItem input {
+    flex-grow: 1;
+    margin: 130px 0;
+    padding: 20px;
+
+    width: 70%;
+
+    background: backgroundWhite;
+    border: 1px solid textDarkGrey;
+    border-radius: 20px;
+    font-size: 1.8rem;
+}
+
+.modalItem input:focus {
+    border: 1px solid mainColor;
+}
+
+.modalItem textarea {
+    flex-grow: 1;
+    margin: 15px 0;
+    padding: 10px;
+
+    width: 60%;
+
+    background: backgroundWhite;
+    border-radius: 20px;
+    border: 1px solid textDarkGrey;
+    text-align: left;
+    font-size: 1.4rem;
+}
+
+.modalItem textarea:focus {
+    border: 1px solid mainColor;
+}
+
+.modalButton {
+    padding: 15px 30px;
+
+    background: mainColor;
+    border-radius: 999px;
+    color: #fff;
+    font-size: 1.2rem;
+}
+
+.modalButton:disabled {
+    background: disabledColor;
+}
+
+.modalButton:hover {
+    opacity: 0.5;
+}
+
+.errorWrapper {
+    margin: 20px;
+    text-align: center;
+}
+
+.error {
+    position: relative;
+
+    display: inline-block;
+    padding: 20px 20px 20px 50px;
+
+    background: backgroundError;
+    color: textError;
+    font-weight: bold;
+    border-radius: 20px;
+}
+
+.error:after {
+    content: '';
+    position: absolute;
+    top: 13px;
+    left: 10px;
+
+    background: url('../../assets/img/icn_warning.png');
+    width: 32px;
+    height: 32px;
+}

@@ -1,0 +1,16 @@
+@value backgroundMain from '../App.css';
+
+.home {
+    width: 100%;
+    min-width: 800px;
+}
+
+.main {
+    height: calc(100% - 60px);
+
+    background: backgroundMain;
+}
+
+.boxFlex {
+    display: flex;
+}

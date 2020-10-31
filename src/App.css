@@ -1,0 +1,34 @@
+@value textGrey: #ddd;
+@value textDarkGrey: #444;
+@value textError: #c54949;
+
+@value backgroundWhite: #fefefe;
+@value backgroundGrey: #ddd;
+@value backgroundMain: #ebf5fe;
+@value backgroundHover: #5674df;
+@value backgroundError: #edaa9a;
+
+@value mainColor: #1565c0;
+
+@value disabledColor: #aaa;
+
+.layout {
+    padding: 10px;
+    margin: 10px;
+
+    background: backgroundWhite;
+}
+
+.mainTitle {
+    margin: 10px 0;
+}
+
+.titleText {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.mainLayout {
+    display: flex;
+    height: calc(100% - 40px);
+}
