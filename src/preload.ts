@@ -1,9 +1,14 @@
+require('dotenv').config()
 // @ts-ignore
 global.cheerio = require('cheerio')
 // @ts-ignore
 global.datastore = require('nedb')
 // @ts-ignore
 global.recharts = require('recharts')
+// @ts-ignore
+global.path = require('path')
+// @ts-ignore
+global.pathToDb = process.env.NODE_ENV === 'development' ? __dirname : path.join(__dirname, '../datastore')
 
 const _setImmediate = setImmediate
 process.once('loaded', () => {

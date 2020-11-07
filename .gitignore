@@ -1,4 +1,13 @@
 /node_modules
 /dist
+/product
+
+main.js
+main.js.map
+preload.js
+preload.js.map
+*.db
 
 .idea/
+.env
+.DS_Store
