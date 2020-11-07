@@ -9,6 +9,7 @@
     "build:main": "tsc",
     "build:render": "webpack",
     "package:mac": "tsc && webpack && yarn mv:package && electron-builder --mac --x64",
+    "release:mac": "tsc && webpack && yarn mv:package && electron-builder --mac --x64 -p 'onTagOrDraft'",
     "mv:package": "mv dist/main.js ./main.js && mv dist/main.js.map ./main.js.map && mv dist/preload.js ./preload.js && mv dist/preload.js.map ./preload.js.map"
   },
   "dependencies": {
@@ -16,6 +17,8 @@
     "cheerio": "^1.0.0-rc.3",
     "destyle.css": "^1.0.13",
     "dotenv": "^8.2.0",
+    "electron-log": "^4.2.4",
+    "electron-updater": "^4.3.5",
     "eslint-loader": "^4.0.2",
     "file-loader": "^6.0.0",
     "html-webpack-plugin": "^4.3.0",
@@ -45,6 +48,7 @@
     "webpack-cli": "^3.3.12"
   },
   "build": {
+    "appId": "com.memoranndumrail.rancheck",
     "directories": {
       "output": "./product"
     },
@@ -54,6 +58,13 @@
       "./preload.js",
       "./src/*.db",
       ".env"
-    ]
+    ],
+    "publish": [{
+      "provider": "github",
+      "owner": "kawasaki-t0325",
+      "repo": "RanCheck",
+      "//": "TODO: release時にtokenはenvから記載するがより良い方法にする",
+      "token": ""
+    }]
   }
 }
