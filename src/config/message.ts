@@ -7,6 +7,7 @@ export const MESSAGE = {
   ALL_SEARCHED:
     '本日は全ての検索が完了しています。\nまた明日以降検索が行えます。',
   SEARCH_ERROR: 'エラーが発生しました。\n再度時間を置いて実行し直してください',
+  INPUT_TOKEN: 'メールに記載されたアクセストークンを入力してください'
 }
 
 export const DELETE_CONFIRM = (keyword: string) =>
