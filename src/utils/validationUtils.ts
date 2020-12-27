@@ -7,6 +7,7 @@ const {
   NOT_EXISTS_URL,
   ALREADY_EXISTS,
   DUPLICATE_KEYWORDS,
+  INVALID_TOKEN_FORMAT
 } = MESSAGE
 
 const validationUtils = {
@@ -43,6 +44,14 @@ const validationUtils = {
   search: (type: 'SEARCHING' | 'ALL_SEARCHED') => {
     alert(MESSAGE[type])
   },
+
+  token: (token: string): string => {
+    const regex = /^[0-9a-zA-Z]{13}$/
+    if (!token.match(regex)) {
+      return INVALID_TOKEN_FORMAT
+    }
+    return ''
+  }
 }
 
 export default validationUtils
