@@ -27,10 +27,13 @@ export type IState = {
   modal: {
     initialSettingModal: boolean
     addSettingModal: boolean
+    addTokenModal: boolean
     openInitialSettingModal: Function
     closeInitialSettingModal: Function
     openAddSettingModal: Function
     closeAddSettingModal: Function
+    openAddTokenModal: Function
+    closeAddTokenModal: Function
   }
   searchStatus: {
     isSearching: boolean
@@ -58,10 +61,13 @@ const initialState: IState = {
   modal: {
     initialSettingModal: false,
     addSettingModal: false,
+    addTokenModal: false,
     openInitialSettingModal: () => {},
     closeInitialSettingModal: () => {},
     openAddSettingModal: () => {},
     closeAddSettingModal: () => {},
+    openAddTokenModal: () => {},
+    closeAddTokenModal: () => {}
   },
   searchStatus: {
     isSearching: false,
@@ -83,6 +89,7 @@ const actions = {
   // modal
   setInitialSettingModal: 'modal/initialSettingModal/',
   setAddSettingModal: 'modal/addSettingModal/',
+  setAddTokenModal: 'modal/addTokenModal/',
   // searchStatus
   setIsSearching: 'searchStatus/isSearching',
   setCount: 'searchStatus/count',
@@ -204,6 +211,10 @@ const StateProvider = ({ children }: { children: any }) => {
       },
       closeAddSettingModal: () =>
         updateStore(actions.setAddSettingModal, store, setStore, false),
+      openAddTokenModal: () =>
+        updateStore(actions.setAddTokenModal, store, setStore, true),
+      closeAddTokenModal: () =>
+        updateStore(actions.setAddTokenModal, store, setStore, false)
     },
     searchStatus: {
       ...store.searchStatus,
@@ -246,6 +257,7 @@ const updateStore = async (
     // modal
     case actions.setAddSettingModal:
     case actions.setInitialSettingModal:
+    case actions.setAddTokenModal:
       value = payload
       break
     // searchStatus

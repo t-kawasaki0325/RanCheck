@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { store } from '../../store/store'
 
 import styles from './SettingMenu.css'
 
@@ -8,10 +9,9 @@ interface IProps {
 
 const SettingMenu: React.FC<IProps> = props => {
   const { closeSettigMenu } = props
+  const { modal } = useContext(store)
 
-  const inputToken = () => {
-    // TODO: トークンを入力
-  }
+  const inputToken = () => modal.openAddTokenModal()
 
   const list = [
     {

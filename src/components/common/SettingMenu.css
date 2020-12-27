@@ -17,6 +17,8 @@
 }
 
 .menuItem:hover {
+    cursor: pointer;
+
     background: backgroundHover;
     color: #fff;
 }
