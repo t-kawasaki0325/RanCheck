@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import rancheck, { rancheckGetters } from './rancheck'
 import projects, { projectsGetters } from './projects'
+import users from './users'
 import { modalGetters } from './modal'
 import { IRancheckEntity, IProjectsEntity } from '../usecase/'
 import { addRancheckType } from '../services/repository/rancheckRepository'
@@ -23,6 +24,10 @@ export type IState = {
     initProject: Function
     fetchProjects: Function
     switchProjects: Function
+  }
+  users: {
+    token: string
+    addToken: Function
   }
   modal: {
     initialSettingModal: boolean
@@ -58,6 +63,10 @@ const initialState: IState = {
     fetchProjects: () => {},
     switchProjects: () => {},
   },
+  users: {
+    token: '',
+    addToken: () => {}
+  },
   modal: {
     initialSettingModal: false,
     addSettingModal: false,
@@ -86,6 +95,8 @@ const actions = {
   addProject: 'projects/projects/add',
   setProject: 'projects/selectedProject/update',
   fetchProjects: 'projects/projects/',
+  // users
+  addToken: 'users/token/add',
   // modal
   setInitialSettingModal: 'modal/initialSettingModal/',
   setAddSettingModal: 'modal/addSettingModal/',
@@ -194,6 +205,11 @@ const StateProvider = ({ children }: { children: any }) => {
           setStore,
           payload,
         ),
+    },
+    users: {
+      ...store.users,
+      addToken: (payload: string) =>
+        updateMultipleStore([actions.addToken, actions.setAddTokenModal], store, setStore, payload)
     },
     modal: {
       ...store.modal,
@@ -348,6 +364,10 @@ const updateMultipleStore = async (
       )
       // indexは現在検索している次の検索数を表すので+2とする
       value = [copiedSettings, isSearching, index + 2, totalNum]
+      break
+    case [actions.addToken, actions.setAddTokenModal].toString():
+      const token = await users.saveToken(payload)
+      value = [token, false]
       break
   }
 

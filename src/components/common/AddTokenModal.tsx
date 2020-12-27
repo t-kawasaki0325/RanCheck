@@ -8,7 +8,7 @@ import { validationUtils } from '../../utils';
 const AddTokenModal: React.FC = () => {
   const [token, setToken] = useState('')
   const [message, setMessage] = useState('')
-  const { modal } = useContext(store)
+  const { modal, users } = useContext(store)
 
   const validate = async () => {
     const error = await validationUtils.token(token)
@@ -16,11 +16,11 @@ const AddTokenModal: React.FC = () => {
     return !!error
   }
 
-  const register = () => {
-    if (validate()) {
+  const register = async () => {
+    if (await validate()) {
       return
     }
-    // TODO: tokenを保持する処理
+    users.addToken(token)
   }
 
   const handleChange = (

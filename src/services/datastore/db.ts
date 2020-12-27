@@ -9,3 +9,8 @@ export const projects = new datastore({
   filename: path.join(pathToDb, 'projects.db'),
   autoload: true
 })
+
+export const users = new datastore({
+  filename: path.join(pathToDb, 'users.db'),
+  autoload: true
+})
