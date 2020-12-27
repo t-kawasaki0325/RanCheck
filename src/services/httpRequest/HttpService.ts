@@ -1,3 +1,8 @@
 export const URL = {
   GOOGLE: 'https://www.google.com/search?q=',
+  AWS_DOMAIN: 'https://twnvlc8c69.execute-api.ap-northeast-1.amazonaws.com/'
+}
+
+export const RANCHECK = {
+  FETCH_RANK: 'rancheck/fetch-rank'
 }

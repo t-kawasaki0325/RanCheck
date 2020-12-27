@@ -65,4 +65,6 @@ export default {
     rancheckRepository.update(setting)
     return setting
   },
+  isValidLicense: async (token: string) =>
+    await rancheckRepository.isValidLicense(token)
 }

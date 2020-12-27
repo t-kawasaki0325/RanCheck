@@ -10,8 +10,8 @@ const AddTokenModal: React.FC = () => {
   const [message, setMessage] = useState('')
   const { modal } = useContext(store)
 
-  const validate = () => {
-    const error = validationUtils.token(token)
+  const validate = async () => {
+    const error = await validationUtils.token(token)
     setMessage(error)
     return !!error
   }

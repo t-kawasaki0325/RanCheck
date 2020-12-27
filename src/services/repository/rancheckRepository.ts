@@ -1,4 +1,5 @@
-import { rancheckDao } from '../datastore'
+import { rancheckDao as rancheckDatastore } from '../datastore'
+import { rancheckDao as rancheckApi } from '../httpRequest'
 import { IRancheckEntity, RancheckEntity } from '../../usecase'
 
 export type addRancheckType = {
@@ -8,25 +9,29 @@ export type addRancheckType = {
 
 const rancheckRepository = {
   get: async (site: string): Promise<IRancheckEntity[]> => {
-    return await rancheckDao.get(site)
+    return await rancheckDatastore.get(site)
   },
 
   add: async ({
     site,
     keywords,
   }: addRancheckType): Promise<IRancheckEntity[]> => {
-    return await rancheckDao.add(
+    return await rancheckDatastore.add(
       keywords.map(keyword => new RancheckEntity('', site, keyword)),
     )
   },
 
   update: (setting: IRancheckEntity) => {
-    rancheckDao.update(setting)
+    rancheckDatastore.update(setting)
   },
 
   delete: (id: string) => {
-    rancheckDao.delete(id)
+    rancheckDatastore.delete(id)
   },
+  
+  isValidLicense: async (token: string): Promise<boolean> => {
+    return await rancheckApi.isValidLicense(token)
+  }
 }
 
 export default rancheckRepository
