@@ -13,7 +13,8 @@ export const MESSAGE = {
 }
 
 export const NOTIFICATION = {
-  TOKEN_INPUT_COMPLETED: 'トークンを有効化しました'
+  TOKEN_INPUT_COMPLETED: 'トークンを有効化しました',
+  TOKEN_ACTIVATED: 'トークンは有効化されています'
 }
 
 export const DELETE_CONFIRM = (keyword: string) =>

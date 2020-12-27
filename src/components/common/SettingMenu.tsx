@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
-import { store } from '../../store/store'
+import { store, usersGetters } from '../../store/store'
+import { NOTIFICATION } from '../../config/message'
 
 import styles from './SettingMenu.css'
 
@@ -9,9 +10,11 @@ interface IProps {
 
 const SettingMenu: React.FC<IProps> = props => {
   const { closeSettigMenu } = props
-  const { modal } = useContext(store)
+  const { modal, users } = useContext(store)
 
-  const inputToken = () => modal.openAddTokenModal()
+  const inputToken = () => usersGetters(users).hasToken()
+      ? alert(NOTIFICATION.TOKEN_ACTIVATED)
+      : modal.openAddTokenModal()
 
   const list = [
     {
