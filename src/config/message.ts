@@ -12,5 +12,9 @@ export const MESSAGE = {
   INPUT_TOKEN: 'メールに記載されたアクセストークンを入力してください'
 }
 
+export const NOTIFICATION = {
+  TOKEN_INPUT_COMPLETED: 'トークンを有効化しました'
+}
+
 export const DELETE_CONFIRM = (keyword: string) =>
   `「${keyword}」を削除します。よろしいですか？`

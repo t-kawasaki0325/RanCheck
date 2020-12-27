@@ -4,6 +4,8 @@ import RancheckEntity from './rancheck/RancheckEntity'
 import IRancheckEntity from './rancheck/IRancheckEntity'
 import ProjectsEntity from './projects/ProjectsEntity'
 import IProjectsEntity from './projects/IProjectsEntity'
+import UsersEntity from './users/UsersEntity'
+import IUsersEntity from './users/IUsersEntity'
 
 export {
   IGoogleSearchResultEntity,
@@ -12,4 +14,6 @@ export {
   RancheckEntity,
   IProjectsEntity,
   ProjectsEntity,
+  IUsersEntity,
+  UsersEntity
 }

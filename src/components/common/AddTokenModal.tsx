@@ -1,5 +1,6 @@
 import React, { useState, useContext, ChangeEvent } from 'react';
 import { store } from '../../store/store'
+import { NOTIFICATION } from '../../config/message'
 
 import styles from './InitialSettingModal.css';
 import IcnCancel from '../../assets/img/icn_cancel.svg';
@@ -21,6 +22,7 @@ const AddTokenModal: React.FC = () => {
       return
     }
     users.addToken(token)
+    alert(NOTIFICATION.TOKEN_INPUT_COMPLETED)
   }
 
   const handleChange = (

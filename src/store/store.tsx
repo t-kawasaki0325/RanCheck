@@ -3,7 +3,7 @@ import rancheck, { rancheckGetters } from './rancheck'
 import projects, { projectsGetters } from './projects'
 import users from './users'
 import { modalGetters } from './modal'
-import { IRancheckEntity, IProjectsEntity } from '../usecase/'
+import { IRancheckEntity, IProjectsEntity, IUsersEntity } from '../usecase/'
 import { addRancheckType } from '../services/repository/rancheckRepository'
 import { dateUtils, validationUtils } from '../utils'
 import { MESSAGE } from '../config/message'
@@ -27,6 +27,7 @@ export type IState = {
   }
   users: {
     token: string
+    user: IUsersEntity
     addToken: Function
   }
   modal: {
@@ -65,6 +66,7 @@ const initialState: IState = {
   },
   users: {
     token: '',
+    user: {} as IUsersEntity,
     addToken: () => {}
   },
   modal: {
@@ -96,7 +98,8 @@ const actions = {
   setProject: 'projects/selectedProject/update',
   fetchProjects: 'projects/projects/',
   // users
-  addToken: 'users/token/add',
+  fetchUser: 'users/user',
+  addToken: 'users/user/add',
   // modal
   setInitialSettingModal: 'modal/initialSettingModal/',
   setAddSettingModal: 'modal/addSettingModal/',
@@ -192,6 +195,7 @@ const StateProvider = ({ children }: { children: any }) => {
         updateMultipleStore(
           [
             actions.fetchProjects,
+            actions.fetchUser,
             actions.setProject,
             actions.setInitialSettingModal,
           ],
@@ -306,11 +310,15 @@ const updateMultipleStore = async (
       break
     case [
       actions.fetchProjects,
+      actions.fetchUser,
       actions.setProject,
       actions.setInitialSettingModal,
     ].toString():
-      const result = await projects.fetchProjects()
-      value = [result, result[0], !result.length]
+      const [projectList, user] = await Promise.all([
+        projects.fetchProjects(),
+        users.get()
+      ])
+      value = [projectList, user, projectList[0], !projectList.length]
       break
     case [
       actions.addProject,
@@ -366,8 +374,8 @@ const updateMultipleStore = async (
       value = [copiedSettings, isSearching, index + 2, totalNum]
       break
     case [actions.addToken, actions.setAddTokenModal].toString():
-      const token = await users.saveToken(payload)
-      value = [token, false]
+      const savedUser = await users.saveToken(payload)
+      value = [savedUser, false]
       break
   }
 
