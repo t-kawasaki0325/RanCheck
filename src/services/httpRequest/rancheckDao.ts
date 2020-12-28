@@ -22,6 +22,13 @@ const rancheckDao = {
       `${URL.AWS_DOMAIN}${RANCHECK.REGISTER_KEYWORD}`,
       { token, site, keywords }
     )
+  },
+
+  deleteKeyword: async (token: string, site: string, keywords: string[]): Promise<void> => {
+    httpClient.post(
+      `${URL.AWS_DOMAIN}${RANCHECK.DELETE_KEYWORD}`,
+      { token, site, keywords }
+    )
   }
 }
 

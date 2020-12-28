@@ -50,8 +50,11 @@ const rancheckRepository = {
     rancheckDatastore.update(setting)
   },
 
-  delete: (id: string) => {
+  delete: (id: string, site: string, keyword: string, token: string, hasToken: boolean) => {
     rancheckDatastore.delete(id)
+    if (hasToken) {
+      rancheckApi.deleteKeyword(token, site, [keyword])
+    }
   },
   
   isValidLicense: async (token: string): Promise<boolean> => {

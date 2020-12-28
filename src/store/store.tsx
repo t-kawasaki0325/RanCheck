@@ -126,8 +126,8 @@ const StateProvider = ({ children }: { children: any }) => {
       setRancheck: (payload: IRancheckEntity) =>
         updateStore(actions.setRancheck, store, setStore, payload),
       deleteRancheck: () => {
-        const { _id } = store.rancheck.selectedSetting
-        updateStore(actions.deleteRancheck, store, setStore, _id)
+        const { _id, site, keyword } = store.rancheck.selectedSetting
+        updateStore(actions.deleteRancheck, store, setStore, {  _id, site, keyword })
       },
       fetchRancheck: () =>
         updateMultipleStore(
@@ -261,8 +261,11 @@ const updateStore = async (
       value = rancheck.setRancheck(payload)
       break
     case actions.deleteRancheck:
-      rancheck.deleteRancheck(payload)
-      value = store.rancheck.settings.filter(setting => setting._id !== payload)
+      const { _id, site, keyword } = payload
+      const token = store.users.user.token
+      const hasToken = usersGetters(store.users).hasToken()
+      rancheck.deleteRancheck(_id, site, keyword, token, hasToken)
+      value = store.rancheck.settings.filter(setting => setting._id !== _id)
       break
     case actions.googleSearch:
       const { setting, index } = payload

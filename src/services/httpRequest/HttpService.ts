@@ -5,5 +5,6 @@ export const URL = {
 
 export const RANCHECK = {
   FETCH_RANK: 'rancheck/fetch-rank',
-  REGISTER_KEYWORD: 'rancheck/register-keyword'
+  REGISTER_KEYWORD: 'rancheck/register-keyword',
+  DELETE_KEYWORD: 'rancheck/delete-keyword'
 }
