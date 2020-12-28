@@ -247,13 +247,16 @@ const updateStore = async (
   setStore: Function,
   payload: any = null,
 ) => {
+  const token = store.users.user.token
+  const hasToken = usersGetters(store.users).hasToken()
+
   let value: any = null
   switch (action) {
     // rancheck
     case actions.addRancheck:
       value = rancheck.addRancheck({
-        token: store.users.user.token,
-          hasToken: usersGetters(store.users).hasToken(),
+        token,
+          hasToken,
         ...payload
       })
       break
@@ -262,8 +265,6 @@ const updateStore = async (
       break
     case actions.deleteRancheck:
       const { _id, site, keyword } = payload
-      const token = store.users.user.token
-      const hasToken = usersGetters(store.users).hasToken()
       rancheck.deleteRancheck(_id, site, keyword, token, hasToken)
       value = store.rancheck.settings.filter(setting => setting._id !== _id)
       break
@@ -307,12 +308,15 @@ const updateMultipleStore = async (
   setStore: Function,
   payload: any = null,
 ) => {
+  const token = store.users.user.token
+  const hasToken = usersGetters(store.users).hasToken()
+
   let value: any = []
   switch (actionList.toString()) {
     case [actions.addRancheck, actions.setAddSettingModal].toString():
       const addedSetting = await rancheck.addRancheck({
-        token: store.users.user.token,
-          hasToken: usersGetters(store.users).hasToken(),
+        token,
+          hasToken,
         ...payload
       })
       value = [[...store.rancheck.settings, ...addedSetting], false]
@@ -338,8 +342,8 @@ const updateMultipleStore = async (
       const [project, settings] = await Promise.all([
         projects.addProject({ site: payload.site }),
         rancheck.addRancheck({
-          token: store.users.user.token,
-          hasToken: usersGetters(store.users).hasToken(),
+          token,
+          hasToken,
           ...payload
         }),
       ])
