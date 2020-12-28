@@ -35,6 +35,7 @@ const AddTokenModal: React.FC = () => {
 
   return (
     <ModalBase
+      type='input'
       title='Add Token'
       name='token'
       message={message}
