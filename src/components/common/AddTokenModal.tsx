@@ -1,9 +1,8 @@
 import React, { useState, useContext, ChangeEvent } from 'react';
+import ModalBase from './ModalBase'
 import { store } from '../../store/store'
 import { NOTIFICATION } from '../../config/message'
 
-import styles from './InitialSettingModal.css';
-import IcnCancel from '../../assets/img/icn_cancel.svg';
 import { validationUtils } from '../../utils';
 
 const AddTokenModal: React.FC = () => {
@@ -35,43 +34,16 @@ const AddTokenModal: React.FC = () => {
   const closeModal = () => modal.closeAddTokenModal()
 
   return (
-    <>
-      <div className={styles.modal}>
-        <div className={styles.modalHeader}>
-          <div
-            className={styles.modalHeaderStep}>
-            <span>Add Token</span>
-          </div>
-        </div>
-        <div className={styles.modalBody}>
-          <div
-            className={`${styles['modalItem-alignRight']} ${styles.modalCancelArea}`}>
-            <img
-              onClick={closeModal}
-              src={IcnCancel}
-            />
-          </div>
-          {message && (
-            <div className={styles.errorWrapper}>
-              <span className={styles.error}>{message}</span>
-            </div>
-          )}
-          <div className={styles.modalTitle}>トークンを追加</div>
-          <div className={styles.modalItem}>
-            <input name="token" onChange={handleChange} />
-          </div>
-          <div
-            className={`${styles.modalItem} ${styles['modalItem-alignRight']}`}>
-            <button
-              className={styles.modalButton}
-              onClick={register}
-            >
-              トークンを有効化
-            </button>
-          </div>
-        </div>
-      </div>
-    </>
+    <ModalBase
+      title='Add Token'
+      name='token'
+      message={message}
+      modalTitle='トークンを追加'
+      buttonLabel='トークンを有効化'
+      buttonClick={register}
+      close={closeModal}
+      handleChange={handleChange}
+    />
   )
 }
 export default AddTokenModal
