@@ -385,6 +385,16 @@ const updateMultipleStore = async (
       break
     case [actions.addToken, actions.setAddTokenModal].toString():
       const savedUser = await users.saveToken(payload)
+      const allSettings = await rancheck.fetchAllRancheck()
+      Promise.all(store.projects.projects.map(project =>
+        rancheck.registerRancheck({
+          token: savedUser.token,
+          site: project.site,
+          keywords: allSettings.reduce((prev: string[], current) => {
+            return current.site !== project.site ? prev : prev.concat(current.keyword)
+          }, [])
+        })
+      ))
       value = [savedUser, false]
       break
   }

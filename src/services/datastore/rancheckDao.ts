@@ -50,6 +50,37 @@ const rancheckDao = {
     })
   },
 
+  all: async (): Promise<IRancheckEntity[]> => {
+    return new Promise(resolve => {
+      rancheck.find({}, (err: Error, docs: selectType[]) => {
+        resolve(
+          docs.map((doc: selectType) => {
+            const {
+              _id,
+              title,
+              site,
+              url,
+              keyword,
+              gRank,
+              groups,
+              createdAt,
+            } = doc
+            return new RancheckEntity(
+              _id,
+              site,
+              keyword,
+              title,
+              url,
+              gRank,
+              groups,
+              createdAt,
+            )
+          }),
+        )
+      })
+    })
+  },
+
   add: async (docs: IRancheckEntity[]): Promise<IRancheckEntity[]> => {
     const site = docs[0].site
 
