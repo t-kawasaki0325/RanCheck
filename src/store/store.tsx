@@ -26,7 +26,6 @@ export type IState = {
     switchProjects: Function
   }
   users: {
-    token: string
     user: IUsersEntity
     addToken: Function
   }
@@ -65,7 +64,6 @@ const initialState: IState = {
     switchProjects: () => {},
   },
   users: {
-    token: '',
     user: {} as IUsersEntity,
     addToken: () => {}
   },
@@ -253,7 +251,11 @@ const updateStore = async (
   switch (action) {
     // rancheck
     case actions.addRancheck:
-      value = rancheck.addRancheck(payload)
+      value = rancheck.addRancheck({
+        token: store.users.user.token,
+          hasToken: usersGetters(store.users).hasToken(),
+        ...payload
+      })
       break
     case actions.setRancheck:
       value = rancheck.setRancheck(payload)
@@ -305,7 +307,11 @@ const updateMultipleStore = async (
   let value: any = []
   switch (actionList.toString()) {
     case [actions.addRancheck, actions.setAddSettingModal].toString():
-      const addedSetting = await rancheck.addRancheck(payload)
+      const addedSetting = await rancheck.addRancheck({
+        token: store.users.user.token,
+          hasToken: usersGetters(store.users).hasToken(),
+        ...payload
+      })
       value = [[...store.rancheck.settings, ...addedSetting], false]
       break
     case [
@@ -328,7 +334,11 @@ const updateMultipleStore = async (
     ].toString():
       const [project, settings] = await Promise.all([
         projects.addProject({ site: payload.site }),
-        rancheck.addRancheck(payload),
+        rancheck.addRancheck({
+          token: store.users.user.token,
+          hasToken: usersGetters(store.users).hasToken(),
+          ...payload
+        }),
       ])
       value = [
         [...store.projects.projects, ...project],

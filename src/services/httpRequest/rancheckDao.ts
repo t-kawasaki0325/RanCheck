@@ -16,6 +16,13 @@ const rancheckDao = {
     )
     return data.code !== HTTP_AUTHENTICATION_FAILED
   },
+
+  register: async (token: string, site: string, keywords: string[]): Promise<void> => {
+    await httpClient.post(
+      `${URL.AWS_DOMAIN}${RANCHECK.REGISTER_KEYWORD}`,
+      { token, site, keywords }
+    )
+  }
 }
 
 export default rancheckDao

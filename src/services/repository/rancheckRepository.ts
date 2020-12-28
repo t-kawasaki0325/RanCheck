@@ -3,6 +3,8 @@ import { rancheckDao as rancheckApi } from '../httpRequest'
 import { IRancheckEntity, RancheckEntity } from '../../usecase'
 
 export type addRancheckType = {
+  token: string
+  hasToken: boolean
   site: string
   keywords: string[]
 }
@@ -13,12 +15,20 @@ const rancheckRepository = {
   },
 
   add: async ({
+    token,
+    hasToken,
     site,
     keywords,
   }: addRancheckType): Promise<IRancheckEntity[]> => {
-    return await rancheckDatastore.add(
-      keywords.map(keyword => new RancheckEntity('', site, keyword)),
-    )
+    const execList = [
+      rancheckDatastore.add(
+        keywords.map(keyword => new RancheckEntity('', site, keyword)),
+      )
+    ]
+    // @ts-ignore
+    hasToken && execList.push(rancheckApi.register(token, site, keywords))
+    const [data] = await Promise.all(execList)
+    return data
   },
 
   update: (setting: IRancheckEntity) => {
