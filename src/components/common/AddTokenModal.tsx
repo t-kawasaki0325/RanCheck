@@ -36,7 +36,7 @@ const AddTokenModal: React.FC = () => {
   return (
     <ModalBase
       type='input'
-      title='Add Token'
+      titleList={['Add Token']}
       name='token'
       message={message}
       modalTitle='トークンを追加'

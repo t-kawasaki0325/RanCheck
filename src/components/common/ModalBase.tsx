@@ -1,16 +1,18 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useContext } from 'react';
+import { store } from '../../store/store'
 
 import styles from './ModalBase.css';
 import IcnCancel from '../../assets/img/icn_cancel.svg';
 
 interface IProps {
   type: 'input' | 'textarea'
-  title: string
+  titleList: string[]
   name: string
   message: string
   buttonLabel: string
   modalTitle: string
   caption?: string
+  currentStep?: number
   buttonClick: (event: React.MouseEvent) => void
   close: (event: any) => void
   handleChange: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
@@ -19,36 +21,50 @@ interface IProps {
 const ModalBase: React.FC<IProps> = props => {
   const {
     type,
-    title,
+    titleList,
     name,
     message,
     modalTitle,
     caption,
+    currentStep,
     buttonLabel,
     buttonClick,
     close,
     handleChange
   } = props
+  const { projects } = useContext(store)
 
   const isInput = type === 'input'
   const isTextarea = type === 'textarea'
+  const isCurrentStep = (index: number) => currentStep === index
+  const showCancelButton = projects.projects.length !== 0
 
   return (
     <>
       <div className={styles.modal}>
         <div className={styles.modalHeader}>
-          <div
-            className={styles.modalHeaderStep}>
-            <span>{title}</span>
-          </div>
+          {titleList.map((title, index) => (
+            <div
+              key={index}
+              className={
+                `${styles.modalHeaderStep} ${isCurrentStep(index) && styles['modalHeaderStep-selected']}`
+              }>
+              {titleList.length > 1 && (
+                <span className={styles.circle}>{index + 1}</span>
+              )}
+              <span>{title}</span>
+            </div>
+          ))}
         </div>
         <div className={styles.modalBody}>
           <div
             className={`${styles['modalItem-alignRight']} ${styles.modalCancelArea}`}>
-            <img
-              onClick={close}
-              src={IcnCancel}
-            />
+            {showCancelButton && (
+              <img
+                onClick={close}
+                src={IcnCancel}
+              />
+            )}
           </div>
           {message && (
             <div className={styles.errorWrapper}>

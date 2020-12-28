@@ -61,7 +61,7 @@ const AddSettingModal: React.FC = () => {
   return (
     <ModalBase
       type='textarea'
-      title='Add keyword'
+      titleList={['Add keyword']}
       name='keywordInclLine'
       message={message}
       buttonLabel='完了'
