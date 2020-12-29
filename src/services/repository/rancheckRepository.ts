@@ -56,6 +56,10 @@ const rancheckRepository = {
       rancheckApi.deleteKeyword(token, site, [keyword])
     }
   },
+
+  download: async (token: string, site: string) => {
+    return await rancheckApi.download(token, site)
+  },
   
   isValidLicense: async (token: string): Promise<boolean> => {
     return await rancheckApi.isValidLicense(token)

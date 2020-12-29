@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react'
-import { store } from '../store/store'
+import { store, usersGetters } from '../store/store'
 import { SettingMenu } from './common'
 
 import styles from './MainTab.css'
@@ -8,14 +8,20 @@ import IcnPlus from '../assets/img/icn_plus.svg'
 import IcnSetting from '../assets/img/icn_setting.svg'
 
 const MainTab: React.FC = () => {
-  const { rancheck, modal } = useContext(store)
+  const { rancheck, modal, users } = useContext(store)
   const [showSettingMenu, setShowSettingMenu] = useState(false)
+
+  const getGoogleRank = () => {
+    usersGetters(users).hasToken()
+      ? rancheck.downloadRank()
+      : rancheck.googleSearch()
+  }
 
   const toggleShowSettingMenu = () => setShowSettingMenu(!showSettingMenu)
 
   return (
     <div className={styles.mainTab}>
-      <div onClick={() => rancheck.googleSearch()} className={styles.icon}>
+      <div onClick={getGoogleRank} className={styles.icon}>
         <img className={styles.iconImg} src={IcnCheck} />
         <span className={styles.iconText}>Rank Check</span>
       </div>

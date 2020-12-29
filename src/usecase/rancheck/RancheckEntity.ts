@@ -109,6 +109,11 @@ class RancheckEntity implements IRancheckEntity {
   public addRank(title: string, url: string, rank: number) {
     this._title = title
     this._url = url
+
+    const lastItem = this._gRank.slice(-1).pop()
+    if (lastItem && lastItem.date === dateUtils.getYYYY_MM_DD()) {
+      this._gRank.pop()
+    }
     this._gRank.push({
       date: dateUtils.getYYYY_MM_DD(),
       rank,

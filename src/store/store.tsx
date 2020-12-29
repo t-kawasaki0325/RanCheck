@@ -17,6 +17,7 @@ export type IState = {
     deleteRancheck: Function
     fetchRancheck: Function
     googleSearch: Function
+    downloadRank: Function
   }
   projects: {
     selectedProject: IProjectsEntity
@@ -55,6 +56,7 @@ const initialState: IState = {
     deleteRancheck: () => {},
     fetchRancheck: async () => {},
     googleSearch: async () => {},
+    downloadRank: async () => {}
   },
   projects: {
     selectedProject: {} as IProjectsEntity,
@@ -91,6 +93,7 @@ const actions = {
   deleteRancheck: 'rancheck/settings/delete',
   fetchRancheck: 'rancheck/settings/fetch',
   googleSearch: 'rancheck/settings/googleSearch',
+  downloadRank: 'rancheck/settings/downloadRank',
   // projects
   addProject: 'projects/projects/add',
   setProject: 'projects/selectedProject/update',
@@ -174,6 +177,11 @@ const StateProvider = ({ children }: { children: any }) => {
           }
         }
       },
+      downloadRank: async () => {
+        updateStore(actions.downloadRank, store, setStore, {
+          site: store.projects.selectedProject.site
+        })
+      }
     },
     projects: {
       ...store.projects,
@@ -268,13 +276,8 @@ const updateStore = async (
       rancheck.deleteRancheck(_id, site, keyword, token, hasToken)
       value = store.rancheck.settings.filter(setting => setting._id !== _id)
       break
-    case actions.googleSearch:
-      const { setting, index } = payload
-      value = [...store.rancheck.settings]
-      value[index] = await rancheck.googleSearch(
-        setting,
-        store.projects.selectedProject.site,
-      )
+    case actions.downloadRank:
+      value = await rancheck.download(store.rancheck.settings, payload.site, token)
       break
     // projects
     case actions.addProject:

@@ -69,6 +69,20 @@ export default {
     rancheckRepository.update(setting)
     return setting
   },
+  download: async (settings: IRancheckEntity[], site: string, token: string) => {
+    const ranks = await rancheckRepository.download(token, site)
+    const copiedSettings = [...settings]
+    Object.entries(ranks).map(([key, value]) => {
+      const index = settings.findIndex(setting => setting.keyword === key)
+      const { title, url, result } = value
+
+      const rank = result.pop()
+      // TODO: 本来編集するべきでないので直す
+      copiedSettings[index]!.addRank(title, url, rank.rank)
+      rancheckRepository.update(copiedSettings[index])
+    })
+    return copiedSettings
+  },
   isValidLicense: async (token: string) =>
     await rancheckRepository.isValidLicense(token)
 }
