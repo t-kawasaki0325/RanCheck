@@ -21,7 +21,6 @@ const AddTokenModal: React.FC = () => {
       return
     }
     users.addToken(token)
-    alert(NOTIFICATION.TOKEN_INPUT_COMPLETED)
   }
 
   const handleChange = (

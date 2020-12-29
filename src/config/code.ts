@@ -1,2 +1,3 @@
 export const HTTP_SUCCESS = 200
 export const HTTP_AUTHENTICATION_FAILED = 401
+export const HTTP_SERVER_ERROR = 500

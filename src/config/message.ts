@@ -12,6 +12,11 @@ export const MESSAGE = {
   INPUT_TOKEN: 'メールに記載されたアクセストークンを入力してください'
 }
 
+export const ERROR_MESSAGE = {
+  NETWORK: 'ネットワークに接続されていないため失敗しました',
+  SERVER: 'サーバーエラーが発生しました。\n再度お試しください'
+}
+
 export const NOTIFICATION = {
   TOKEN_INPUT_COMPLETED: 'トークンを有効化しました',
   TOKEN_ACTIVATED: 'トークンは有効化されています'
