@@ -6,7 +6,15 @@ export const MESSAGE = {
   SEARCHING: '現在検索中です。\n検索が終了すると操作を行えるようになります。',
   ALL_SEARCHED:
     '本日は全ての検索が完了しています。\nまた明日以降検索が行えます。',
-  SEARCH_ERROR: 'エラーが発生しました。\n再度時間を置いて実行し直してください',
+  SEARCH_ERROR: 'エラーが発生しました。\n再度時間を置いて実行し直してください。',
+  INVALID_TOKEN_FORMAT: 'トークンの形式が不正です。\nトークンは13文字の英数字です。',
+  INVALID_TOKEN: 'トークンが誤っています。\n再度入力をご確認ください。',
+  INPUT_TOKEN: 'メールに記載されたアクセストークンを入力してください'
+}
+
+export const NOTIFICATION = {
+  TOKEN_INPUT_COMPLETED: 'トークンを有効化しました',
+  TOKEN_ACTIVATED: 'トークンは有効化されています'
 }
 
 export const DELETE_CONFIRM = (keyword: string) =>

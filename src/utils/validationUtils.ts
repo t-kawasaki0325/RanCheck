@@ -1,5 +1,6 @@
 import { MESSAGE } from '../config/message'
 import { projectsGetters, rancheckGetters, IState } from '../store/store'
+import rancheck from '../store/rancheck'
 import { testDao } from '../services/httpRequest'
 
 const {
@@ -7,6 +8,8 @@ const {
   NOT_EXISTS_URL,
   ALREADY_EXISTS,
   DUPLICATE_KEYWORDS,
+  INVALID_TOKEN_FORMAT,
+  INVALID_TOKEN
 } = MESSAGE
 
 const validationUtils = {
@@ -43,6 +46,17 @@ const validationUtils = {
   search: (type: 'SEARCHING' | 'ALL_SEARCHED') => {
     alert(MESSAGE[type])
   },
+
+  token: async (token: string): Promise<string> => {
+    const regex = /^[0-9a-zA-Z]{13}$/
+    if (!token.match(regex)) {
+      return INVALID_TOKEN_FORMAT
+    }
+    if (!(await rancheck.isValidLicense(token))) {
+      return INVALID_TOKEN
+    }
+    return ''
+  }
 }
 
 export default validationUtils

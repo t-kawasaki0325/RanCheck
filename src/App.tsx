@@ -3,7 +3,7 @@ import { store, projectsGetters } from './store/store'
 import { modalGetters } from './store/modal'
 import { Home } from './pages'
 import { Header, Sidebar } from './components'
-import { AddSettingModal, InitialSettingModal } from './components/common'
+import { AddSettingModal, AddTokenModal, InitialSettingModal } from './components/common'
 
 import styles from './App.css'
 import 'destyle.css'
@@ -25,6 +25,7 @@ const App: React.FC = () => {
   return (
     <>
       {init && modal.addSettingModal && <AddSettingModal />}
+      {init && modal.addTokenModal && <AddTokenModal />}
       {init && modal.initialSettingModal && <InitialSettingModal />}
       {init && modalGetters(modal).allModalClosed && (
         <>

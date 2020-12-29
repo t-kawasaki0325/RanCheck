@@ -1,0 +1,24 @@
+@value textDarkGrey from '../../App.css';
+@value backgroundWhite from '../../App.css';
+@value backgroundHover from '../../App.css';
+
+.menu {
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.menuItem {
+    padding: 2px 20px;
+
+    font-size: 1rem;
+    background: backgroundWhite;
+    color: textDarkGrey;
+}
+
+.menuItem:hover {
+    cursor: pointer;
+
+    background: backgroundHover;
+    color: #fff;
+}
