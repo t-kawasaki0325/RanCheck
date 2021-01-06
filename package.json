@@ -13,7 +13,7 @@
     "mv:package": "mv dist/main.js ./main.js && mv dist/main.js.map ./main.js.map && mv dist/preload.js ./preload.js && mv dist/preload.js.map ./preload.js.map"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "cheerio": "^1.0.0-rc.3",
     "destyle.css": "^1.0.13",
     "dotenv": "^8.2.0",
