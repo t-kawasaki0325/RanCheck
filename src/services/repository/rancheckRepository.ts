@@ -27,34 +27,37 @@ const rancheckRepository = {
     site,
     keywords,
   }: addRancheckType): Promise<IRancheckEntity[]> => {
-    const execList = [
-      rancheckDatastore.add(
-        keywords.map(keyword => new RancheckEntity('', site, keyword)),
-      )
-    ]
-    // @ts-ignore
-    hasToken && execList.push(rancheckApi.register(token, site, keywords))
-    const [data] = await Promise.all(execList)
-    return data
+    let isSucceed = true
+    if (hasToken) {
+      isSucceed = await rancheckApi.register(token, site, keywords)
+    }
+    // トークンを保持かつAPIの処理に失敗したときにはローカルのDBに保存処理を行わない
+    return isSucceed
+      ? await rancheckDatastore.add(
+          keywords.map(keyword => new RancheckEntity('', site, keyword)),
+        )
+      : []
   },
 
   register: async ({
     token,
     site,
     keywords,
-  }: registerRancheckType): Promise<void> => {
-    await rancheckApi.register(token, site, keywords)
+  }: registerRancheckType): Promise<boolean> => {
+    return await rancheckApi.register(token, site, keywords)
   },
 
   update: (setting: IRancheckEntity) => {
     rancheckDatastore.update(setting)
   },
 
-  delete: (id: string, site: string, keyword: string, token: string, hasToken: boolean) => {
-    rancheckDatastore.delete(id)
+  delete: async (id: string, site: string, keyword: string, token: string, hasToken: boolean) => {
+    let isSucceed = true
     if (hasToken) {
-      rancheckApi.deleteKeyword(token, site, [keyword])
+      isSucceed = await rancheckApi.deleteKeyword(token, site, [keyword])
     }
+    isSucceed && rancheckDatastore.delete(id)
+    return isSucceed
   },
 
   download: async (token: string, site: string) => {

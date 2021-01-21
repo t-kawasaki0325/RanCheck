@@ -6,7 +6,7 @@ import { modalGetters } from './modal'
 import { IRancheckEntity, IProjectsEntity, IUsersEntity } from '../usecase/'
 import { addRancheckType } from '../services/repository/rancheckRepository'
 import { dateUtils, validationUtils } from '../utils'
-import { MESSAGE } from '../config/message'
+import { MESSAGE, ERROR_MESSAGE, NOTIFICATION } from '../config/message'
 
 export type IState = {
   rancheck: {
@@ -261,20 +261,15 @@ const updateStore = async (
   let value: any = null
   switch (action) {
     // rancheck
-    case actions.addRancheck:
-      value = rancheck.addRancheck({
-        token,
-          hasToken,
-        ...payload
-      })
-      break
     case actions.setRancheck:
       value = rancheck.setRancheck(payload)
       break
     case actions.deleteRancheck:
       const { _id, site, keyword } = payload
-      rancheck.deleteRancheck(_id, site, keyword, token, hasToken)
-      value = store.rancheck.settings.filter(setting => setting._id !== _id)
+      const deleteResult = await rancheck.deleteRancheck(_id, site, keyword, token, hasToken)
+      value = deleteResult
+        ? store.rancheck.settings.filter(setting => setting._id !== _id)
+        : store.rancheck.settings
       break
     case actions.downloadRank:
       value = await rancheck.download(store.rancheck.settings, payload.site, token)
@@ -394,8 +389,10 @@ const updateMultipleStore = async (
       value = [copiedSettings, isSearching, index + 2, totalNum]
       break
     case [actions.addToken, actions.setAddTokenModal].toString():
-      const savedUser = await users.saveToken(payload)
-      const allSettings = await rancheck.fetchAllRancheck()
+      const [savedUser, allSettings] = await Promise.all([
+        users.saveToken(payload),
+        rancheck.fetchAllRancheck()
+      ])
       Promise.all(store.projects.projects.map(project =>
         rancheck.registerRancheck({
           token: savedUser.token,
@@ -405,6 +402,11 @@ const updateMultipleStore = async (
           }, [])
         })
       ))
+      .then(results => {
+        const isSucceed = results.every(result => result)
+        const message = isSucceed ? NOTIFICATION.TOKEN_INPUT_COMPLETED : ERROR_MESSAGE.SERVER
+        alert(message)
+      })
       value = [savedUser, false]
       break
   }
