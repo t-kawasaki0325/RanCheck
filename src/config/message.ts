@@ -7,7 +7,7 @@ export const MESSAGE = {
   ALL_SEARCHED:
     '本日は全ての検索が完了しています。\nまた明日以降検索が行えます。',
   SEARCH_ERROR: 'エラーが発生しました。\n再度時間を置いて実行し直してください。',
-  INVALID_TOKEN_FORMAT: 'トークンの形式が不正です。\nトークンは13文字の英数字です。',
+  INVALID_TOKEN_FORMAT: 'トークンの形式が不正です。\n確認の上、再度ご入力ください。',
   INVALID_TOKEN: 'トークンが誤っています。\n再度入力をご確認ください。',
   INPUT_TOKEN: 'メールに記載されたアクセストークンを入力してください'
 }
