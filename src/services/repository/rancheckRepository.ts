@@ -1,3 +1,4 @@
+import { PLAN } from '../../config/plan'
 import { rancheckDao as rancheckDatastore } from '../datastore'
 import { rancheckDao as rancheckApi } from '../httpRequest'
 import { IRancheckEntity, RancheckEntity } from '../../usecase'

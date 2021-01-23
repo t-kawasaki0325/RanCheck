@@ -4,6 +4,7 @@ export const URL = {
 }
 
 export const RANCHECK = {
+  FETCH_PLAN: 'rancheck/fetch-plan',
   FETCH_RANK: 'rancheck/fetch-rank',
   REGISTER_KEYWORD: 'rancheck/register-keyword',
   DELETE_KEYWORD: 'rancheck/delete-keyword'

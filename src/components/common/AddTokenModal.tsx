@@ -1,7 +1,6 @@
 import React, { useState, useContext, ChangeEvent } from 'react';
 import ModalBase from './ModalBase'
 import { store } from '../../store/store'
-import { NOTIFICATION } from '../../config/message'
 
 import { validationUtils } from '../../utils';
 
