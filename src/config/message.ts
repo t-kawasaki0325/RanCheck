@@ -9,7 +9,10 @@ export const MESSAGE = {
   SEARCH_ERROR: 'エラーが発生しました。\n再度時間を置いて実行し直してください。',
   INVALID_TOKEN_FORMAT: 'トークンの形式が不正です。\n確認の上、再度ご入力ください。',
   INVALID_TOKEN: 'トークンが誤っています。\n再度入力をご確認ください。',
-  INPUT_TOKEN: 'メールに記載されたアクセストークンを入力してください'
+  INPUT_TOKEN: 'メールに記載されたアクセストークンを入力してください',
+  INVALID_ADD_SITE: (num: number) => `現在のプランではサイトを${num}個までしか追加できません`,
+  INVALID_ADD_KEYWORD: (num: number, current: number) =>
+    `現在のプランではキーワードを${num}個までしか登録できません（現在登録数：${current}）`
 }
 
 export const ERROR_MESSAGE = {

@@ -48,7 +48,7 @@ const validationUtils = {
   },
 
   token: async (token: string): Promise<string> => {
-    const regex = /^[0-9a-zA-Z]{13}$/
+    const regex = /^[0-9a-zA-Z]{13,}$/
     if (!token.match(regex)) {
       return INVALID_TOKEN_FORMAT
     }

@@ -1,7 +1,8 @@
 import React, { useState, ChangeEvent, useContext } from 'react'
 import ModalBase from './ModalBase'
+import { MESSAGE } from '../../config/message'
 import { validationUtils, toHalfWidthSpace } from '../../utils'
-import { store } from '../../store/store'
+import { store, usersGetters } from '../../store/store'
 
 interface IRegisterInfo {
   site: string
@@ -33,7 +34,7 @@ const InitialSettingModal: React.FC = () => {
   })
   const [step, setStep] = useState(0)
   const [message, setMessage] = useState('')
-  const { rancheck, projects, modal } = useContext(store)
+  const { rancheck, projects, modal, users } = useContext(store)
 
   const register = async () => {
     const { site, keywordInclLine } = registerInfo
@@ -52,27 +53,48 @@ const InitialSettingModal: React.FC = () => {
     })
   }
 
+  const addSiteValidate = async () => {
+    let error = await validationUtils.projects(registerInfo.site, projects)
+    if (!error && usersGetters(users).currentPlan().MAX_SITE < projects.projects.length + 1) {
+      error = MESSAGE.INVALID_ADD_SITE(usersGetters(users).currentPlan().MAX_SITE)
+    }
+    return error
+  }
+
+  const addKeywordValidate = () => {
+    const keywords = keywordsToArray(registerInfo.keywordInclLine)
+    let error = validationUtils.rancheck(keywords, rancheck)
+    if (
+      !error
+      // TODO: 現行はサイトを1つの制約があるが本来は複数サイト存在するため修正必須
+      //　実装イメージとしてはrancheckのstoreにtotalKeywordNumを追加
+      && usersGetters(users).currentPlan().MAX_KEYWORD < rancheck.settings.length + keywords.length
+    ) {
+      error = MESSAGE.INVALID_ADD_KEYWORD(usersGetters(users).currentPlan().MAX_KEYWORD, rancheck.settings.length)
+    }
+    return error
+  }
+
   const validate = async () => {
     let error = ''
     if (step === STEP.SETUP_SITE) {
-      error = await validationUtils.projects(registerInfo.site, projects)
+      error = await addSiteValidate()
     }
     if (step === STEP.ADD_KEYWORD) {
-      error = validationUtils.rancheck(
-        keywordsToArray(registerInfo.keywordInclLine),
-        rancheck,
-      )
+      error = addKeywordValidate()
     }
     setMessage(error)
     return !!error
   }
 
   const toNext = async () => {
-    const isValid = !(await validate())
-    if (step < ALL_STEP && isValid) {
+    if (await validate()) {
+      return
+    }
+    if (step === STEP.SETUP_SITE) {
       setStep(step => step + 1)
     }
-    if (step === ALL_STEP - 1) {
+    if (step === STEP.ADD_KEYWORD) {
       register()
     }
   }
@@ -85,16 +107,14 @@ const InitialSettingModal: React.FC = () => {
       name: 'site',
       modalTitle: 'サイトのURLを追加',
       buttonLabel: 'キーワードを追加',
-      caption: '',
-      buttonClick: () => toNext()
+      caption: ''
     },
     {
       type: 'textarea',
       name: 'keywordInclLine',
       modalTitle: '検索キーワードを追加',
       buttonLabel: '完了',
-      caption: '※1行ごとに1つのキーワードを入力できます',
-      buttonClick: () => register()
+      caption: '※1行ごとに1つのキーワードを入力できます'
     }
   ] as {
     type: 'input' | 'textarea'
@@ -102,7 +122,6 @@ const InitialSettingModal: React.FC = () => {
     modalTitle: string
     buttonLabel: string
     caption: string
-    buttonClick: (event: React.MouseEvent) => void
   }[]
   const currentProp = propValues[step]
 
@@ -116,7 +135,7 @@ const InitialSettingModal: React.FC = () => {
       buttonLabel={currentProp.buttonLabel}
       currentStep={step}
       caption={currentProp.caption}
-      buttonClick={currentProp.buttonClick}
+      buttonClick={toNext}
       close={closeModal}
       handleChange={handleChange}
     />

@@ -1,4 +1,10 @@
-export const PLAN = {
+export type planValueType = {
+  VALUE: number
+  MAX_SITE: number
+  MAX_KEYWORD: number
+}
+
+export const PLAN: { [key: string]: planValueType } = {
   FREE: {
     VALUE: 0,
     MAX_SITE: 1,
