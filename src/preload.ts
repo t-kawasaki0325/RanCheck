@@ -8,6 +8,8 @@ global.recharts = require('recharts')
 // @ts-ignore
 global.path = require('path')
 // @ts-ignore
+global.crypt = require('crypto')
+// @ts-ignore
 global.pathToDb =
   process.env.NODE_ENV === 'development'
     ? __dirname

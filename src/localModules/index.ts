@@ -7,4 +7,6 @@ export const { recharts } = window
 // @ts-ignore
 export const { path } = window
 // @ts-ignore
+export const { crypt } = window
+// @ts-ignore
 export const { pathToDb } = window
