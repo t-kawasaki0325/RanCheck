@@ -6,8 +6,9 @@
   "license": "MIT",
   "scripts": {
     "start": "electron ./dist/main.js",
-    "build:main": "tsc",
-    "build:render": "webpack",
+    "lint": "eslint",
+    "build:main": "prettier --write src/ && tsc",
+    "build:render": "prettier --write src/ && webpack",
     "package:mac": "tsc && webpack && yarn mv:package && electron-builder --mac --x64",
     "release:mac": "tsc && webpack && yarn mv:package && electron-builder --mac --x64 -p 'onTagOrDraft'",
     "mv:package": "mv dist/main.js ./main.js && mv dist/main.js.map ./main.js.map && mv dist/preload.js ./preload.js && mv dist/preload.js.map ./preload.js.map"
@@ -32,14 +33,21 @@
     "@types/react": "^16.9.43",
     "@types/react-dom": "^16.9.8",
     "@types/recharts": "^1.8.14",
+    "@typescript-eslint/eslint-plugin": "^4.14.0",
+    "@typescript-eslint/parser": "^4.14.0",
     "asar": "^3.0.3",
     "cross-env": "^7.0.2",
     "css-loader": "^4.2.0",
     "electron": "^9.1.0",
     "electron-builder": "^22.9.1",
     "eslint": "^7.4.0",
+    "eslint-config-airbnb": "^18.2.1",
     "eslint-config-prettier": "^6.11.0",
+    "eslint-import-resolver-webpack": "^0.13.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.22.0",
     "prettier": "^2.0.5",
     "style-loader": "^1.2.1",
     "ts-loader": "^8.0.0",
@@ -59,12 +67,14 @@
       "./src/*.db",
       ".env"
     ],
-    "publish": [{
-      "provider": "github",
-      "owner": "kawasaki-t0325",
-      "repo": "RanCheck",
-      "//": "TODO: release時にtokenはenvから記載するがより良い方法にする",
-      "token": ""
-    }]
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "kawasaki-t0325",
+        "repo": "RanCheck",
+        "//": "TODO: release時にtokenはenvから記載するがより良い方法にする",
+        "token": ""
+      }
+    ]
   }
 }

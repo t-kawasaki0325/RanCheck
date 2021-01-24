@@ -1,3 +1,8 @@
+export interface IRank {
+  date: string
+  rank: number
+}
+
 interface IRancheckEntity {
   _id: string
   title: string
@@ -23,11 +28,6 @@ interface IRancheckEntity {
   rankTransitionByThreeMonth: Function
   rankTransitionBySixMonth: Function
   forSave: Function
-}
-
-export interface IRank {
-  date: string
-  rank: number
 }
 
 export default IRancheckEntity

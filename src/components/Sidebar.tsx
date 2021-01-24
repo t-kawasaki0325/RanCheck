@@ -8,7 +8,7 @@ const Sidebar: React.FC = () => {
   const { projects, modal } = useContext(store)
 
   const toggleShrink = () => {
-    setIsShrink(isShrink => !isShrink)
+    setIsShrink(shrinkStatus => !shrinkStatus)
   }
 
   const openInitSettingModal = () => modal.openInitialSettingModal()

@@ -1,6 +1,6 @@
 import { MESSAGE } from '../config/message'
 import { projectsGetters, rancheckGetters, IState } from '../store/store'
-import rancheck from '../store/rancheck'
+import rancheckStore from '../store/rancheck'
 import { testDao } from '../services/httpRequest'
 
 const {
@@ -9,7 +9,7 @@ const {
   ALREADY_EXISTS,
   DUPLICATE_KEYWORDS,
   INVALID_TOKEN_FORMAT,
-  INVALID_TOKEN
+  INVALID_TOKEN,
 } = MESSAGE
 
 const validationUtils = {
@@ -52,11 +52,11 @@ const validationUtils = {
     if (!token.match(regex)) {
       return INVALID_TOKEN_FORMAT
     }
-    if (!(await rancheck.isValidLicense(token))) {
+    if (!(await rancheckStore.isValidLicense(token))) {
       return INVALID_TOKEN
     }
     return ''
-  }
+  },
 }
 
 export default validationUtils

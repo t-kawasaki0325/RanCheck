@@ -18,23 +18,25 @@ const googleRepository = {
     let page = 0
     let totalSearchNum = 0
     while (1) {
+      // eslint-disable-next-line no-await-in-loop
       const results = await googleRepository.get(keyword, page, totalSearchNum)
 
       // 検索結果が見つかったとき
       const matchSearchResult = results.find(result =>
         includeString(result.url, site),
       )
-      if (!!matchSearchResult) {
+      if (matchSearchResult) {
         return matchSearchResult
       }
 
-      page++
+      page += 1
       totalSearchNum += results.length
       // 検索結果が見つからず100位まで検索したとき
       if (totalSearchNum >= MAX_SEARCH_NUM) {
         break
       }
 
+      // eslint-disable-next-line no-await-in-loop
       await sleep()
     }
 

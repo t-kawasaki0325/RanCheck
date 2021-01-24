@@ -3,7 +3,7 @@ import rancheck, { rancheckGetters } from './rancheck'
 import projects, { projectsGetters } from './projects'
 import users, { usersGetters } from './users'
 import { modalGetters } from './modal'
-import { IRancheckEntity, IProjectsEntity, IUsersEntity } from '../usecase/'
+import { IRancheckEntity, IProjectsEntity, IUsersEntity } from '../usecase'
 import { addRancheckType } from '../services/repository/rancheckRepository'
 import { dateUtils, validationUtils } from '../utils'
 import { MESSAGE, ERROR_MESSAGE, NOTIFICATION } from '../config/message'
@@ -56,7 +56,7 @@ const initialState: IState = {
     deleteRancheck: () => {},
     fetchRancheck: async () => {},
     googleSearch: async () => {},
-    downloadRank: async () => {}
+    downloadRank: async () => {},
   },
   projects: {
     selectedProject: {} as IProjectsEntity,
@@ -67,7 +67,7 @@ const initialState: IState = {
   },
   users: {
     user: {} as IUsersEntity,
-    addToken: () => {}
+    addToken: () => {},
   },
   modal: {
     initialSettingModal: false,
@@ -78,7 +78,7 @@ const initialState: IState = {
     openAddSettingModal: () => {},
     closeAddSettingModal: () => {},
     openAddTokenModal: () => {},
-    closeAddTokenModal: () => {}
+    closeAddTokenModal: () => {},
   },
   searchStatus: {
     isSearching: false,
@@ -111,8 +111,221 @@ const actions = {
   setTotalNum: 'searchStatus/totalNum',
 }
 
-const store = React.createContext(initialState)
-const { Provider } = store
+const updateStore = async (
+  action: string,
+  store: IState,
+  setStore: Function,
+  payload: any = null,
+) => {
+  const { token } = store.users.user
+  const hasToken = usersGetters(store.users).hasToken()
+
+  let value: any = null
+  switch (action) {
+    // rancheck
+    case actions.setRancheck: {
+      value = rancheck.setRancheck(payload)
+      break
+    }
+    case actions.deleteRancheck: {
+      const { _id, site, keyword } = payload
+      const deleteResult = await rancheck.deleteRancheck(
+        _id,
+        site,
+        keyword,
+        token,
+        hasToken,
+      )
+      value = deleteResult
+        ? store.rancheck.settings.filter(setting => setting._id !== _id)
+        : store.rancheck.settings
+      break
+    }
+    case actions.downloadRank: {
+      value = await rancheck.download(
+        store.rancheck.settings,
+        payload.site,
+        token,
+      )
+      break
+    }
+    // projects
+    case actions.addProject: {
+      value = [await projects.addProject(payload)]
+      break
+    }
+    // modal
+    case actions.setAddSettingModal:
+    case actions.setInitialSettingModal:
+    case actions.setAddTokenModal: {
+      value = payload
+      break
+    }
+    // searchStatus
+    case actions.setIsSearching: {
+      value = payload
+      break
+    }
+    default:
+      return
+  }
+
+  const [key, updateKey] = action.split('/')
+  setStore({
+    ...store,
+    [key]: {
+      ...(store as any)[key],
+      [updateKey]: value,
+    },
+  })
+}
+
+const updateMultipleStore = async (
+  actionList: string[],
+  store: IState,
+  setStore: Function,
+  payload: any = null,
+) => {
+  const { token } = store.users.user
+  const hasToken = usersGetters(store.users).hasToken()
+
+  let value: any = []
+  switch (actionList.toString()) {
+    case [actions.addRancheck, actions.setAddSettingModal].toString(): {
+      const addedSetting = await rancheck.addRancheck({
+        token,
+        hasToken,
+        ...payload,
+      })
+      value = [[...store.rancheck.settings, ...addedSetting], false]
+      break
+    }
+    case [
+      actions.fetchProjects,
+      actions.fetchUser,
+      actions.setProject,
+      actions.setInitialSettingModal,
+    ].toString(): {
+      const [projectList, user] = await Promise.all([
+        projects.fetchProjects(),
+        users.get(),
+      ])
+      value = [projectList, user, projectList[0], !projectList.length]
+      break
+    }
+    case [
+      actions.addProject,
+      actions.addRancheck,
+      actions.setProject,
+      actions.setInitialSettingModal,
+    ].toString(): {
+      const [project, settings] = await Promise.all([
+        projects.addProject({ site: payload.site }),
+        rancheck.addRancheck({
+          token,
+          hasToken,
+          ...payload,
+        }),
+      ])
+      value = [
+        [...store.projects.projects, ...project],
+        settings,
+        project[0],
+        false,
+      ]
+      break
+    }
+    case [actions.fetchRancheck, actions.setRancheck].toString(): {
+      const { selectedProject } = store.projects
+      const rancheckSettings = await rancheck.fetchRancheck(
+        selectedProject.site,
+      )
+      value = [rancheckSettings, rancheckSettings[0]]
+      break
+    }
+    case [
+      actions.setProject,
+      actions.fetchRancheck,
+      actions.setRancheck,
+    ].toString(): {
+      const changeProject = store.projects.projects.find(
+        project => project._id === payload,
+      )
+      const changedSettings = await rancheck.fetchRancheck(changeProject!.site)
+      value = [changeProject, changedSettings, changedSettings[0]]
+      break
+    }
+    case [
+      actions.googleSearch,
+      actions.setIsSearching,
+      actions.setCount,
+      actions.setTotalNum,
+    ].toString(): {
+      const { setting, index, isSearching, totalNum } = payload
+      const copiedSettings = [...store.rancheck.settings]
+      const settingIndex = copiedSettings.findIndex((v: IRancheckEntity) =>
+        v.equals(setting),
+      )
+      copiedSettings[settingIndex] = await rancheck.googleSearch(
+        setting,
+        store.projects.selectedProject.site,
+      )
+      // indexは現在検索している次の検索数を表すので+2とする
+      value = [copiedSettings, isSearching, index + 2, totalNum]
+      break
+    }
+    case [actions.addToken, actions.setAddTokenModal].toString(): {
+      const [savedUser, allSettings] = await Promise.all([
+        users.saveToken(payload),
+        rancheck.fetchAllRancheck(),
+      ])
+      Promise.all(
+        store.projects.projects.map(project =>
+          rancheck.registerRancheck({
+            token: savedUser.token,
+            site: project.site,
+            keywords: allSettings.reduce((prev: string[], current) => {
+              return current.site !== project.site
+                ? prev
+                : prev.concat(current.keyword)
+            }, []),
+          }),
+        ),
+      ).then(results => {
+        const isSucceed = results.every(result => result)
+        const message = isSucceed
+          ? NOTIFICATION.TOKEN_INPUT_COMPLETED
+          : ERROR_MESSAGE.SERVER
+        alert(message)
+      })
+      value = [savedUser, false]
+      break
+    }
+    default:
+      return
+  }
+
+  const keys = actionList.map(action => {
+    const [key, updateKey] = action.split('/')
+    return [key, updateKey]
+  })
+  const updateValue = {}
+  keys.forEach(([key, updateKey], index) => {
+    const baseObj = key in updateValue ? updateValue : store
+    ;(updateValue as any)[key] = {
+      ...(baseObj as any)[key],
+      [updateKey]: value[index],
+    }
+  })
+
+  setStore({
+    ...store,
+    ...updateValue,
+  })
+}
+
+const context = React.createContext(initialState)
+const { Provider } = context
 const StateProvider = ({ children }: { children: any }) => {
   const [store, setStore] = useState(initialState)
 
@@ -130,7 +343,11 @@ const StateProvider = ({ children }: { children: any }) => {
         updateStore(actions.setRancheck, store, setStore, payload),
       deleteRancheck: () => {
         const { _id, site, keyword } = store.rancheck.selectedSetting
-        updateStore(actions.deleteRancheck, store, setStore, {  _id, site, keyword })
+        updateStore(actions.deleteRancheck, store, setStore, {
+          _id,
+          site,
+          keyword,
+        })
       },
       fetchRancheck: () =>
         updateMultipleStore(
@@ -151,7 +368,9 @@ const StateProvider = ({ children }: { children: any }) => {
           return
         }
 
+        // eslint-disable-next-line no-restricted-syntax
         for (const [index, setting] of searchTarget.entries()) {
+          // eslint-disable-next-line no-await-in-loop
           const isError = await updateMultipleStore(
             [
               actions.googleSearch,
@@ -179,9 +398,9 @@ const StateProvider = ({ children }: { children: any }) => {
       },
       downloadRank: async () => {
         updateStore(actions.downloadRank, store, setStore, {
-          site: store.projects.selectedProject.site
+          site: store.projects.selectedProject.site,
         })
-      }
+      },
     },
     projects: {
       ...store.projects,
@@ -219,28 +438,37 @@ const StateProvider = ({ children }: { children: any }) => {
     users: {
       ...store.users,
       addToken: (payload: string) =>
-        updateMultipleStore([actions.addToken, actions.setAddTokenModal], store, setStore, payload)
+        updateMultipleStore(
+          [actions.addToken, actions.setAddTokenModal],
+          store,
+          setStore,
+          payload,
+        ),
     },
     modal: {
       ...store.modal,
       openInitialSettingModal: () => {
-        store.searchStatus.isSearching
-          ? validationUtils.search('SEARCHING')
-          : updateStore(actions.setInitialSettingModal, store, setStore, true)
+        if (store.searchStatus.isSearching) {
+          validationUtils.search('SEARCHING')
+          return
+        }
+        updateStore(actions.setInitialSettingModal, store, setStore, true)
       },
       closeInitialSettingModal: () =>
         updateStore(actions.setInitialSettingModal, store, setStore, false),
       openAddSettingModal: () => {
-        store.searchStatus.isSearching
-          ? validationUtils.search('SEARCHING')
-          : updateStore(actions.setAddSettingModal, store, setStore, true)
+        if (store.searchStatus.isSearching) {
+          validationUtils.search('SEARCHING')
+          return
+        }
+        updateStore(actions.setAddSettingModal, store, setStore, true)
       },
       closeAddSettingModal: () =>
         updateStore(actions.setAddSettingModal, store, setStore, false),
       openAddTokenModal: () =>
         updateStore(actions.setAddTokenModal, store, setStore, true),
       closeAddTokenModal: () =>
-        updateStore(actions.setAddTokenModal, store, setStore, false)
+        updateStore(actions.setAddTokenModal, store, setStore, false),
     },
     searchStatus: {
       ...store.searchStatus,
@@ -249,185 +477,11 @@ const StateProvider = ({ children }: { children: any }) => {
   return <Provider value={{ ...value }}>{children}</Provider>
 }
 
-const updateStore = async (
-  action: string,
-  store: IState,
-  setStore: Function,
-  payload: any = null,
-) => {
-  const token = store.users.user.token
-  const hasToken = usersGetters(store.users).hasToken()
-
-  let value: any = null
-  switch (action) {
-    // rancheck
-    case actions.setRancheck:
-      value = rancheck.setRancheck(payload)
-      break
-    case actions.deleteRancheck:
-      const { _id, site, keyword } = payload
-      const deleteResult = await rancheck.deleteRancheck(_id, site, keyword, token, hasToken)
-      value = deleteResult
-        ? store.rancheck.settings.filter(setting => setting._id !== _id)
-        : store.rancheck.settings
-      break
-    case actions.downloadRank:
-      value = await rancheck.download(store.rancheck.settings, payload.site, token)
-      break
-    // projects
-    case actions.addProject:
-      value = [await projects.addProject(payload)]
-      break
-    // modal
-    case actions.setAddSettingModal:
-    case actions.setInitialSettingModal:
-    case actions.setAddTokenModal:
-      value = payload
-      break
-    // searchStatus
-    case actions.setIsSearching:
-      value = payload
-      break
-  }
-
-  const [key, updateKey] = action.split('/')
-  setStore({
-    ...store,
-    [key]: {
-      ...(store as any)[key],
-      [updateKey]: value,
-    },
-  })
+export {
+  context as store,
+  StateProvider,
+  modalGetters,
+  rancheckGetters,
+  projectsGetters,
+  usersGetters,
 }
-
-const updateMultipleStore = async (
-  actionList: string[],
-  store: IState,
-  setStore: Function,
-  payload: any = null,
-) => {
-  const token = store.users.user.token
-  const hasToken = usersGetters(store.users).hasToken()
-
-  let value: any = []
-  switch (actionList.toString()) {
-    case [actions.addRancheck, actions.setAddSettingModal].toString():
-      const addedSetting = await rancheck.addRancheck({
-        token,
-          hasToken,
-        ...payload
-      })
-      value = [[...store.rancheck.settings, ...addedSetting], false]
-      break
-    case [
-      actions.fetchProjects,
-      actions.fetchUser,
-      actions.setProject,
-      actions.setInitialSettingModal,
-    ].toString():
-      const [projectList, user] = await Promise.all([
-        projects.fetchProjects(),
-        users.get()
-      ])
-      value = [projectList, user, projectList[0], !projectList.length]
-      break
-    case [
-      actions.addProject,
-      actions.addRancheck,
-      actions.setProject,
-      actions.setInitialSettingModal,
-    ].toString():
-      const [project, settings] = await Promise.all([
-        projects.addProject({ site: payload.site }),
-        rancheck.addRancheck({
-          token,
-          hasToken,
-          ...payload
-        }),
-      ])
-      value = [
-        [...store.projects.projects, ...project],
-        settings,
-        project[0],
-        false,
-      ]
-      break
-    case [actions.fetchRancheck, actions.setRancheck].toString():
-      const selectedProject = store.projects.selectedProject
-      const rancheckSettings = await rancheck.fetchRancheck(
-        selectedProject.site,
-      )
-      value = [rancheckSettings, rancheckSettings[0]]
-      break
-    case [
-      actions.setProject,
-      actions.fetchRancheck,
-      actions.setRancheck,
-    ].toString():
-      const changeProject = store.projects.projects.find(
-        project => project._id === payload,
-      )
-      const changedSettings = await rancheck.fetchRancheck(changeProject!.site)
-      value = [changeProject, changedSettings, changedSettings[0]]
-      break
-    case [
-      actions.googleSearch,
-      actions.setIsSearching,
-      actions.setCount,
-      actions.setTotalNum,
-    ].toString():
-      const { setting, index, isSearching, totalNum } = payload
-      const copiedSettings = [...store.rancheck.settings]
-      const settingIndex = copiedSettings.findIndex((v: IRancheckEntity) =>
-        v.equals(setting),
-      )
-      copiedSettings[settingIndex] = await rancheck.googleSearch(
-        setting,
-        store.projects.selectedProject.site,
-      )
-      // indexは現在検索している次の検索数を表すので+2とする
-      value = [copiedSettings, isSearching, index + 2, totalNum]
-      break
-    case [actions.addToken, actions.setAddTokenModal].toString():
-      const [savedUser, allSettings] = await Promise.all([
-        users.saveToken(payload),
-        rancheck.fetchAllRancheck()
-      ])
-      Promise.all(store.projects.projects.map(project =>
-        rancheck.registerRancheck({
-          token: savedUser.token,
-          site: project.site,
-          keywords: allSettings.reduce((prev: string[], current) => {
-            return current.site !== project.site ? prev : prev.concat(current.keyword)
-          }, [])
-        })
-      ))
-      .then(results => {
-        const isSucceed = results.every(result => result)
-        const message = isSucceed ? NOTIFICATION.TOKEN_INPUT_COMPLETED : ERROR_MESSAGE.SERVER
-        alert(message)
-      })
-      value = [savedUser, false]
-      break
-  }
-
-  const keys = actionList.map(action => {
-    const [key, updateKey] = action.split('/')
-    return [key, updateKey]
-  })
-  const updateValue = {}
-  keys.forEach(([key, updateKey], index) => {
-    const baseObj = key in updateValue ? updateValue : store
-    ;(updateValue as any)[key] = {
-      ...(baseObj as any)[key],
-      [updateKey]: value[index],
-    }
-  })
-
-  setStore({
-    ...store,
-    ...updateValue,
-  })
-}
-
-export { store, StateProvider, modalGetters, rancheckGetters, projectsGetters, usersGetters }

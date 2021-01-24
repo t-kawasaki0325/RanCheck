@@ -10,11 +10,11 @@ import styles from './SettingTable.css'
 const MIN_SETTING_LENGTH = 13
 const EmplySettingTable = () => (
   <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td />
+    <td />
+    <td />
+    <td />
+    <td />
   </tr>
 )
 
@@ -50,12 +50,12 @@ const SettingTable: React.FC = () => {
     event: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value } = event.target
-    setCondition(condition => ({ ...condition, [name]: value }))
+    setCondition(current => ({ ...current, [name]: value }))
   }
 
   const changeSortSettings = (column: 'rank' | 'transition') => {
-    setSort(sort => ({
-      ...sort,
+    setSort(current => ({
+      ...current,
       type: column,
       [column]: !sort[column],
     }))
@@ -68,11 +68,11 @@ const SettingTable: React.FC = () => {
         const { word, number } = condition
         return (
           setting.wordIncludes(word) &&
-          (number === '0' || setting.matchKeywordNumber(parseInt(number)))
+          (number === '0' || setting.matchKeywordNumber(parseInt(number, 10)))
         )
       })
 
-  const length = displaySettings().length
+  const { length } = displaySettings()
   const numShortage =
     length > MIN_SETTING_LENGTH ? 0 : MIN_SETTING_LENGTH - length
 
@@ -87,7 +87,8 @@ const SettingTable: React.FC = () => {
           <select
             name="number"
             value={condition.number}
-            onChange={handleChange}>
+            onChange={handleChange}
+          >
             <option value={0}>全て ▼</option>
             <option value={1}>1語</option>
             <option value={2}>2語</option>
@@ -96,7 +97,8 @@ const SettingTable: React.FC = () => {
         </div>
         {isSearching && (
           <div className={styles.searchStatus}>
-            {count} / {totalNum} 検索中…
+            {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
+            {count} /{totalNum} 検索中…
           </div>
         )}
       </div>
@@ -107,12 +109,14 @@ const SettingTable: React.FC = () => {
               <th>キーワード</th>
               <th
                 className={styles.sort}
-                onClick={() => changeSortSettings('rank')}>
+                onClick={() => changeSortSettings('rank')}
+              >
                 Google順位
               </th>
               <th
                 className={styles.sort}
-                onClick={() => changeSortSettings('transition')}>
+                onClick={() => changeSortSettings('transition')}
+              >
                 Google順位変化
               </th>
               <th>タイトル</th>
@@ -127,7 +131,8 @@ const SettingTable: React.FC = () => {
                   onMouseMove={() => rancheck.setRancheck(setting)}
                   onContextMenu={({ pageX, pageY }) => {
                     setContextMenu({ top: pageY, left: pageX, state: true })
-                  }}>
+                  }}
+                >
                   <td>{setting.keyword}</td>
                   <td>{setting.latestRank() || '-'}</td>
                   <td>

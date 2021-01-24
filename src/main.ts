@@ -1,12 +1,13 @@
 import { app, BrowserWindow, dialog } from 'electron'
 import { autoUpdater } from 'electron-updater'
 import log from 'electron-log'
+
 const path = require('path')
 require('dotenv').config()
 
 autoUpdater.logger = log
 // @ts-ignore
-autoUpdater.logger.transports.file.level = "info"
+autoUpdater.logger.transports.file.level = 'info'
 
 const createWindow = (): void => {
   const win = new BrowserWindow({
@@ -22,9 +23,11 @@ const createWindow = (): void => {
   })
 
   const loadPath = process.env.NODE_ENV === 'development' ? '.' : './dist'
-  win.loadFile(loadPath + '/index.html')
+  win.loadFile(`${loadPath}/index.html`)
 
-  process.env.NODE_ENV === 'development' && win.webContents.openDevTools()
+  if (process.env.NODE_ENV === 'development') {
+    win.webContents.openDevTools()
+  }
 }
 
 app.whenReady().then(createWindow)
@@ -45,12 +48,17 @@ app.on('ready', () => {
   autoUpdater.checkForUpdates()
 
   autoUpdater.on('update-downloaded', () => {
-    dialog.showMessageBox({
-      type: 'info',
-      message: 'RanCheckのアップデートがあります。アプリを終了してアップデートしますか？',
-      buttons: ['再起動して更新', '後で']
-    }).then(result => {
-      result.response === 0 && autoUpdater.quitAndInstall()
-    })
+    dialog
+      .showMessageBox({
+        type: 'info',
+        message:
+          'RanCheckのアップデートがあります。アプリを終了してアップデートしますか？',
+        buttons: ['再起動して更新', '後で'],
+      })
+      .then(result => {
+        if (result.response === 0) {
+          autoUpdater.quitAndInstall()
+        }
+      })
   })
 })

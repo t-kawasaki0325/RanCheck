@@ -1,7 +1,10 @@
 import { IState } from './store'
 import { rancheckRepository, googleRepository } from '../services'
 import { IRancheckEntity } from '../usecase'
-import { addRancheckType, registerRancheckType } from '../services/repository/rancheckRepository';
+import {
+  addRancheckType,
+  registerRancheckType,
+} from '../services/repository/rancheckRepository'
 
 export type SortType = '' | 'rank' | 'transition'
 
@@ -32,33 +35,42 @@ export const rancheckGetters = (store: IState['rancheck']) => ({
       [[], []],
     )
     if (type === 'rank') {
-      rank
-        ? settings.sort((a, b) => (a.latestRank() > b.latestRank() ? 1 : -1))
-        : settings.sort((a, b) => (a.latestRank() < b.latestRank() ? 1 : -1))
+      if (rank) {
+        settings.sort((a, b) => (a.latestRank() > b.latestRank() ? 1 : -1))
+      } else {
+        settings.sort((a, b) => (a.latestRank() < b.latestRank() ? 1 : -1))
+      }
     }
     if (type === 'transition') {
-      transition
-        ? settings.sort((a, b) =>
-            a.rankTransition() > b.rankTransition() ? 1 : -1,
-          )
-        : settings.sort((a, b) =>
-            a.rankTransition() < b.rankTransition() ? 1 : -1,
-          )
+      if (transition) {
+        settings.sort((a, b) =>
+          a.rankTransition() > b.rankTransition() ? 1 : -1,
+        )
+      } else {
+        settings.sort((a, b) =>
+          a.rankTransition() < b.rankTransition() ? 1 : -1,
+        )
+      }
     }
     return settings.concat(outrangeSettings)
-  }
+  },
 })
 
 export default {
   addRancheck: async (payload: addRancheckType) =>
-    await rancheckRepository.add(payload),
+    rancheckRepository.add(payload),
   registerRancheck: async (payload: registerRancheckType) =>
-    await rancheckRepository.register(payload),
+    rancheckRepository.register(payload),
   setRancheck: (payload: IRancheckEntity) => payload,
-  deleteRancheck: (id: string, site: string, keyword: string, token: string, hasToken: boolean) =>
-    rancheckRepository.delete(id, site, keyword, token, hasToken),
-  fetchRancheck: async (site: string) => await rancheckRepository.get(site),
-  fetchAllRancheck: async () => await rancheckRepository.getAll(),
+  deleteRancheck: (
+    id: string,
+    site: string,
+    keyword: string,
+    token: string,
+    hasToken: boolean,
+  ) => rancheckRepository.delete(id, site, keyword, token, hasToken),
+  fetchRancheck: async (site: string) => rancheckRepository.get(site),
+  fetchAllRancheck: async () => rancheckRepository.getAll(),
   googleSearch: async (setting: IRancheckEntity, site: string) => {
     const { rank, title, url } = await googleRepository.getSearchResult(
       setting.keyword,
@@ -69,10 +81,14 @@ export default {
     rancheckRepository.update(setting)
     return setting
   },
-  download: async (settings: IRancheckEntity[], site: string, token: string) => {
+  download: async (
+    settings: IRancheckEntity[],
+    site: string,
+    token: string,
+  ) => {
     const ranks = await rancheckRepository.download(token, site)
     const copiedSettings = [...settings]
-    Object.entries(ranks).map(([key, value]) => {
+    Object.entries(ranks).forEach(([key, value]) => {
       const index = settings.findIndex(setting => setting.keyword === key)
       const { title, url, result } = value
 
@@ -84,5 +100,5 @@ export default {
     return copiedSettings
   },
   isValidLicense: async (token: string) =>
-    await rancheckRepository.isValidLicense(token)
+    rancheckRepository.isValidLicense(token),
 }

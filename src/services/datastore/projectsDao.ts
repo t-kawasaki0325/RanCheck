@@ -34,8 +34,14 @@ const projectsDao = {
       projects.insert(
         { site, groups, lastSearch },
         (error: Error, newDoc: selectType) => {
-          const { _id, site, groups, lastSearch } = newDoc
-          resolve(new ProjectsEntity(_id, site, lastSearch, groups))
+          resolve(
+            new ProjectsEntity(
+              newDoc._id,
+              newDoc.site,
+              newDoc.lastSearch,
+              newDoc.groups,
+            ),
+          )
         },
       )
     })

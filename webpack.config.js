@@ -38,6 +38,9 @@ module.exports = {
       '.tsx',
       '.js',
     ],
+    alias: {
+      '@': path.resolve(__dirname, 'src')
+    }
   },
   plugins: [
     new HtmlWebpackPlugin({

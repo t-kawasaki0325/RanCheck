@@ -19,4 +19,4 @@ export const isObjEmpty = (obj: Object): boolean =>
 export const range = (end: number): number[] => [...Array(end).keys()]
 
 export const toHalfWidthSpace = (text: string): string =>
-  text.replace(/　/g, ' ')
+  text.replace(/\u3000/g, ' ')

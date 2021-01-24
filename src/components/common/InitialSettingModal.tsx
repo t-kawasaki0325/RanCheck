@@ -13,7 +13,6 @@ const STEP = {
   SETUP_SITE: 0,
   ADD_KEYWORD: 1,
 }
-const ALL_STEP = Object.keys(STEP).length
 
 const keywordsToArray = (keywordInclLine: string): string[] => {
   return keywordInclLine
@@ -55,8 +54,13 @@ const InitialSettingModal: React.FC = () => {
 
   const addSiteValidate = async () => {
     let error = await validationUtils.projects(registerInfo.site, projects)
-    if (!error && usersGetters(users).currentPlan().MAX_SITE < projects.projects.length + 1) {
-      error = MESSAGE.INVALID_ADD_SITE(usersGetters(users).currentPlan().MAX_SITE)
+    if (
+      !error &&
+      usersGetters(users).currentPlan().MAX_SITE < projects.projects.length + 1
+    ) {
+      error = MESSAGE.INVALID_ADD_SITE(
+        usersGetters(users).currentPlan().MAX_SITE,
+      )
     }
     return error
   }
@@ -65,12 +69,16 @@ const InitialSettingModal: React.FC = () => {
     const keywords = keywordsToArray(registerInfo.keywordInclLine)
     let error = validationUtils.rancheck(keywords, rancheck)
     if (
-      !error
+      !error &&
       // TODO: 現行はサイトを1つの制約があるが本来は複数サイト存在するため修正必須
-      //　実装イメージとしてはrancheckのstoreにtotalKeywordNumを追加
-      && usersGetters(users).currentPlan().MAX_KEYWORD < rancheck.settings.length + keywords.length
+      // 実装イメージとしてはrancheckのstoreにtotalKeywordNumを追加
+      usersGetters(users).currentPlan().MAX_KEYWORD <
+        rancheck.settings.length + keywords.length
     ) {
-      error = MESSAGE.INVALID_ADD_KEYWORD(usersGetters(users).currentPlan().MAX_KEYWORD, rancheck.settings.length)
+      error = MESSAGE.INVALID_ADD_KEYWORD(
+        usersGetters(users).currentPlan().MAX_KEYWORD,
+        rancheck.settings.length,
+      )
     }
     return error
   }
@@ -92,7 +100,7 @@ const InitialSettingModal: React.FC = () => {
       return
     }
     if (step === STEP.SETUP_SITE) {
-      setStep(step => step + 1)
+      setStep(current => current + 1)
     }
     if (step === STEP.ADD_KEYWORD) {
       register()
@@ -107,15 +115,15 @@ const InitialSettingModal: React.FC = () => {
       name: 'site',
       modalTitle: 'サイトのURLを追加',
       buttonLabel: 'キーワードを追加',
-      caption: ''
+      caption: '',
     },
     {
       type: 'textarea',
       name: 'keywordInclLine',
       modalTitle: '検索キーワードを追加',
       buttonLabel: '完了',
-      caption: '※1行ごとに1つのキーワードを入力できます'
-    }
+      caption: '※1行ごとに1つのキーワードを入力できます',
+    },
   ] as {
     type: 'input' | 'textarea'
     name: string

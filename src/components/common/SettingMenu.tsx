@@ -12,32 +12,32 @@ const SettingMenu: React.FC<IProps> = props => {
   const { closeSettigMenu } = props
   const { modal, users } = useContext(store)
 
-  const inputToken = () => usersGetters(users).hasToken()
+  const inputToken = () =>
+    usersGetters(users).hasToken()
       ? alert(NOTIFICATION.TOKEN_ACTIVATED)
       : modal.openAddTokenModal()
-
-  const list = [
-    {
-      text: 'アカウントの有効化',
-      action: () => inputToken()
-    }
-  ]
 
   return (
     <div className={styles.menu}>
       <ul>
-        {list.map((item, index) => {
-          return (
-            <li key={index} className={styles.menuItem} onClick={() => {
+        <li className={styles.menuItem}>
+          <span
+            role="button"
+            tabIndex={0}
+            onClick={() => {
               // modalを閉じる
               closeSettigMenu()
               // 指定の処理
-              item.action()
-            }}>
-              {item.text}
-            </li>
-          )
-        })}
+              inputToken()
+            }}
+            onKeyDown={() => {
+              closeSettigMenu()
+              inputToken()
+            }}
+          >
+            アカウントの有効化
+          </span>
+        </li>
       </ul>
     </div>
   )

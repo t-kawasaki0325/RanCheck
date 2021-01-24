@@ -1,4 +1,3 @@
-import { PLAN } from '../../config/plan'
 import { rancheckDao as rancheckDatastore } from '../datastore'
 import { rancheckDao as rancheckApi } from '../httpRequest'
 import { IRancheckEntity, RancheckEntity } from '../../usecase'
@@ -15,11 +14,11 @@ export type addRancheckType = registerRancheckType & {
 
 const rancheckRepository = {
   get: async (site: string): Promise<IRancheckEntity[]> => {
-    return await rancheckDatastore.get(site)
+    return rancheckDatastore.get(site)
   },
 
   getAll: async (): Promise<IRancheckEntity[]> => {
-    return await rancheckDatastore.all()
+    return rancheckDatastore.all()
   },
 
   add: async ({
@@ -34,7 +33,7 @@ const rancheckRepository = {
     }
     // トークンを保持かつAPIの処理に失敗したときにはローカルのDBに保存処理を行わない
     return isSucceed
-      ? await rancheckDatastore.add(
+      ? rancheckDatastore.add(
           keywords.map(keyword => new RancheckEntity('', site, keyword)),
         )
       : []
@@ -45,29 +44,37 @@ const rancheckRepository = {
     site,
     keywords,
   }: registerRancheckType): Promise<boolean> => {
-    return await rancheckApi.register(token, site, keywords)
+    return rancheckApi.register(token, site, keywords)
   },
 
   update: (setting: IRancheckEntity) => {
     rancheckDatastore.update(setting)
   },
 
-  delete: async (id: string, site: string, keyword: string, token: string, hasToken: boolean) => {
+  delete: async (
+    id: string,
+    site: string,
+    keyword: string,
+    token: string,
+    hasToken: boolean,
+  ): Promise<boolean> => {
     let isSucceed = true
     if (hasToken) {
       isSucceed = await rancheckApi.deleteKeyword(token, site, [keyword])
     }
-    isSucceed && rancheckDatastore.delete(id)
+    if (isSucceed) {
+      rancheckDatastore.delete(id)
+    }
     return isSucceed
   },
 
   download: async (token: string, site: string) => {
-    return await rancheckApi.download(token, site)
+    return rancheckApi.download(token, site)
   },
-  
+
   isValidLicense: async (token: string): Promise<boolean> => {
-    return await rancheckApi.isValidLicense(token)
-  }
+    return rancheckApi.isValidLicense(token)
+  },
 }
 
 export default rancheckRepository

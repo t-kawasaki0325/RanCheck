@@ -12,35 +12,60 @@ const MainTab: React.FC = () => {
   const [showSettingMenu, setShowSettingMenu] = useState(false)
 
   const getGoogleRank = () => {
-    usersGetters(users).hasToken()
-      ? rancheck.downloadRank()
-      : rancheck.googleSearch()
+    if (usersGetters(users).hasToken()) {
+      rancheck.downloadRank()
+      return
+    }
+    rancheck.googleSearch()
   }
 
   const toggleShowSettingMenu = () => setShowSettingMenu(!showSettingMenu)
 
   return (
     <div className={styles.mainTab}>
-      <div onClick={getGoogleRank} className={styles.icon}>
-        <img className={styles.iconImg} src={IcnCheck} />
+      <div
+        role="button"
+        tabIndex={0}
+        onClick={getGoogleRank}
+        onKeyDown={getGoogleRank}
+        className={styles.icon}
+      >
+        <img className={styles.iconImg} src={IcnCheck} alt="Rank Check" />
         <span className={styles.iconText}>Rank Check</span>
       </div>
-      <div onClick={() => modal.openAddSettingModal()} className={styles.icon}>
-        <img className={styles.iconImg} src={IcnPlus} />
+      <div
+        role="button"
+        tabIndex={0}
+        onClick={() => modal.openAddSettingModal()}
+        onKeyDown={() => modal.openAddSettingModal()}
+        className={styles.icon}
+      >
+        <img className={styles.iconImg} src={IcnPlus} alt="Add Keyword" />
         <span className={styles.iconText}>Add keyword</span>
       </div>
       <div className={styles.menuWrapper}>
-        <div onClick={() => toggleShowSettingMenu()} className={styles.icon}>
-          <img className={styles.iconImg} src={IcnSetting} />
+        <div
+          role="button"
+          tabIndex={0}
+          onClick={() => toggleShowSettingMenu()}
+          onKeyDown={() => toggleShowSettingMenu()}
+          className={styles.icon}
+        >
+          <img className={styles.iconImg} src={IcnSetting} alt="Settings" />
           <span className={styles.iconText}>Settings</span>
         </div>
         {showSettingMenu && (
           <>
-            <div className={styles.overlay} onClick={() => toggleShowSettingMenu()}></div>
+            <div
+              role="button"
+              aria-label="Show Setting Menu"
+              tabIndex={0}
+              onClick={() => toggleShowSettingMenu()}
+              onKeyDown={() => toggleShowSettingMenu()}
+              className={styles.overlay}
+            />
             <div className={styles.menu}>
-              <SettingMenu
-                closeSettigMenu={toggleShowSettingMenu}
-              />
+              <SettingMenu closeSettigMenu={toggleShowSettingMenu} />
             </div>
           </>
         )}
