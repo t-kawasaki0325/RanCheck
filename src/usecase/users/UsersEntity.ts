@@ -17,14 +17,26 @@ class UsersEntity implements IUsersEntity {
   _plan: number
 
   /**
+   * トークン有効化日
+   */
+  _activateAt: string
+
+  /**
    * 契約期限日：契約が切れるとFREEプランへ移行
    */
   _expiredAt: string
 
-  constructor(_id: string, token: string, plan: number, expiredAt: string) {
+  constructor(
+    _id: string,
+    token: string,
+    plan: number,
+    activateAt: string,
+    expiredAt: string,
+  ) {
     this.__id = _id
     this._token = token
     this._plan = plan
+    this._activateAt = activateAt
     this._expiredAt = expiredAt
   }
 
@@ -38,6 +50,10 @@ class UsersEntity implements IUsersEntity {
 
   get plan() {
     return this._plan
+  }
+
+  get activateAt() {
+    return this._activateAt
   }
 
   get expiredAt() {

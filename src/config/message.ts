@@ -26,6 +26,8 @@ export const ERROR_MESSAGE = {
 export const NOTIFICATION = {
   TOKEN_INPUT_COMPLETED: 'トークンを有効化しました',
   TOKEN_ACTIVATED: 'トークンは有効化されています',
+  TOKEN_FIRST_DAY_CANNOT_USE:
+    'セットアップに時間が必要です。\n再度翌日に実行してください',
 }
 
 export const DELETE_CONFIRM = (keyword: string) =>

@@ -16,6 +16,8 @@ export const usersGetters = (store: IState['users']) => ({
   },
   currentPlan: (): planValueType =>
     Object.values(PLAN).find(v => v.VALUE === store.user.plan) || PLAN.FREE,
+  isTokenActivationDay: () =>
+    store.user.activateAt === dateUtils.getYYYY_MM_DD(),
 })
 
 export default {

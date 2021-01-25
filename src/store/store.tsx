@@ -367,6 +367,10 @@ const StateProvider = ({ children }: { children: any }) => {
           validationUtils.search('ALL_SEARCHED')
           return
         }
+        if (usersGetters(store.users).isTokenActivationDay()) {
+          alert(NOTIFICATION.TOKEN_FIRST_DAY_CANNOT_USE)
+          return
+        }
 
         // eslint-disable-next-line no-restricted-syntax
         for (const [index, setting] of searchTarget.entries()) {
