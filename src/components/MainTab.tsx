@@ -12,7 +12,7 @@ const MainTab: React.FC = () => {
   const [showSettingMenu, setShowSettingMenu] = useState(false)
 
   const getGoogleRank = () => {
-    if (usersGetters(users).hasToken()) {
+    if (usersGetters(users).hasValidToken()) {
       rancheck.downloadRank()
       return
     }

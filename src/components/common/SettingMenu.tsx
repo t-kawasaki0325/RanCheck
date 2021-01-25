@@ -13,7 +13,7 @@ const SettingMenu: React.FC<IProps> = props => {
   const { modal, users } = useContext(store)
 
   const inputToken = () =>
-    usersGetters(users).hasToken()
+    usersGetters(users).hasValidToken()
       ? alert(NOTIFICATION.TOKEN_ACTIVATED)
       : modal.openAddTokenModal()
 

@@ -20,3 +20,6 @@ export const range = (end: number): number[] => [...Array(end).keys()]
 
 export const toHalfWidthSpace = (text: string): string =>
   text.replace(/\u3000/g, ' ')
+
+export const zeroPadding = (num: number, length: number) =>
+  `${num}`.padStart(length, '0')

@@ -118,7 +118,7 @@ const updateStore = async (
   payload: any = null,
 ) => {
   const { token } = store.users.user
-  const hasToken = usersGetters(store.users).hasToken()
+  const hasToken = usersGetters(store.users).hasValidToken()
 
   let value: any = null
   switch (action) {
@@ -187,7 +187,7 @@ const updateMultipleStore = async (
   payload: any = null,
 ) => {
   const { token } = store.users.user
-  const hasToken = usersGetters(store.users).hasToken()
+  const hasToken = usersGetters(store.users).hasValidToken()
 
   let value: any = []
   switch (actionList.toString()) {
