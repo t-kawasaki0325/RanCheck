@@ -276,7 +276,7 @@ const updateMultipleStore = async (
     }
     case [actions.addToken, actions.setAddTokenModal].toString(): {
       const [savedUser, allSettings] = await Promise.all([
-        users.saveToken(payload),
+        users.saveToken(store.users.user._id, payload),
         rancheck.fetchAllRancheck(),
       ])
       Promise.all(

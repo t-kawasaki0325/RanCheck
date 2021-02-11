@@ -29,24 +29,32 @@ const usersDao = {
   },
 
   saveToken: async (
+    userId: string,
     token: string,
     plan: number,
     expiredAt: string,
   ): Promise<selectType> => {
     const activateAt = dateUtils.getYYYY_MM_DD()
+
     return new Promise(resolve => {
-      users.insert(
+      users.update(
+        { _id: userId },
         { token, plan, activateAt, expiredAt },
-        (error: Error, newDoc: selectType) => {
-          resolve(
-            new UsersEntity(
-              newDoc._id,
-              newDoc.token,
-              newDoc.plan,
-              newDoc.activateAt,
-              newDoc.expiredAt,
-            ),
-          )
+        { upsert: true },
+        (error: Error, replaceNum: number, newDoc: selectType | undefined) => {
+          if (newDoc !== undefined) {
+            resolve(
+              new UsersEntity(
+                newDoc._id,
+                newDoc.token,
+                newDoc.plan,
+                newDoc.activateAt,
+                newDoc.expiredAt,
+              ),
+            )
+          } else {
+            resolve(new UsersEntity(userId, token, plan, activateAt, expiredAt))
+          }
         },
       )
     })

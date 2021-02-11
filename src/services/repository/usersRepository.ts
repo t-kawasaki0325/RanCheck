@@ -7,9 +7,9 @@ const usersRepositoy = {
     return usersDao.get()
   },
 
-  saveToken: async (token: string): Promise<IUsersEntity> => {
+  saveToken: async (userId: string, token: string): Promise<IUsersEntity> => {
     const { plan, expiredAt } = await rancheckDao.fetchPlan(token)
-    return usersDao.saveToken(token, plan, expiredAt)
+    return usersDao.saveToken(userId, token, plan, expiredAt)
   },
 }
 

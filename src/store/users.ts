@@ -28,5 +28,6 @@ export const usersGetters = (store: IState['users']) => ({
 
 export default {
   get: () => usersRepository.get(),
-  saveToken: (token: string) => usersRepository.saveToken(token),
+  saveToken: (userId: string, token: string) =>
+    usersRepository.saveToken(userId, token),
 }
