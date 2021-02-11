@@ -14,8 +14,14 @@ export const usersGetters = (store: IState['users']) => ({
       parseInt(dateUtils.getYYYY_MM_DD().replace(/\//g, ''), 10)
     )
   },
-  currentPlan: (): planValueType =>
-    Object.values(PLAN).find(v => v.VALUE === store.user.plan) || PLAN.FREE,
+  currentPlan: (): planValueType => {
+    if (!usersGetters(store).hasValidToken()) {
+      return PLAN.FREE
+    }
+    return (
+      Object.values(PLAN).find(v => v.VALUE === store.user.plan) || PLAN.FREE
+    )
+  },
   isTokenActivationDay: () =>
     store.user.activateAt === dateUtils.getYYYY_MM_DD(),
 })
