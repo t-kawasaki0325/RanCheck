@@ -91,6 +91,10 @@ export default {
     Object.entries(ranks).forEach(([key, value]) => {
       const index = settings.findIndex(setting => setting.keyword === key)
       const { title, url, result } = value
+      // 今日登録したキーワードのとき
+      if (result === undefined) {
+        return
+      }
 
       const rank = result.pop()
       // TODO: 本来編集するべきでないので直す
