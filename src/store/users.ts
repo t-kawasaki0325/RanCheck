@@ -10,8 +10,8 @@ export const usersGetters = (store: IState['users']) => ({
       return false
     }
     return (
-      parseInt(dateUtils.getYYYY_MM_DD().replace(/\//g, ''), 10) >
-      parseInt(store.user.expiredAt.replace(/\//g, ''), 10)
+      parseInt(store.user.expiredAt.replace(/\//g, ''), 10) >
+      parseInt(dateUtils.getYYYY_MM_DD().replace(/\//g, ''), 10)
     )
   },
   currentPlan: (): planValueType =>
