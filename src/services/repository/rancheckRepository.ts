@@ -8,9 +8,7 @@ export type registerRancheckType = {
   keywords: string[]
 }
 
-export type addRancheckType = registerRancheckType & {
-  hasToken: boolean
-}
+export type addRancheckType = registerRancheckType
 
 const rancheckRepository = {
   get: async (site: string): Promise<IRancheckEntity[]> => {
@@ -23,14 +21,10 @@ const rancheckRepository = {
 
   add: async ({
     token,
-    hasToken,
     site,
     keywords,
   }: addRancheckType): Promise<IRancheckEntity[]> => {
-    let isSucceed = true
-    if (hasToken) {
-      isSucceed = await rancheckApi.register(token, site, keywords)
-    }
+    const isSucceed = await rancheckApi.register(token, site, keywords)
     // トークンを保持かつAPIの処理に失敗したときにはローカルのDBに保存処理を行わない
     return isSucceed
       ? rancheckDatastore.add(
@@ -56,12 +50,8 @@ const rancheckRepository = {
     site: string,
     keyword: string,
     token: string,
-    hasToken: boolean,
   ): Promise<boolean> => {
-    let isSucceed = true
-    if (hasToken) {
-      isSucceed = await rancheckApi.deleteKeyword(token, site, [keyword])
-    }
+    const isSucceed = await rancheckApi.deleteKeyword(token, site, [keyword])
     if (isSucceed) {
       rancheckDatastore.delete(id)
     }

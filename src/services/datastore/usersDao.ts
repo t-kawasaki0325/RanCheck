@@ -1,5 +1,5 @@
 import { users } from './db'
-import { PLAN } from '../../config/plan'
+import { PLAN, DEFAULT_TOKEN } from '../../config/plan'
 import { dateUtils } from '../../utils'
 import { UsersEntity, IUsersEntity } from '../../usecase'
 
@@ -18,10 +18,10 @@ const usersDao = {
         const doc = docs.pop()
         const { _id, token, plan, activateAt, expiredAt } = doc || {
           _id: '',
-          token: '',
+          token: DEFAULT_TOKEN,
           plan: PLAN.FREE.VALUE,
-          activateAt: '',
-          expiredAt: '',
+          activateAt: dateUtils.getYYYY_MM_DD(),
+          expiredAt: dateUtils.getIndefinitePeriod(),
         }
         resolve(new UsersEntity(_id, token, plan, activateAt, expiredAt))
       })

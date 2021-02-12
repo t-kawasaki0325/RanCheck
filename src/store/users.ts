@@ -1,12 +1,15 @@
 import { IState } from './store'
-import { planValueType, PLAN } from '../config/plan'
+import { planValueType, PLAN, DEFAULT_TOKEN } from '../config/plan'
 import { usersRepository } from '../services'
 import { dateUtils } from '../utils'
 
 export const usersGetters = (store: IState['users']) => ({
-  hasValidToken: () => {
+  hasPaidToken: () => {
     const hasToken = store.user.token !== undefined && store.user.token !== ''
     if (!hasToken) {
+      return false
+    }
+    if (store.user.token === DEFAULT_TOKEN) {
       return false
     }
     return (
@@ -15,7 +18,7 @@ export const usersGetters = (store: IState['users']) => ({
     )
   },
   currentPlan: (): planValueType => {
-    if (!usersGetters(store).hasValidToken()) {
+    if (!usersGetters(store).hasPaidToken()) {
       return PLAN.FREE
     }
     return (

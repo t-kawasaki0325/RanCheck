@@ -118,7 +118,6 @@ const updateStore = async (
   payload: any = null,
 ) => {
   const { token } = store.users.user
-  const hasToken = usersGetters(store.users).hasValidToken()
 
   let value: any = null
   switch (action) {
@@ -134,7 +133,6 @@ const updateStore = async (
         site,
         keyword,
         token,
-        hasToken,
       )
       value = deleteResult
         ? store.rancheck.settings.filter(setting => setting._id !== _id)
@@ -187,14 +185,12 @@ const updateMultipleStore = async (
   payload: any = null,
 ) => {
   const { token } = store.users.user
-  const hasToken = usersGetters(store.users).hasValidToken()
 
   let value: any = []
   switch (actionList.toString()) {
     case [actions.addRancheck, actions.setAddSettingModal].toString(): {
       const addedSetting = await rancheck.addRancheck({
         token,
-        hasToken,
         ...payload,
       })
       value = [[...store.rancheck.settings, ...addedSetting], false]
@@ -223,7 +219,6 @@ const updateMultipleStore = async (
         projects.addProject({ site: payload.site }),
         rancheck.addRancheck({
           token,
-          hasToken,
           ...payload,
         }),
       ])

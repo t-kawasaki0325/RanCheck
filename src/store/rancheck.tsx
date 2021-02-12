@@ -62,13 +62,8 @@ export default {
   registerRancheck: async (payload: registerRancheckType) =>
     rancheckRepository.register(payload),
   setRancheck: (payload: IRancheckEntity) => payload,
-  deleteRancheck: (
-    id: string,
-    site: string,
-    keyword: string,
-    token: string,
-    hasToken: boolean,
-  ) => rancheckRepository.delete(id, site, keyword, token, hasToken),
+  deleteRancheck: (id: string, site: string, keyword: string, token: string) =>
+    rancheckRepository.delete(id, site, keyword, token),
   fetchRancheck: async (site: string) => rancheckRepository.get(site),
   fetchAllRancheck: async () => rancheckRepository.getAll(),
   googleSearch: async (setting: IRancheckEntity, site: string) => {
