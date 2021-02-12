@@ -18,9 +18,20 @@ plugins:
   - prettier
 rules:
   complexity: ['error', 10]
-  react/props-types: off
-  '@typescript-eslint/interface-name-prefix':
+  no-undef: off
+  no-underscore-dangle: off
+  no-use-before-define: off
+  no-unused-vars: off
+  import/extensions: off
+  import/prefer-default-export: off
+  import/no-extraneous-dependencies: off
+  "@typescript-eslint/no-use-before-define": ["error"]
+  "@typescript-eslint/no-unused-vars": "error"
+  react/prop-types: off
+  react/jsx-filename-extension:
     - error
-    - prefixWithI: 'always'
+    - extensions: [".tsx"]
   prettier/prettier:
     - error
+settings:
+  "import/resolver": "webpack"

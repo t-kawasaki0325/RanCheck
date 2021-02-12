@@ -1,8 +1,8 @@
-import React, { ChangeEvent, useContext } from 'react';
+import React, { ChangeEvent, useContext } from 'react'
 import { store } from '../../store/store'
 
-import styles from './ModalBase.css';
-import IcnCancel from '../../assets/img/icn_cancel.svg';
+import styles from './ModalBase.css'
+import IcnCancel from '../../assets/img/icn_cancel.svg'
 
 interface IProps {
   type: 'input' | 'textarea'
@@ -15,7 +15,9 @@ interface IProps {
   currentStep?: number
   buttonClick: (event: React.MouseEvent) => void
   close: (event: any) => void
-  handleChange: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
+  handleChange: (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => void
 }
 
 const ModalBase: React.FC<IProps> = props => {
@@ -30,7 +32,7 @@ const ModalBase: React.FC<IProps> = props => {
     buttonLabel,
     buttonClick,
     close,
-    handleChange
+    handleChange,
   } = props
   const { projects } = useContext(store)
 
@@ -45,10 +47,11 @@ const ModalBase: React.FC<IProps> = props => {
         <div className={styles.modalHeader}>
           {titleList.map((title, index) => (
             <div
-              key={index}
-              className={
-                `${styles.modalHeaderStep} ${isCurrentStep(index) && styles['modalHeaderStep-selected']}`
-              }>
+              key={title}
+              className={`${styles.modalHeaderStep} ${
+                isCurrentStep(index) && styles['modalHeaderStep-selected']
+              }`}
+            >
               {titleList.length > 1 && (
                 <span className={styles.circle}>{index + 1}</span>
               )}
@@ -58,12 +61,12 @@ const ModalBase: React.FC<IProps> = props => {
         </div>
         <div className={styles.modalBody}>
           <div
-            className={`${styles['modalItem-alignRight']} ${styles.modalCancelArea}`}>
+            className={`${styles['modalItem-alignRight']} ${styles.modalCancelArea}`}
+          >
             {showCancelButton && (
-              <img
-                onClick={close}
-                src={IcnCancel}
-              />
+              <div role="button" tabIndex={0} onClick={close} onKeyDown={close}>
+                <img src={IcnCancel} alt="Close Modal" />
+              </div>
             )}
           </div>
           {message && (
@@ -78,7 +81,8 @@ const ModalBase: React.FC<IProps> = props => {
               <textarea
                 rows={10}
                 name="keywordInclLine"
-                onChange={handleChange}></textarea>
+                onChange={handleChange}
+              />
             )}
           </div>
           {!!caption && (
@@ -87,8 +91,10 @@ const ModalBase: React.FC<IProps> = props => {
             </div>
           )}
           <div
-            className={`${styles.modalItem} ${styles['modalItem-alignRight']}`}>
+            className={`${styles.modalItem} ${styles['modalItem-alignRight']}`}
+          >
             <button
+              type="button"
               className={styles.modalButton}
               onClick={buttonClick}
             >

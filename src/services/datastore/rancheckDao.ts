@@ -21,28 +21,18 @@ export interface selectType extends saveType {
 const rancheckDao = {
   get: async (site: string): Promise<IRancheckEntity[]> => {
     return new Promise(resolve => {
-      rancheck.find({ site: site }, (err: Error, docs: selectType[]) => {
+      rancheck.find({ site }, (err: Error, docs: selectType[]) => {
         resolve(
           docs.map((doc: selectType) => {
-            const {
-              _id,
-              title,
-              site,
-              url,
-              keyword,
-              gRank,
-              groups,
-              createdAt,
-            } = doc
             return new RancheckEntity(
-              _id,
-              site,
-              keyword,
-              title,
-              url,
-              gRank,
-              groups,
-              createdAt,
+              doc._id,
+              doc.site,
+              doc.keyword,
+              doc.title,
+              doc.url,
+              doc.gRank,
+              doc.groups,
+              doc.createdAt,
             )
           }),
         )
@@ -55,25 +45,15 @@ const rancheckDao = {
       rancheck.find({}, (err: Error, docs: selectType[]) => {
         resolve(
           docs.map((doc: selectType) => {
-            const {
-              _id,
-              title,
-              site,
-              url,
-              keyword,
-              gRank,
-              groups,
-              createdAt,
-            } = doc
             return new RancheckEntity(
-              _id,
-              site,
-              keyword,
-              title,
-              url,
-              gRank,
-              groups,
-              createdAt,
+              doc._id,
+              doc.site,
+              doc.keyword,
+              doc.title,
+              doc.url,
+              doc.gRank,
+              doc.groups,
+              doc.createdAt,
             )
           }),
         )
@@ -82,7 +62,7 @@ const rancheckDao = {
   },
 
   add: async (docs: IRancheckEntity[]): Promise<IRancheckEntity[]> => {
-    const site = docs[0].site
+    const { site } = docs[0]
 
     return new Promise(resolve => {
       rancheck.insert(
@@ -92,25 +72,15 @@ const rancheckDao = {
             newDocs
               .filter(doc => doc.site === site)
               .map((doc: selectType) => {
-                const {
-                  _id,
-                  title,
-                  site,
-                  url,
-                  keyword,
-                  gRank,
-                  groups,
-                  createdAt,
-                } = doc
                 return new RancheckEntity(
-                  _id,
-                  title,
-                  site,
-                  keyword,
-                  url,
-                  gRank,
-                  groups,
-                  createdAt,
+                  doc._id,
+                  doc.title,
+                  doc.site,
+                  doc.keyword,
+                  doc.url,
+                  doc.gRank,
+                  doc.groups,
+                  doc.createdAt,
                 )
               }),
           )

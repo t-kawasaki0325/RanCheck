@@ -14,13 +14,23 @@ const SidebarShrink: React.FC<IProps> = (props: IProps) => {
 
   return (
     <div className={styles.shrinkSidebar}>
-      <div onClick={() => expandSidebar()} className={styles.icon}>
-        <img src={IcnMenu} />
+      <div
+        role="button"
+        tabIndex={0}
+        onClick={() => expandSidebar()}
+        onKeyDown={() => expandSidebar()}
+        className={styles.icon}
+      >
+        <img src={IcnMenu} alt="Expand Sidebar" />
       </div>
       <div
+        role="button"
+        tabIndex={0}
         className={`${styles.icon} ${styles.positionBottom}`}
-        onClick={() => openAddSiteModal()}>
-        <img src={IcnPlus} />
+        onClick={() => openAddSiteModal()}
+        onKeyDown={() => openAddSiteModal()}
+      >
+        <img src={IcnPlus} alt="Open Add Site Modal" />
       </div>
     </div>
   )

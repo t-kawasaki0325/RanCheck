@@ -13,5 +13,5 @@ export default {
     await projectsRepository.add(payload),
   ],
   fetchProjects: async (): Promise<IProjectsEntity[]> =>
-    await projectsRepository.get(),
+    projectsRepository.get(),
 }

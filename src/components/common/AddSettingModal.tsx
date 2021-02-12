@@ -1,6 +1,7 @@
 import React, { useState, ChangeEvent, useContext } from 'react'
 import ModalBase from './ModalBase'
-import { store } from '../../store/store'
+import { MESSAGE } from '../../config/message'
+import { store, usersGetters } from '../../store/store'
 import { validationUtils, toHalfWidthSpace } from '../../utils'
 
 interface IRegisterInfo {
@@ -24,13 +25,23 @@ const AddSettingModal: React.FC = () => {
     keywordInclLine: '',
   })
   const [message, setMessage] = useState('')
-  const { modal, rancheck, projects } = useContext(store)
+  const { modal, rancheck, projects, users } = useContext(store)
 
   const validate = () => {
-    const error = validationUtils.rancheck(
-      keywordsToArray(registerInfo.keywordInclLine),
-      rancheck,
-    )
+    const keywords = keywordsToArray(registerInfo.keywordInclLine)
+    let error = validationUtils.rancheck(keywords, rancheck)
+    if (
+      !error &&
+      // TODO: 現行はサイトを1つの制約があるが本来は複数サイト存在するため修正必須
+      // 実装イメージとしてはrancheckのstoreにtotalKeywordNumを追加
+      usersGetters(users).currentPlan().MAX_KEYWORD <
+        rancheck.settings.length + keywords.length
+    ) {
+      error = MESSAGE.INVALID_ADD_KEYWORD(
+        usersGetters(users).currentPlan().MAX_KEYWORD,
+        rancheck.settings.length,
+      )
+    }
     setMessage(error)
     return !!error
   }
@@ -40,7 +51,7 @@ const AddSettingModal: React.FC = () => {
       return
     }
     const { keywordInclLine } = registerInfo
-    const site = projects.selectedProject.site
+    const { site } = projects.selectedProject
     const keywords = keywordsToArray(keywordInclLine)
 
     rancheck.addRancheck({ site, keywords })
@@ -60,13 +71,13 @@ const AddSettingModal: React.FC = () => {
 
   return (
     <ModalBase
-      type='textarea'
+      type="textarea"
       titleList={['Add keyword']}
-      name='keywordInclLine'
+      name="keywordInclLine"
       message={message}
-      buttonLabel='完了'
-      modalTitle='検索キーワードを追加'
-      caption='※1行ごとに1つのキーワードを入力できます'
+      buttonLabel="完了"
+      modalTitle="検索キーワードを追加"
+      caption="※1行ごとに1つのキーワードを入力できます"
       buttonClick={register}
       close={closeModal}
       handleChange={handleChange}

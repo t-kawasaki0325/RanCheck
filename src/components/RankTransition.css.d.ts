@@ -3,6 +3,6 @@ declare const styles: {
   readonly mainTitle: string
   readonly titleText: string
   readonly comparisonArea: string
-  readonly comparisonArea_text: string
+  readonly comparisonAreaText: string
 }
 export = styles

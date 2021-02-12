@@ -1,9 +1,8 @@
-import React, { useState, useContext, ChangeEvent } from 'react';
+import React, { useState, useContext, ChangeEvent } from 'react'
 import ModalBase from './ModalBase'
 import { store } from '../../store/store'
-import { NOTIFICATION } from '../../config/message'
 
-import { validationUtils } from '../../utils';
+import { validationUtils } from '../../utils'
 
 const AddTokenModal: React.FC = () => {
   const [token, setToken] = useState('')
@@ -34,12 +33,12 @@ const AddTokenModal: React.FC = () => {
 
   return (
     <ModalBase
-      type='input'
+      type="input"
       titleList={['Add Token']}
-      name='token'
+      name="token"
       message={message}
-      modalTitle='トークンを追加'
-      buttonLabel='トークンを有効化'
+      modalTitle="トークンを追加"
+      buttonLabel="トークンを有効化"
       buttonClick={register}
       close={closeModal}
       handleChange={handleChange}

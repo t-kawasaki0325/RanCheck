@@ -12,7 +12,7 @@ client.interceptors.response.use(
       alert(ERROR_MESSAGE.NETWORK)
     }
     return Promise.reject(error)
-  }
+  },
 )
 
 const httpClient = {
@@ -22,7 +22,7 @@ const httpClient = {
 
   post: (url: string, params: {}) => {
     return client.post(url, params)
-  }
+  },
 }
 
 export default httpClient

@@ -7,11 +7,11 @@ export type addProjectType = {
 
 const projectsRepository = {
   get: async (): Promise<IProjectsEntity[]> => {
-    return await projecstDao.get()
+    return projecstDao.get()
   },
 
   add: async ({ site }: addProjectType): Promise<IProjectsEntity> => {
-    return await projecstDao.add(new ProjectsEntity('', site, ''))
+    return projecstDao.add(new ProjectsEntity('', site, ''))
   },
 }
 

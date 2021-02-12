@@ -14,22 +14,22 @@ const RankTransition: React.FC = () => {
         <span className={styles.titleText}>Rank推移</span>
       </div>
       <div className={styles.comparisonArea}>
-        <div className={styles.comparisonArea_text}>
+        <div className={styles.comparisonAreaText}>
           1週間前と比較：
           {!isObjEmpty(selectedSetting) &&
             selectedSetting.rankTransitionByWeek()}
         </div>
-        <div className={styles.comparisonArea_text}>
+        <div className={styles.comparisonAreaText}>
           1ヶ月前と比較：
           {!isObjEmpty(selectedSetting) &&
             selectedSetting.rankTransitionByMonth()}
         </div>
-        <div className={styles.comparisonArea_text}>
+        <div className={styles.comparisonAreaText}>
           3ヶ月前と比較：
           {!isObjEmpty(selectedSetting) &&
             selectedSetting.rankTransitionByThreeMonth()}
         </div>
-        <div className={styles.comparisonArea_text}>
+        <div className={styles.comparisonAreaText}>
           半年前と比較：
           {!isObjEmpty(selectedSetting) &&
             selectedSetting.rankTransitionBySixMonth()}

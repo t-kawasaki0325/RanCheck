@@ -15,5 +15,5 @@ export {
   IProjectsEntity,
   ProjectsEntity,
   IUsersEntity,
-  UsersEntity
+  UsersEntity,
 }

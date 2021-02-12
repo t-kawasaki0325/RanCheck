@@ -1,9 +1,14 @@
-import { users } from './db';
+import { users } from './db'
+import { PLAN } from '../../config/plan'
+import { dateUtils } from '../../utils'
 import { UsersEntity, IUsersEntity } from '../../usecase'
 
 export interface selectType {
   _id: string
   token: string
+  plan: number
+  activateAt: string
+  expiredAt: string
 }
 
 const usersDao = {
@@ -11,23 +16,49 @@ const usersDao = {
     return new Promise(resolve => {
       users.find({}, (err: Error, docs: selectType[]) => {
         const doc = docs.pop()
-        const { _id, token } = doc || { _id: '', token: '' }
-        resolve(new UsersEntity(_id, token))
+        const { _id, token, plan, activateAt, expiredAt } = doc || {
+          _id: '',
+          token: '',
+          plan: PLAN.FREE.VALUE,
+          activateAt: '',
+          expiredAt: '',
+        }
+        resolve(new UsersEntity(_id, token, plan, activateAt, expiredAt))
       })
     })
   },
 
-  saveToken: async (token: string): Promise<selectType> => {
+  saveToken: async (
+    userId: string,
+    token: string,
+    plan: number,
+    expiredAt: string,
+  ): Promise<selectType> => {
+    const activateAt = dateUtils.getYYYY_MM_DD()
+
     return new Promise(resolve => {
-      users.insert(
-        { token },
-        (error: Error, newDoc: selectType) => {
-          const { _id, token } = newDoc
-          resolve(new UsersEntity(_id, token))
+      users.update(
+        { _id: userId },
+        { token, plan, activateAt, expiredAt },
+        { upsert: true },
+        (error: Error, replaceNum: number, newDoc: selectType | undefined) => {
+          if (newDoc !== undefined) {
+            resolve(
+              new UsersEntity(
+                newDoc._id,
+                newDoc.token,
+                newDoc.plan,
+                newDoc.activateAt,
+                newDoc.expiredAt,
+              ),
+            )
+          } else {
+            resolve(new UsersEntity(userId, token, plan, activateAt, expiredAt))
+          }
         },
       )
     })
-  }
+  },
 }
 
 export default usersDao

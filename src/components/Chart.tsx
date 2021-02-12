@@ -31,8 +31,7 @@ const Chart: React.FC = () => {
   const data = selectedSetting.gRank
 
   const yAxis =
-    Y_AXIS.find(yAxis => selectedSetting.maxRank() <= yAxis.max) ||
-    Y_AXIS.slice(-1)[0]
+    Y_AXIS.find(y => selectedSetting.maxRank() <= y.max) || Y_AXIS.slice(-1)[0]
 
   return (
     // FIXME: rechartsはy軸を逆転すると最小値が消えるため対応
@@ -44,7 +43,8 @@ const Chart: React.FC = () => {
           left: '50px',
           top: '-3px',
           fontSize: 12,
-        }}>
+        }}
+      >
         1
       </div>
       <LineChart width={760} height={160} data={data}>
@@ -53,10 +53,10 @@ const Chart: React.FC = () => {
         <XAxis dataKey="date" tick={{ fontSize: 14 }} />
         <YAxis
           domain={[1, yAxis.max]}
-          allowDataOverflow={true}
+          allowDataOverflow
           tick={{ fontSize: 12 }}
           ticks={yAxis.ticks}
-          reversed={true}
+          reversed
         />
       </LineChart>
     </div>
