@@ -47,7 +47,7 @@ const Chart: React.FC = () => {
       >
         1
       </div>
-      <LineChart width={760} height={160} data={data}>
+      <LineChart width={900} height={160} data={data}>
         <Line type="monotone" dataKey="rank" stroke="#8884d8" />
         <CartesianGrid stroke="#ccc" />
         <XAxis dataKey="date" tick={{ fontSize: 14 }} />
