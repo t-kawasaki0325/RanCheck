@@ -1,6 +1,7 @@
 import { IState } from './store'
 import { rancheckRepository, googleRepository } from '../services'
 import { IRancheckEntity } from '../usecase'
+import { dateUtils } from '../utils'
 import {
   addRancheckType,
   registerRancheckType,
@@ -91,7 +92,17 @@ export default {
         return
       }
 
+
       const rank = result.pop()
+      // 最新日付が今日の日付でない場合
+      if (rank.date !== dateUtils.getYYYY_MM_DD()) {
+        return
+      }
+      // 既に検索済みの場合
+      if (rank.date === copiedSettings[index].lastSearch) {
+        return
+      }
+
       // TODO: 本来編集するべきでないので直す
       copiedSettings[index]!.addRank(title, url, rank.rank)
       rancheckRepository.update(copiedSettings[index])
