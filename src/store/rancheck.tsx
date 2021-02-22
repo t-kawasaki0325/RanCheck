@@ -92,7 +92,6 @@ export default {
         return
       }
 
-
       const rank = result.pop()
       // 最新日付が今日の日付でない場合
       if (rank.date !== dateUtils.getYYYY_MM_DD()) {
