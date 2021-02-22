@@ -9,6 +9,8 @@ export default {
     )}/${zeroPadding(date.getDate(), 2)}`
   },
 
+  getIndefinitePeriod: () => '2099/01/01',
+
   aWeekAgo: () => {
     const date = new Date()
     date.setDate(date.getDate() - 7)

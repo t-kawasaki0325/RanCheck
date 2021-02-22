@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react'
-import { store, usersGetters } from '../store/store'
+import { store } from '../store/store'
 import { SettingMenu } from './common'
 
 import styles from './MainTab.css'
@@ -8,15 +8,13 @@ import IcnPlus from '../assets/img/icn_plus.svg'
 import IcnSetting from '../assets/img/icn_setting.svg'
 
 const MainTab: React.FC = () => {
-  const { rancheck, modal, users } = useContext(store)
+  const { rancheck, modal } = useContext(store)
   const [showSettingMenu, setShowSettingMenu] = useState(false)
 
   const getGoogleRank = () => {
-    if (usersGetters(users).hasValidToken()) {
-      rancheck.downloadRank()
-      return
-    }
-    rancheck.googleSearch()
+    rancheck.downloadRank()
+    // TODO: 中の処理も含め全て削除するか決める
+    // rancheck.googleSearch()
   }
 
   const toggleShowSettingMenu = () => setShowSettingMenu(!showSettingMenu)
@@ -30,8 +28,14 @@ const MainTab: React.FC = () => {
         onKeyDown={getGoogleRank}
         className={styles.icon}
       >
-        <img className={styles.iconImg} src={IcnCheck} alt="Rank Check" />
-        <span className={styles.iconText}>Rank Check</span>
+        <img
+          // TODO: アイコンのサイズを調整する
+          style={{ height: 32 }}
+          className={styles.iconImg}
+          src={IcnCheck}
+          alt="Rank Check"
+        />
+        <span className={styles.iconText}>Update Rank</span>
       </div>
       <div
         role="button"

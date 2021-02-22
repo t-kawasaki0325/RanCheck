@@ -1,5 +1,5 @@
 import React from 'react'
-import { MainTab, RankGraph, RankTransition, SettingTable } from '../components'
+import { MainTab, RankGraph, SettingTable } from '../components'
 
 import styles from './Home.css'
 
@@ -13,7 +13,7 @@ const Home: React.FC = () => {
         </div>
         <div className={styles.boxFlex}>
           <RankGraph />
-          <RankTransition />
+          {/* <RankTransition /> */}
         </div>
       </div>
     </div>
