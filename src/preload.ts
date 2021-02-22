@@ -13,8 +13,8 @@ global.crypt = require('crypto')
 global.pathToDb =
   process.env.NODE_ENV === 'development'
     ? __dirname
-    // @ts-ignore
-    : global.path.join(__dirname, '../datastore')
+    : // @ts-ignore
+      global.path.join(__dirname, '../datastore')
 
 const _setImmediate = setImmediate
 process.once('loaded', () => {
